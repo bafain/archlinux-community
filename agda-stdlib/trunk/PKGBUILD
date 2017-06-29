@@ -4,7 +4,7 @@
 
 pkgname=agda-stdlib
 pkgver=0.13
-pkgrel=1
+pkgrel=2
 pkgdesc="Agda standard libraries"
 url="https://github.com/agda/agda-stdlib"
 license=("MIT")
@@ -18,7 +18,7 @@ sha256sums=('SKIP')
 build() {
     cd "${srcdir}/${pkgname}"
     
-    runhaskell Setup configure
+    runhaskell Setup configure --enable-executable-dynamic
     runhaskell Setup build
 
     dist/build/GenerateEverything/GenerateEverything
