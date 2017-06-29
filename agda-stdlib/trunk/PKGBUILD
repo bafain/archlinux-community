@@ -4,7 +4,7 @@
 
 pkgname=agda-stdlib
 pkgver=0.13
-pkgrel=2
+pkgrel=3
 pkgdesc="Agda standard libraries"
 url="https://github.com/agda/agda-stdlib"
 license=("MIT")
@@ -12,8 +12,11 @@ arch=('i686' 'x86_64')
 depends=("agda")
 makedepends=("ghc" "git" "haskell-filemanip")
 options=('staticlibs')
-source=("git+https://github.com/agda/agda-stdlib.git#tag=v$pkgver")
-sha256sums=('SKIP')
+install=$pkgname.install
+source=("git+https://github.com/agda/agda-stdlib.git#tag=v$pkgver"
+        "standard-library.agda-lib")
+sha256sums=('SKIP'
+            '9a88f76a516f8d497ed37790eae3f4dceb3a2ac854535d6a5f8c1f7528494521')
 
 build() {
     cd "${srcdir}/${pkgname}"
@@ -28,8 +31,11 @@ build() {
 }
 
 package() {
+    cd "${srcdir}"
+    install -D -m644 "standard-library.agda-lib" "${pkgdir}/usr/share/agda/lib/standard-library.agda-lib"
+
     cd "${srcdir}/${pkgname}"
-    install -dm755 "$pkgdir/usr/share/agda/lib/prim"
-    cp -pr Everything.agda* src/* "$pkgdir/usr/share/agda/lib/prim"
+    install -dm755 "$pkgdir/usr/share/agda/lib/stdlib"
+    cp -pr Everything.agda* src/* "$pkgdir/usr/share/agda/lib/stdlib"
     install -D -m644 "LICENCE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENCE"
 }

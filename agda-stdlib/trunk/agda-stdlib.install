@@ -1,0 +1,14 @@
+post_install() {
+  cat << EOF
+==> Put this in your AGDA_DIR/libraries file (AGDA_DIR defaults to
+    \$HOME/.agda) to tell Agda about the location of the standard
+    library:
+
+/usr/share/agda/lib/standard-library.agda-lib
+
+==> If you want to enable autoloading of the Agda standard library,
+    you will also need to put this in your AGDA_DIR/defaults file:
+
+standard-library
+EOF
+}
