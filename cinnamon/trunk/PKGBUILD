@@ -5,10 +5,10 @@
 # Contributor: CReimer
 
 pkgname=cinnamon
-pkgver=3.4.3
+pkgver=3.6.7
 pkgrel=1
 pkgdesc="Linux desktop which provides advanced innovative features and a traditional user experience"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://github.com/linuxmint/Cinnamon"
 license=('GPL2')
 depends=('accountsservice' 'caribou' 'cinnamon-settings-daemon' 'cinnamon-session'
@@ -17,7 +17,7 @@ depends=('accountsservice' 'caribou' 'cinnamon-settings-daemon' 'cinnamon-sessio
          'muffin' 'python2-cairo' 'python-dbus' 'python2-dbus' 'python2-pillow'
          'python2-pam' 'python2-pexpect' 'python2-pyinotify' 'python2-lxml'
          'cinnamon-control-center' 'cinnamon-screensaver' 'cinnamon-menus' 'libgnomekbd'
-         'network-manager-applet' 'nemo' 'polkit-gnome' 'xapps' 'python2-gobject')
+         'network-manager-applet' 'nemo' 'polkit-gnome' 'xapps' 'python2-gobject' 'gnome-bluetooth')
 makedepends=('gnome-common' 'intltool' 'gtk-doc' 'gobject-introspection')
 optdepends=('blueberry: Bluetooth support'
             'gnome-panel: fallback mode'
@@ -27,8 +27,8 @@ options=('!emptydirs')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxmint/Cinnamon/archive/$pkgver.tar.gz"
         "set_wheel.patch"
         "default-theme.patch")
-sha512sums=('3ba0b77e2339d2565525ffcc31e147d31720d5790c9af8b313fa445df86693c8c68e6f1feb97664c6f98bf512e89bba1ba088869048d722a8f35784b30d46969'
-            'cff8fb42a81d71b929327df5d56a68b68a96e79d4b85125ea7de0ed2dca53c6b45d08deccafa4453a7471f52aa6bf7d39ed979d2a085906997969a63e7dd7a8c'
+sha512sums=('446e0bbf1fcda7e193735115b4c0396e24428e102b0e74d4b1e150c279d97bbf45961fe57ac08e5828f957c390c39bf385bf29ae7549f5fead2bc59389e64add'
+            '55929747b9cc1bc8893717c9fef257f8f2d560dc56849f1c74f88ed636b6f9f9997f6c4713768793b115e93482543a330b70eba672d696ea8456741ed2c71237'
             '3c460141b277df61c4546cc311fa5ecc7e7ea19a7d39a92d1d0214c37a91b4e163bc91823df7098bd2cf6fb430361cdb9839ab96abe53fe82f2a735e187de563')
             
 prepare() {

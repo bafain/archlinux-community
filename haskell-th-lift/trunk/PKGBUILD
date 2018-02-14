@@ -3,24 +3,24 @@
 
 _hkgname=th-lift
 pkgname=haskell-th-lift
-pkgver=0.7.7
-pkgrel=2
+pkgver=0.7.8
+pkgrel=1
 pkgdesc="Derive Template Haskell's Lift class for datatypes."
-url="http://github.com/ekmett/th-lift/"
+url="https://github.com/ekmett/th-lift/"
 license=('custom:BSD3')
-arch=('i686' 'x86_64')
-depends=('ghc')
+arch=('x86_64')
+depends=('ghc-libs')
+makedepends=('ghc')
 source=(https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz)
-sha512sums=('490d349ef2985defcf58eb49686c89ab79f8f9a3e29f3edb195440fe7995ecec6b2538767855ae0a5b9f43e5b00fe0bee167513486be99c111776ab7855d37d2')
+sha512sums=('a71f053ad11c0994f1e4525f949711c7fd0f10d617b263b039d6e11c9cf22228cadc42c7ad2f92742bb99117ef0c490f3a7d22eba70a2c1b2102b573c1e2e2f8')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -32,12 +32,7 @@ package() {
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "BSD3" "${pkgdir}/usr/share/licenses/${pkgname}/BSD3"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/BSD3"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

@@ -1,49 +1,45 @@
 # $Id$
 # Maintainer: Ronald van Haren <ronald.archlinux.org>
+# Maintainer: Bruno Pagani (a.k.a. ArchangeGabriel) <archange@archlinux.org>
 # Contributor: damir <damir@archlinux.org>
 
 pkgname=netcdf
-pkgver=4.4.1
-pkgrel=2
+pkgver=4.5.0
+pkgrel=1
 pkgdesc="network Common Data Form interface for array-oriented data access and corresponding library"
-arch=("i686" "x86_64")
-url="http://www.unidata.ucar.edu/downloads/netcdf/index.jsp"
-depends=('gcc-libs' 'hdf5' 'curl')
+arch=('i686' 'x86_64')
+url="https://www.unidata.ucar.edu/software/netcdf/"
+depends=('hdf5' 'curl')
 optdepends=('netcdf-fortran: fortran bindings' 'netcdf-cxx: c++ bindings')
-provides=('libnetcdf.so')
 options=('!makeflags')
 license=('custom')
-#source=("http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-${pkgver}.tar.gz")
-source=("https://github.com/Unidata/netcdf-c/archive/v${pkgver}.tar.gz")
-sha1sums=('1cae39472930a25d6ab1bdf6af2a0d85d09aedf9')
+source=(${pkgname}-${pkgver}.tar.gz::"https://github.com/Unidata/netcdf-c/archive/v${pkgver}.tar.gz"
+        'fix-tst_h_dimscales.patch')
+sha256sums=('f7d1cb2a82100b9bf9a1130a50bc5c7baf0de5b5022860ac3e09a0a32f83cf4a'
+            'b2b18ddd4dc0c0e08e59454a6e141e4ba6547ffd5df50d5fe758df45ec77aa6c')
 
-build() {
-  # cd "${srcdir}"/${pkgname}-${pkgver}
-  cd "${srcdir}/netcdf-c-${pkgver}"
-#  autoreconf -fis
-  ./configure --prefix=/usr --enable-shared --enable-netcdf-4 --enable-dap-netcdf
-  make
+prepare() {
+    cd ${pkgname}-c-${pkgver}
+    patch -p1 -i ../fix-tst_h_dimscales.patch
 }
 
-# As of netcdf-c-4.4.1, all the tests pass except for one; a workaround is to
-# update CFLAGS so no optimization level is used (i.e., remove "-O2"). See
-# https://github.com/Unidata/netcdf-c/issues/244
-# check() {
-#   # cd "${srcdir}"/${pkgname}-${pkgver}
-#   cd "${srcdir}/netcdf-c-${pkgver}"
-#   make check
-# }
+build() {
+    cd ${pkgname}-c-${pkgver}
+    ./configure \
+        --prefix=/usr \
+        --enable-shared \
+        --disable-parallel4
+    make
+}
+
+check() {
+    cd ${pkgname}-c-${pkgver}
+    make check
+}
 
 package() {
-#  cd "${srcdir}"/${pkgname}-${pkgver}
-  cd "${srcdir}/netcdf-c-${pkgver}"
-  install -m755 -d "${pkgdir}"/usr/lib
-  install -m755 -d "${pkgdir}"/usr/share/man
-  make DESTDIR="${pkgdir}" install
+    cd ${pkgname}-c-${pkgver}
+    make DESTDIR="${pkgdir}" install
 
-#  install -Dm644 "${srcdir}"/${pkgname}-${pkgver}/COPYRIGHT \
-#    "${pkgdir}"/usr/share/licenses/${pkgname}/COPYRIGHT
-  install -Dm644 "${srcdir}"/netcdf-c-${pkgver}/COPYRIGHT \
-        "${pkgdir}"/usr/share/licenses/${pkgname}/COPYRIGHT
-
+    install -Dm644 COPYRIGHT -t "${pkgdir}"/usr/share/licenses/${pkgname}/
 }

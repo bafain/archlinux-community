@@ -3,7 +3,7 @@
 
 pkgbase=python-praw
 pkgname=('python-praw' 'python2-praw')
-pkgver=4.5.1
+pkgver=5.3.0
 pkgrel=1
 pkgdesc="Python Reddit API Wrapper that allows for simple access to reddit's API"
 arch=('any')
@@ -15,11 +15,9 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-prawcore' 'python2
 checkdepends=('python-mock' 'python2-mock' 'python-betamax-serializers'
               'python2-betamax-serializers' 'python-betamax-matchers' 'python2-betamax-matchers')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/praw-dev/praw/archive/v$pkgver.tar.gz")
-sha512sums=('ab75aacbec4fbeb1cdabac49a8e9c89f02770f6a87276617f23404c94fac7ca8a7821d37fe1552785215ce8eaa4eab76f8ded513b80a0dd472e3d4c1d1d5fa34')
+sha512sums=('5381b715401b8faf0cae50b9faa66c481154a76ee3ffefdaa6ae0268866b63447161a91f9d74129919d932437166fbe3a936a407306580d184700a840b63dec6')
 
 prepare() {
-  sed -e 's/betamax-matchers >=0.3.0, <0.4/betamax-matchers >=0.3.0/' \
-      -i praw-$pkgver/setup.py
   cp -a praw-$pkgver{,-py2}
 }
 

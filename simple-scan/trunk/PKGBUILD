@@ -4,34 +4,33 @@
 # Contributor: Joeny Ang <ang(dot)joeny(at)gmail(dot)com>
 
 pkgname=simple-scan
-pkgver=3.24.1
-pkgrel=2
+pkgver=3.26.3
+pkgrel=1
 pkgdesc="Simple scanning utility"
 url="https://launchpad.net/simple-scan"
-arch=(i686 x86_64)
+arch=(x86_64)
 license=(GPL3)
+groups=(gnome)
 depends=(sane dconf gtk3 colord libgusb)
-makedepends=(yelp-tools intltool vala)
-source=(https://download.gnome.org/sources/$pkgname/${pkgver:0:4}/$pkgname-$pkgver.tar.xz)
-sha256sums=('5eae832b14664183d55aa599801cf32f19ff2174dfba4e3d7e4eb4d55810efb3')
+makedepends=(yelp-tools meson vala git)
+_commit=81eadec7bf420e7d1bdc039a1470de3f156b92b5  # tags/3.26.3^0
+source=("git+https://gitlab.gnome.org/GNOME/simple-scan.git#commit=$_commit")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd $pkgname
+  git describe --tags | sed 's/-/+/g'
+}
 
 prepare() {
-  cd $pkgname-$pkgver
-
-  # Force regeneration
-  touch src/*.vala
+  cd $pkgname
 }
 
 build() {
-  cd $pkgname-$pkgver
-  ./configure \
-    --prefix=/usr \
-    --disable-schemas-compile \
-    --disable-packagekit
-  make
+  arch-meson $pkgname build
+  ninja -C build
 }
 
 package() {
-  cd $pkgname-$pkgver
-  make DESTDIR="$pkgdir" install
+  DESTDIR="$pkgdir" ninja -C build install
 }

@@ -1,0 +1,26 @@
+# $Id$
+# Maintainer: Felix Yan <felixonmars@archlinux.org>
+
+pkgname=deepin-boot-maker
+pkgver=2.0.4.3
+pkgrel=1
+pkgdesc='Tool to create a bootable usb stick quick and easy'
+arch=('x86_64')
+url="https://github.com/linuxdeepin/deepin-boot-maker"
+license=('GPL3')
+depends=('deepin-qt5integration' 'p7zip' 'mtools' 'syslinux')
+makedepends=('qt5-tools' 'python')
+groups=('deepin')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-boot-maker/archive/$pkgver.tar.gz")
+sha512sums=('5f682de463d2f82f7c281abed4aea320ca962fd7b23eadefa247497dce419898fb80c21c1e6d115418ee8d601d124c12cd8e14b07a5ace522c4a7ebadd83f7b8')
+
+build(){
+  cd deepin-boot-maker-$pkgver
+  qmake-qt5 PREFIX=/usr
+  make
+}
+
+package() {
+  cd deepin-boot-maker-$pkgver
+  make INSTALL_ROOT="$pkgdir" install
+}

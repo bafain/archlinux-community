@@ -4,12 +4,12 @@
 # Contributor: Bartlomiej Piotrowski <nospam@bpiotrowski.pl>
 
 pkgname=pkgconf
-pkgver=1.3.7
+pkgver=1.4.1
 pkgrel=1
 
 pkgdesc='Light pkg-config replacement'
 url='https://github.com/pkgconf/pkgconf'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom:ISC')
 
 conflicts=('pkg-config')
@@ -17,7 +17,7 @@ provides=('pkg-config')
 
 source=("https://distfiles.dereferenced.org/pkgconf/pkgconf-$pkgver.tar.xz")
 
-sha256sums=('1be7e40900c7467893c65f810211b1e68da3f8d5e70fddb883fc24839cad0339')
+sha256sums=('961d6f4df814436fceaea8171d94313c854d209d5f6be2137ed3e9fe0251cbf8')
 
 build() {
 	cd pkgconf-$pkgver

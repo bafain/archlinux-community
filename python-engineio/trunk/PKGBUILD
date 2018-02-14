@@ -2,7 +2,7 @@
 
 pkgbase=python-engineio
 pkgname=('python-engineio' 'python2-engineio')
-pkgver=1.5.4
+pkgver=2.0.2
 pkgrel=1
 pkgdesc='Python implementation of the Engine.IO realtime server'
 url='https://github.com/miguelgrinberg/python-engineio'
@@ -10,11 +10,12 @@ arch=('any')
 license=('MIT')
 makedepends=('python-setuptools' 'python-sphinx' 'python-six'
              'python2-setuptools' 'python2-sphinx' 'python2-six')
-checkdepends=('python-mock' 'python-eventlet' 'python-pytest' 'python-aiohttp'
-              'python2-mock' 'python2-eventlet' 'python2-pytest')
+checkdepends=('python-mock' 'python-eventlet' 'python-pytest' 'python-pytest-runner' 'python-aiohttp'
+              'python2-mock' 'python2-eventlet' 'python2-pytest' 'python2-pytest-runner')
 options=('!makeflags')
 source=(${pkgbase}-${pkgver}.tar.gz::https://github.com/miguelgrinberg/python-engineio/archive/v${pkgver}.tar.gz)
-sha512sums=('9a7a075a18349edf9d9f39e5fd956580d81a01ce5daee26cf6a5099665e429115fe922fda9cacf4266ebfc14e403db16aec3b7476ea20ec4bdd395782686340c')
+sha256sums=('9fbe531108a95bc61518b61c4718e2661fc81d32b54fd6af34799bf10a367a6b')
+sha512sums=('eca3aae5fb0377dd04cb75bb2a42121049cb6fecb3aeb89ed4469f2504e4a741fd2c00abccdb10dc775077ba3ca62435713763969278cd13143b9a9a9d056084')
 
 prepare() {
   cp -ra ${pkgbase}-${pkgver}{,-py2}
@@ -33,10 +34,10 @@ build() {
 
 check() {
   (cd ${pkgbase}-${pkgver}
-    py.test
+    python setup.py test
   )
   (cd ${pkgbase}-${pkgver}-py2
-    py.test2
+    python2 setup.py test
   )
 }
 
@@ -49,8 +50,8 @@ package_python-engineio() {
 
   cd ${pkgbase}-${pkgver}
   python setup.py install -O1 --root="${pkgdir}" --skip-build
-  install -Dm 644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-  install -Dm 644 README.rst "${pkgdir}/usr/share/doc/${pkgname}/README"
+  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -Dm 644 README.rst -t "${pkgdir}/usr/share/doc/${pkgname}"
   install -Dm 644 docs/_build/text/index.txt "${pkgdir}/usr/share/doc/${pkgname}/DOCUMENTATION"
   install -Dm 644 docs/_build/man/engineio.1 "${pkgdir}/usr/share/man/man1/${pkgname}.1"
 }
@@ -63,8 +64,8 @@ package_python2-engineio() {
 
   cd ${pkgbase}-${pkgver}-py2
   python2 setup.py install -O1 --root="${pkgdir}" --skip-build
-  install -Dm 644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-  install -Dm 644 README.rst "${pkgdir}/usr/share/doc/${pkgname}/README"
+  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -Dm 644 README.rst -t "${pkgdir}/usr/share/doc/${pkgname}"
   install -Dm 644 docs/_build/text/index.txt "${pkgdir}/usr/share/doc/${pkgname}/DOCUMENTATION"
   install -Dm 644 docs/_build/man/engineio.1 "${pkgdir}/usr/share/man/man1/${pkgname}.1"
 }

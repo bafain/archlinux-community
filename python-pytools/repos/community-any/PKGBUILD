@@ -4,7 +4,7 @@
 
 pkgbase=python-pytools
 pkgname=('python2-pytools' 'python-pytools')
-pkgver=2017.3
+pkgver=2017.6
 pkgrel=1
 pkgdesc="A collection of tools for Python"
 arch=('any')
@@ -15,7 +15,7 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-decorator' 'python
              'python2-numpy')
 checkdepends=('python-pytest-runner' 'python2-pytest-runner')
 source=("https://pypi.io/packages/source/p/pytools/pytools-$pkgver.tar.gz")
-sha512sums=('d1102e0604e8060753ee25b1dc11fb135325cc8cdd5bfac0e04d0f431d7277e77846bda1e6017258df15384c0dfafdb370d473ec94d55dd4f87b30da0307615e')
+sha512sums=('2865af51fb3cdfeff6feb53049e34a4d2dd3779c82b95e69c1590cec5471ce2afad0066e041bf30cadeda72732a76a55c1b7af7246a59b77ee474a775ee1ef52')
 
 prepare() {
   cp -a pytools-$pkgver{,-python2}
@@ -31,10 +31,10 @@ build() {
 
 check() {
   cd "$srcdir"/pytools-$pkgver
-  python setup.py ptr
+  python setup.py pytest
 
   cd "$srcdir"/pytools-$pkgver-python2
-  python2 setup.py ptr
+  python2 setup.py pytest
 }
 
 package_python-pytools(){

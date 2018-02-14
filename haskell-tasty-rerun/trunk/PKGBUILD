@@ -4,25 +4,25 @@
 
 _hkgname=tasty-rerun
 pkgname=haskell-tasty-rerun
-pkgver=1.1.6
-pkgrel=30
+pkgver=1.1.9
+pkgrel=9
 pkgdesc="Run tests by filtering the test tree depending on the result of previous test runs"
-url="http://github.com/ocharles/tasty-rerun"
+url="https://github.com/ocharles/tasty-rerun"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=('ghc' "haskell-mtl" "haskell-optparse-applicative" "haskell-reducers"
-         "haskell-split" "haskell-stm" "haskell-tagged" "haskell-tasty")
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-mtl' 'haskell-optparse-applicative' 'haskell-reducers'
+         'haskell-split' 'haskell-stm' 'haskell-tagged' 'haskell-tasty')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('ed33270c8a1f1576985e9907087921fd4f8fba19253fe3bfefec2d05f9799d79')
+sha512sums=('e58f2cf286a48155cddf24d97f0efaa5329120de3d00e23a578da2307571012b4e367412224795769964742a935a7ebd8b0bafc535c01703c5b307515f309515')
 
 build() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
-    
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    cd $_hkgname-$pkgver
+
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
         --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -30,16 +30,11 @@ build() {
 }
 
 package() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
-    
+    cd $_hkgname-$pkgver
+
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

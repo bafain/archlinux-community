@@ -4,7 +4,7 @@
 # Contributor: David Runge <dave@sleepmap.de>
 
 pkgname=nextcloud-app-notes
-pkgver=2.2.0
+pkgver=2.3.2
 pkgrel=1
 pkgdesc="Simple Notes app for Nextcloud"
 arch=('any')
@@ -14,7 +14,7 @@ depends=('nextcloud')
 makedepends=()
 options=('!strip')
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/nextcloud/notes/releases/download/v${pkgver}/notes.tar.gz")
-sha512sums=('c4329123623aa1018237376eec46b6bb4f2705554df8a4b7d4109591749db952dd4c21b6a612df1a7f26e32cd0668331569196782229c0d7fcb0af714d41c482')
+sha512sums=('7ebd5d563b10c55a061157febb667f29097c7f828e2c3091fee923c3116112e7d3ccce4d942663dc9e2329cbf6b3384eab2db4ddd3db40165737138fc5d67714')
 
 package() {
   install -d "${pkgdir}/usr/share/webapps/nextcloud/apps"

@@ -1,45 +1,42 @@
 # $Id$
-# Maintainer: Alexander Rødseth <rodseth@gmail.com>
-# Contributor: Thomas Dziedzic < gostrc at gmail >
+# Maintainer: Alexander F Rødseth <xyproto@archlinux.org>
+# Contributor: Thomas Dziedzic <gostrc@gmail.com>
 # Contributor: Chris O'Donnell <christopher.p.odonnell@gmail.com>
 # Contributor: Sam May <sam.m4y@gmail.com>
+# Contributor: Pierre-Yves Ritschard <pyr@spootnik.org>
 
 pkgname=clojure
-pkgver=1.8.0
-pkgrel=1
+pkgver=1.9.0
+_toolver=315
+pkgrel=4
 pkgdesc='LISP for the JVM'
 url='http://clojure.org/'
 arch=('any')
 license=('CPL')
-depends=('java-environment' 'bash')
-makedepends=('java-environment' 'classpath' 'git' 'maven')
-optdepends=('rlwrap: friendlier shell with readline support')
+depends=('java-environment')
+makedepends=('classpath' 'git' 'java-environment' 'maven')
+optdepends=('rlwrap: friendly shell with readline support')
 install='clojure.install'
-source=("$pkgname::git://github.com/clojure/clojure.git#tag=$pkgname-$pkgver"
-        'clj.sh' "$pkgname.sh")
-sha256sums=('SKIP'
-            '2194819fd417174351172d94e3ccff050479401ca883b57d325a349072200bee'
+source=("https://download.clojure.org/install/clojure-tools-$pkgver.$_toolver.tar.gz"
+        'clojure.sh')
+sha256sums=('c9eba2fe2d151f9eb0635c997232c9637c8af4799f8dd0e93634d594ede80949'
             'b3fa6257dad10fb39851e87563269b80b2473623126595d9c279bbd90e97f052')
 
-build() {
-  cd "$pkgname"
-
-  mvn package -Dmaven.test.skip=true -Dmaven.repo.local=m2
-}
-
-check() {
-  cd "$pkgname"
-
-  mvn test -Dmaven.repo.local=m2
+prepare() {
+  sed -i -e 's,PREFIX,/usr/share/clojure,g' clojure-tools/clojure
 }
 
 package() {
-  install -Dm755 clj.sh "$pkgdir/usr/bin/clj"
-  install -Dm755 clj.sh "$pkgdir/usr/bin/clojure"
-  install -Dm755 "$pkgname.sh" "$pkgdir/etc/profile.d/$pkgname.sh"
-  install -Dm644 "$pkgname/target/$pkgname-$pkgver.jar" \
-    "$pkgdir/usr/share/$pkgname/$pkgname.jar"
+  cd clojure-tools
+
+  install -Dm644 deps.edn "$pkgdir/usr/share/clojure/deps.edn"
+  install -Dm644 example-deps.edn "$pkgdir/usr/share/clojure/example-deps.edn"
+  install -Dm644 clojure-tools-$pkgver.$_toolver.jar \
+    "$pkgdir/usr/share/clojure/libexec/clojure-tools-$pkgver.$_toolver.jar"
+  install -Dm755 clojure "$pkgdir/usr/bin/clojure"
+  install -Dm755 clj "$pkgdir/usr/bin/clj"
+  install -Dm755 "$srcdir/clojure.sh" "$pkgdir/etc/profile.d/clojure.sh"
 }
 
 # getver: clojure.org/downloads
-# vim:set ts=2 sw=2 et:
+# vim: ts=2 sw=2 et:

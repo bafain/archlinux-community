@@ -5,19 +5,19 @@
 # Contributor: Josh VanderLinden <arch@cloudlery.com>
 
 pkgname=docker-compose
-pkgver=1.14.0
-pkgrel=1
+pkgver=1.18.0
+pkgrel=2
 pkgdesc="Fast, isolated development environments using Docker"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://www.docker.com/"
 license=("Apache")
-depends=('python-cached-property' 'python-colorama' 'python-docopt' 'python-yaml' 'python-requests'
+depends=('python-cached-property' 'python-docopt' 'python-yaml' 'python-requests'
          'python-texttable' 'python-websocket-client' 'python-docker' 'python-dockerpty'
          'python-six' 'python-jsonschema' 'python-setuptools')
 depends_x86_64+=('docker')
 checkdepends=('python-pytest-runner' 'python-mock')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/docker/compose/archive/$pkgver.tar.gz")
-sha512sums=('b9a4ca81b51465bab668e92b662cd7820473af1400a96810c6f86eb87d860a88beb51fd309b8365a49eb0b8cefc28376a20e3d681d6ef41fa9a7590b8bdec641')
+sha512sums=('08f02a4bdb421f1a0c37d1966a23d1385371e98fc0186265593d552d8b4b568338d9189db173491508ba14a3672489d6a4b5fb1c59b1aca4f76c6ae5db22dfad')
 
 prepare() {
   cd compose-$pkgver
@@ -37,7 +37,7 @@ check() {
   # TODO: need a running docker daemon to test
 
   cd compose-$pkgver
-  python setup.py install --root="$PWD/tmp_install" --optimize=1
+  # python setup.py install --root="$PWD/tmp_install" --optimize=1
   # PATH="$PWD/tmp_install/usr/bin:$PATH" PYTHONPATH="$PWD/tmp_install/usr/lib/python3.6/site-packages:$PYTHONPATH" python setup.py pytest
 }
 
@@ -46,5 +46,7 @@ package() {
 
   python setup.py install -O1 --root="$pkgdir"
   install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
-  install -Dm644 contrib/completion/bash/docker-compose "$pkgdir"/usr/share/bash-completion/completions/docker-compose
+  install -Dm644 contrib/completion/bash/docker-compose      "$pkgdir"/usr/share/bash-completion/completions/docker-compose
+  install -Dm644 contrib/completion/fish/docker-compose.fish "$pkgdir"/usr/share/fish/completions/docker-compose.fish
+  install -Dm644 contrib/completion/zsh/_docker-compose      "$pkgdir"/usr/share/zsh/site-functions/_docker-compose
 }

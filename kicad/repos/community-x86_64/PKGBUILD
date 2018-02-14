@@ -3,23 +3,24 @@
 # Contributor: Marq Schneider <queueRAM@gmail.com>
 
 pkgname=kicad
-pkgver=4.0.6
-pkgrel=3
+pkgver=4.0.7
+pkgrel=4
 pkgdesc="Electronic schematic and printed circuit board (PCB) design tools"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 #url="http://iut-tice.ujf-grenoble.fr/kicad/"
 url="http://kicad-pcb.org/"
 license=('GPL')
-depends=('wxgtk' 'hicolor-icon-theme' 'desktop-file-utils' 'libsm' 'boost-libs' 'glew' 'wxpython' 'curl')
-makedepends=('cmake' 'zlib' 'mesa' 'boost' 'gettext' 'wxpython' 'swig')
+#wxgtk3 is not supported yet (FS#54839)
+depends=('wxgtk2' 'hicolor-icon-theme' 'desktop-file-utils' 'libsm' 'boost-libs' 'glew' 'python2' 'curl')
+makedepends=('cmake' 'zlib' 'mesa' 'boost' 'swig')
 optdepends=('kicad-library: for footprints and symbols'
             'kicad-library-3d: for 3d models of components')
 source=("https://launchpad.net/kicad/4.0/$pkgver/+download/kicad-$pkgver.tar.xz"
         "kicad-i18n.$pkgver.tar.gz::https://github.com/KiCad/kicad-i18n/archive/$pkgver.tar.gz"
         "boost-1.61.patch")
-md5sums=('24eca1f22bbb0a88acbba321a4b1c4aa'
-         '6680338a8b23e7d651bb30cbba04e2b3'
-         '56276be014b3719442be10284729a4c3')
+sha512sums=('7b2acd9efadf5d48565f71bd0df2474ecc8fc04145953c13ac27363d48dbe6b0de091e311713635f603aed89ce0759a1d623abb37a139e2c87184ca4e717145b'
+            '4880705fd7e95c939b7f5e2b7730fd37c426be10596f4cfa80d7df102d9e67232621900395d45f4e735986054f74fb215ae2002a2818faae32b1c75e3cb7e10a'
+            'a960117a4c08144de5111e76a33f208a9b3fe702d10ec2546afc57faf3de3fccfe19b5a5c62b527953d55687e644ed67c9b560cd3baf8b678d127977f3f30cee')
 
 prepare() {
   cd "$srcdir/kicad-$pkgver"
@@ -40,7 +41,6 @@ build() {
               -DKICAD_SKIP_BOOST=ON         \
               -DKICAD_SCRIPTING=ON          \
               -DKICAD_SCRIPTING_MODULES=ON  \
-              -DKICAD_SCRIPTING_WXPYTHON=ON \
               -DBUILD_GITHUB_PLUGIN=ON
   make
 

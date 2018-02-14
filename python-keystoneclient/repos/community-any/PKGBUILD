@@ -3,7 +3,7 @@
 
 pkgbase=python-keystoneclient
 pkgname=(python-keystoneclient python2-keystoneclient)
-pkgver=3.11.0
+pkgver=3.15.0
 pkgrel=1
 pkgdesc="Client Library for OpenStack Identity"
 arch=('any')
@@ -20,7 +20,7 @@ checkdepends=('python-oslotest' 'python2-oslotest' 'python-testresources' 'pytho
               'python-requests-mock' 'python2-requests-mock' 'python-pycodestyle'
               'python2-pycodestyle' 'python-lxml' 'python2-lxml')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/python-keystoneclient/archive/$pkgver.tar.gz")
-sha512sums=('97a8c0dfa2275ef1eb80fbd12e257f4c6b129ed98c5744cd254809ca0d94beeb1bb32f7f712d9ebcc9c7c5940556bb8f401c789e61a973cbc30872279c0d30ab')
+sha512sums=('64f18b5a54cc18136cb02ebdcc35af27fab6dc5389d28a4d2e401ea79ad222d77508f27292163ec52d2595a955f1c0dfcbdb5e67437aeeea10b7315d91d2efe0')
 
 prepare() {
   cp -a python-keystoneclient-$pkgver{,-py2}

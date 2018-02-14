@@ -3,18 +3,18 @@
 # Maintainer: Jelle van der Waa <jelle@vdwaa.nl>
 
 pkgname=vte3-ng
-_basever=0.48.3
+_basever=0.50.2
 pkgver=$_basever.a
 pkgrel=1
 pkgdesc="Enhanced Virtual Terminal Emulator widget for use with GTK3"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('LGPL')
 options=('!emptydirs')
 depends=('gtk3' 'vte-common' 'pcre2')
 makedepends=('intltool' 'gobject-introspection' 'gtk3' 'vala' 'gtk-doc' 'gperf')
 url="https://github.com/thestinger/vte-ng"
 source=("https://github.com/thestinger/vte-ng/archive/$pkgver.tar.gz")
-md5sums=('cc3f21518c7cda46f61df9d439524a1c')
+md5sums=('af0863ef1b19250bedc903fc23c6bb08')
 provides=(vte3=$_basever vte3-select-text=$_basever)
 conflicts=(vte3 vte3-select-text)
 replaces=(vte3-select-text)

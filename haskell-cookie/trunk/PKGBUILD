@@ -5,23 +5,24 @@
 
 _hkgname=cookie
 pkgname=haskell-cookie
-pkgver=0.4.2.1
-pkgrel=5
+pkgver=0.4.3
+pkgrel=3
 pkgdesc="HTTP cookie parsing and rendering"
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=('MIT')
-arch=('i686' 'x86_64')
-depends=('ghc' 'haskell-blaze-builder' 'haskell-data-default' 'haskell-old-locale' 'haskell-text')
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-blaze-builder' 'haskell-data-default-class' 'haskell-old-locale'
+         'haskell-text')
+makedepends=('ghc')
 source=(https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz)
-md5sums=('12613c254e38bf4b0e0e278cccbf23c2')
+sha512sums=('b04380e62d3a0a2e41aca77c0a2aac14bc03420cda59717d408028d97777bd6393a8ca55c27636215888837c1ca969b2cb00bf172aa23b611d4312f7f444b567')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid -fnetwork-uri
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid -fnetwork-uri
     runhaskell Setup build
-    runhaskell Setup haddock
     runhaskell Setup register   --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -30,15 +31,10 @@ build() {
 
 package() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
+
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s /usr/share/doc/${pkgname}/html "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

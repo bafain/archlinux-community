@@ -7,9 +7,9 @@
 
 pkgname=stardict
 pkgver=3.0.6
-pkgrel=3
+pkgrel=5
 pkgdesc='International dictionary software'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://www.stardict.org/'
 license=('GPL')
 depends=('gtk2' 'libsigc++')
@@ -25,6 +25,8 @@ prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   patch -p1 -i ../gcc46.patch
   patch -p1 -i ../glib2.patch
+
+  sed -i 's/, enchant/, enchant-2/' dict/configure.ac
 }
 
 build() {
@@ -40,6 +42,7 @@ build() {
     --disable-gucharmap \
     --disable-festival \
     --disable-updateinfo
+  sed -e 's/ -shared / -Wl,-O1,--as-needed\0/g' -i {dict,lib,tools}/libtool
   make
 }
 

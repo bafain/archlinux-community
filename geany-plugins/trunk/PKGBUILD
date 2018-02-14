@@ -1,27 +1,37 @@
 # $Id$
 # Maintainer: Alexander F Rødseth <xyproto@archlinux.org>
-# Contributor: Angel 'angvp' Velasquez <angvp[at]archlinux.com.ve>
-# Contributor: djgera
+# Contributor: Angel 'angvp' Velasquez <angvp@archlinux.org>
+# Contributor: Gerardo Exequiel Pozzi <vmlinuz386@gmail.com>
 # Contributor: Patrick Melo <patrick@patrickmelo.eti.br>
 
 pkgname=geany-plugins
-pkgver=1.30
-pkgrel=1
+pkgver=1.32
+pkgrel=4
 pkgdesc='Plugins for Geany'
-arch=('x86_64' 'i686')
-url='http://plugins.geany.org/'
+arch=('x86_64')
+url='https://plugins.geany.org/'
 license=('GPL')
-depends=("geany>=$pkgver" 'gtkspell' 'ctpl' 'gpgme' 'vte'
-         'desktop-file-utils' 'lua51' 'libgit2')
-makedepends=('intltool' 'vala' 'gdb' 'cppcheck' 'libgit2')
-optdepends=('hspell: hebrew spell checker')
-source=("https://plugins.geany.org/$pkgname/$pkgname-$pkgver.tar.bz2")
-sha256sums=('8adb90645d273d9549e1fa99b69ea87dc1fd612f7467eb18eee11a6b30c9ba5b')
+depends=("geany>=$pkgver" 'ctpl' 'gpgme' 'gtkspell3' 'libgit2' 'lua51')
+makedepends=('cppcheck' 'intltool')
+source=("https://plugins.geany.org/$pkgname/$pkgname-$pkgver.tar.bz2"
+        enchant-2.patch)
+sha256sums=('78d4b394fe22fda298e80a22616421efdd4a419eb227b99eadca73f65abac117'
+            '094a613b600e42de9b23c3586abf25f3b0695eb62ca2d341e82c0a5633fefeb8')
+
+prepare() {
+  cd $pkgname-$pkgver
+  patch -Np1 -i ../enchant-2.patch
+  autoreconf -fi
+}
 
 build() {
   cd "$pkgname-$pkgver"
 
+  # Looking forward to Python 3 being supported
+  export PYTHON=/usr/bin/python2
+
   ./configure --prefix=/usr --libexecdir=/usr/lib
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
 }
 
@@ -30,4 +40,4 @@ package() {
 }
 
 # getver: plugins.geany.org/downloads.html
-# vim:set ts=2 sw=2 et:
+# vim: ts=2 sw=2 et:

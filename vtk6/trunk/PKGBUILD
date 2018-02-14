@@ -6,13 +6,13 @@
 pkgname=vtk6
 pkgver=6.3.0
 _majorver=6.3
-pkgrel=7
+pkgrel=11
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization. Legacy 6.3 version.'
-arch=('i686' 'x86_64')
-url='http://www.vtk.org/'
+arch=('x86_64')
+url='https://www.vtk.org/'
 license=('BSD')
 depends=('gcc-libs' 'gl2ps')
-makedepends=('boost' 'cmake' 'ninja' 'java-environment' 'doxygen' 'gnuplot' 'tk' 'wget' 'python2-matplotlib' 'python2-twisted' 'python2-mpi4py' 'python2-autobahn' 'unixodbc' 'gdal' 'openmpi' 'mariadb' 'glew' 'ffmpeg' 'lesstif' 'qt5-base' 'jsoncpp' 'qt5-webkit' 'qt5-tools')
+makedepends=('boost' 'cmake' 'ninja' 'java-environment' 'doxygen' 'gnuplot' 'tk' 'wget' 'python2-matplotlib' 'python2-twisted' 'python2-mpi4py' 'python2-autobahn' 'unixodbc' 'gdal' 'openmpi' 'mariadb' 'glew' 'ffmpeg' 'qt5-base' 'jsoncpp' 'qt5-webkit' 'qt5-tools')
 optdepends=('python2: python bindings'
             'java-runtime: java bindings'
             'tk: tcl bindings'
@@ -27,9 +27,9 @@ optdepends=('python2: python bindings'
             'glew'
             'gdal'
             'mariadb')
-source=("http://www.vtk.org/files/release/${_majorver}/VTK-${pkgver}.tar.gz"
-        "http://www.vtk.org/files/release/${_majorver}/VTKData-${pkgver}.tar.gz"
-        "http://www.vtk.org/files/release/${_majorver}/VTKLargeData-${pkgver}.tar.gz"
+source=("https://www.vtk.org/files/release/${_majorver}/VTK-${pkgver}.tar.gz"
+        "https://www.vtk.org/files/release/${_majorver}/VTKData-${pkgver}.tar.gz"
+        "https://www.vtk.org/files/release/${_majorver}/VTKLargeData-${pkgver}.tar.gz"
         # https://github.com/Kitware/VTK/pull/21
         remove-vtkxdmf3.patch::https://github.com/nschloe/VTK/commit/a98527dfe9ce23beebf386fab07caef99b911ede.patch
         find-libxml2.patch::https://github.com/nschloe/VTK/commit/6216f98a7124e12a2c1cefd113347f94b51f3c51.patch

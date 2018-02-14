@@ -4,18 +4,18 @@
 
 _target=arm-none-eabi
 pkgname=$_target-binutils
-pkgver=2.28
+pkgver=2.30
 pkgrel=1
-#_commit=2bd25930
 pkgdesc='A set of programs to assemble and manipulate binary and object files for the ARM EABI (bare-metal) target'
-arch=(i686 x86_64)
+arch=(x86_64)
 url='http://www.gnu.org/software/binutils/'
 license=(GPL)
 depends=(zlib)
 source=(ftp://ftp.gnu.org/gnu/binutils/binutils-$pkgver.tar.bz2{,.sig})
-sha1sums=('f8b033731f6baa437d429c60e2623570f1ef9d6b'
+sha1sums=('33d807f7fa680b00439eb5560acd0c2ef645e5f9'
           'SKIP')
-validpgpkeys=('EAF1C276A747E9ED86210CBAC3126D3B4AE55E93')  # Tristan Gingold <gingold@adacore.com>
+validpgpkeys=('EAF1C276A747E9ED86210CBAC3126D3B4AE55E93'  # Tristan Gingold <gingold@adacore.com>
+              '3A24BC1E8FB409FA9F14371813FCEF89DD9E3C4F') # Nick Clifton (Chief Binutils Maintainer) <nickc@redhat.com>
 
 prepare() {
   cd binutils-$pkgver

@@ -6,49 +6,49 @@
 
 pkgname=('rust' 'rust-docs')
 epoch=1
-pkgver=1.18.0
-pkgrel=1
+pkgver=1.23.0
+pkgrel=3
 
 pkgdesc='Systems programming language focused on safety, speed and concurrency'
 url='https://www.rust-lang.org/'
-arch=('x86_64' 'i686')
+arch=('x86_64')
 license=('MIT' 'Apache')
 
-makedepends=('rust' 'cargo' 'libffi' 'perl' 'python2' 'curl' 'llvm' 'jemalloc')
+makedepends=('rust' 'libffi' 'perl' 'python2' 'curl' 'cmake')
 
 options=('!emptydirs')
 
-source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz"{,.asc})
+source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz"{,.asc}
+        bootstrap-config.toml)
 
-sha256sums=('d2dc36e99b9e2269488b2bcddde43c234e6bde03edf70cba82a027ff49c36111'
-            'SKIP')
+sha256sums=('7464953871dcfdfa8afcc536916a686dd156a83339d8ec4d5cb4eb2fe146cb91'
+            'SKIP'
+            '6c25c451d6286efd19e96a552406c8b299345749577cf924699cf4c3831d9ad0')
 validpgpkeys=('108F66205EAEB0AAA8DD5E1C85AB96E6FA1BE5FE') # Rust Language (Tag and Release Signing Key) <rust-key@rust-lang.org>
+
+prepare() {
+  cd "rustc-$pkgver-src"
+
+  cp "$srcdir"/bootstrap-config.toml config.toml
+}
 
 build() {
   cd "rustc-$pkgver-src"
-
-  ./configure \
-    --prefix=/usr \
-    --release-channel=stable \
-    --llvm-root=/usr \
-    --enable-llvm-link-shared \
-    --disable-codegen-tests \
-    --jemalloc-root=/usr/lib \
-    --enable-local-rust
-
-  export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
 
   msg2 "Run build under x.py"
   python2 ./x.py build
 }
 
 package_rust() {
-  depends=('gcc-libs' 'llvm-libs')
-  optdepends=('cargo')
+  depends=('gcc-libs')
+  provides=('cargo' 'rustfmt')
+  conflicts=('cargo' 'rustfmt')
+  replaces=('cargo' 'rustfmt')
+
 
   cd "rustc-$pkgver-src"
 
-  make DESTDIR="$pkgdir" install
+  DESTDIR="$pkgdir" python2 ./x.py install
 
   for license in APACHE MIT; do install -Dm644 "LICENSE-$license" \
     "$pkgdir/usr/share/licenses/$pkgname/LICENSE-$license"; done
@@ -60,6 +60,9 @@ package_rust() {
 
   # move docs out of the way
   mv "$pkgdir/usr/share/doc" "$srcdir/"
+
+  # The version distributed with rust is old and buggy, and ends up breaking other builds.
+  rm "$pkgdir"/usr/bin/rustfmt
 }
 
 package_rust-docs() {

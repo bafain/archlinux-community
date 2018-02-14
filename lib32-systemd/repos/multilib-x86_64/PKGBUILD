@@ -1,38 +1,40 @@
 # $Id$
+# Maintainer: Christian Hesse <mail@eworm.de>
 # Maintainer: Dave Reisner <dreisner@archlinux.org>
 # Maintainer: Tom Gundersen <teg@jklm.no>
 
 pkgname=lib32-systemd
 _pkgbasename=systemd
-pkgver=232
+# latest commit on stable branch
+_commit='78bd76934d74556054ed4cb69929d4318ae82a2d'
+# Bump this to latest major release for signed tag verification,
+# the commit count is handled by pkgver() function.
+pkgver=237.31
 pkgrel=1
 pkgdesc="system and service manager (32-bit)"
 arch=('x86_64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL2' 'LGPL2.1')
-depends=('lib32-libgcrypt' 'lib32-xz' 'lib32-libcap' 'lib32-gcc-libs' 'systemd')
-makedepends=('lib32-gcc-libs' 'gcc-multilib' 'lib32-libidn' 'lib32-glib2' 'intltool' 'gperf'
-             'lib32-curl' 'lib32-bzip2' 'git')
+depends=('lib32-gcc-libs' 'lib32-libcap' 'lib32-libgcrypt' 'lib32-xz' 'systemd')
+makedepends=('gcc-multilib' 'git' 'gperf' 'intltool' 'lib32-acl' 'lib32-bzip2'
+             'lib32-curl' 'lib32-dbus' 'lib32-gcc-libs' 'lib32-glib2'
+             'lib32-gnutls' 'lib32-libelf' 'lib32-libidn' 'lib32-pcre2'
+             'libxslt' 'meson')
 options=('strip')
-source=("git://github.com/systemd/systemd.git#tag=v$pkgver"
-        '0001-disable-RestrictAddressFamilies-on-i686.patch'
-        '0001-Revert-nspawn-try-to-bind-mount-resolved-s-resolv.co.patch')
-md5sums=('SKIP'
-         '9536d399938a48fbf38c24e322f4f078'
-         '2f324d6ddd4fd78b73d453044292b9b1')
-validpgpkeys=(
-  '63CDA1E5D3FC22B998D20DD6327F26951A015CC4'  # Lennart Poettering
-)
+validpgpkeys=('63CDA1E5D3FC22B998D20DD6327F26951A015CC4')  # Lennart Poettering <lennart@poettering.net>
+source=('git://github.com/systemd/systemd-stable.git'
+        'git://github.com/systemd/systemd.git') # pull in for tags, backports & reverts
+sha256sums=('SKIP'
+         'SKIP')
 
 _backports=(
-  '843d5baf6aad6c53fc00ea8d95d83209a4f92de1'  # core: don't use the unified hierarchy for the systemd cgroup yet (#4628)
-  'abd67ce74858491565cde157c7b08fda43d3279c'  # basic/virt: fix userns check on CONFIG_USER_NS=n kernel (#4651)
-  '4318abe8d26e969ebdb97744a63ab900233a0185'  # build-sys: do not install ctrl-alt-del.target symlink twice
-  'd112eae7da77899be245ab52aa1747d4675549f1'  # device: Avoid calling unit_free(NULL) in device setup logic (#4748)
+)
+
+_reverts=(
 )
 
 _validate_tag() {
-  local success fingerprint trusted status tag=v$pkgver
+  local success fingerprint trusted status tag=v${pkgver%.*}
 
   parse_gpg_statusfile /dev/stdin < <(git verify-tag --raw "$tag" 2>&1)
 
@@ -58,25 +60,33 @@ _validate_tag() {
   return 0
 }
 
+pkgver() {
+  local version count
+
+  cd "$_pkgbasename-stable"
+
+  version="$(git describe --abbrev=0 --tags)"
+  count="$(git rev-list --count ${version}..)"
+  printf '%s.%s' "${version#v}" "${count}"
+}
+
 prepare() {
-  cd systemd
+  cd "$_pkgbasename-stable"
+
+  git remote add upstream ../systemd/
+  git fetch --all
+
+  git checkout "${_commit}"
 
   _validate_tag || return
 
-  if (( ${#_backports[*]} > 0 )); then
-    git cherry-pick -n "${_backports[@]}"
-  fi
-
-  # these patches aren't upstream, but they make v232 more useable.
-
-  # https://github.com/systemd/systemd/issues/4575
-  patch -Np1 <../0001-disable-RestrictAddressFamilies-on-i686.patch
-
-  # https://github.com/systemd/systemd/issues/4595
-  # https://github.com/systemd/systemd/issues/3826
-  patch -Np1 <../0001-Revert-nspawn-try-to-bind-mount-resolved-s-resolv.co.patch
-
-  ./autogen.sh
+  local _commit
+  for _commit in "${_backports[@]}"; do
+    git cherry-pick -n "$_commit"
+  done
+  for _commit in "${_reverts[@]}"; do
+    git revert -n "$_commit"
+  done
 }
 
 build() {
@@ -84,47 +94,47 @@ build() {
   export CXX="g++ -m32"
   export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 
-  cd systemd
-
   local timeservers=({0..3}.arch.pool.ntp.org)
 
-  local configure_options=(
-    --libexecdir=/usr/lib32
-    --libdir=/usr/lib32
-    --localstatedir=/var
-    --sysconfdir=/etc
+  local meson_options=(
+    --libexecdir	/usr/lib32
+    --libdir		/usr/lib32
 
-    --disable-audit
-    --disable-tests
-    --disable-ima
-    --disable-seccomp
-    --disable-pam
-    --disable-kmod
-    --disable-networkd
-    --disable-blkid
-    --disable-libiptc
-    --disable-lz4
-    --disable-manpages
-    --without-python
+    -Daudit=false
+    -Dgnuefi=false
+    -Dima=false
+    -Dlz4=false
+    -Dblkid=false
+    -Dkmod=false
+    -Dlibcryptsetup=false
+    -Dlibiptc=false
+    -Dmanpages=false
+    -Dnetworkd=false
+    -Dpam=false
+    -Dpython=false
+    -Dseccomp=false
+    -Dman=false
+    -Dhtml=false
 
-    --with-sysvinit-path=
-    --with-sysvrcnd-path=
-    --with-ntp-servers="${timeservers[*]}"
-    --with-default-dnssec=no
-    --with-dbuspolicydir=/usr/share/dbus-1/system.d
-    --without-kill-user-processes
+    -Ddbuspolicydir=/usr/share/dbus-1/system.d
+    -Ddefault-dnssec=no
+    # TODO(dreisner): consider changing this to unified
+    -Ddefault-hierarchy=hybrid
+    -Ddefault-kill-user-processes=false
+    -Dfallback-hostname='archlinux'
+    -Dntp-servers="${timeservers[*]}"
+    -Drpmmacrosdir=no
+    -Dsysvinit-path=
+    -Dsysvrcnd-path=
   )
-  #  --disable-libcryptsetup
 
-  ./configure "${configure_options[@]}"
+  arch-meson "$_pkgbasename-stable" build "${meson_options[@]}"
 
-  make
+  ninja -C build
 }
 
 package() {
-  cd systemd
-
-  make DESTDIR="$pkgdir" install
+  DESTDIR="$pkgdir" ninja -C build install
 
   rm -rf "${pkgdir}"/{etc,var}
   rm -rf "${pkgdir}"/usr/{bin,include,lib,share}

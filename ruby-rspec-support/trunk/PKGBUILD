@@ -3,20 +3,20 @@
 
 _gemname=rspec-support
 pkgname=ruby-${_gemname}
-pkgver=3.5.0
-pkgrel=2
+pkgver=3.7.1
+pkgrel=1
 pkgdesc='Common code needed by the other RSpec gems. Not intended for direct use'
 url='https://github.com/rspec/rspec-support'
 arch=('any')
 license=('MIT')
-depends=('ruby')
+depends=('ruby' 'ruby-rdoc')
 options=('!emptydirs')
 source=(https://rubygems.org/downloads/${_gemname}-${pkgver}.gem)
 noextract=(${_gemname}-${pkgver}.gem)
-sha512sums=('cfe68664fdc31b099dfe6ba02d9e0507a50206a67c28e91dd0366c4f78ebdd4a928a2f1c7cf58aca3c5e261c3fe2d8acfb372efc1c2fde342ca52c05a9025bbe')
+sha512sums=('0f4c70d446d3dd0890adface47d14a138409c2b6e2ec207b7ecef87ff6baeeab14f1f905c52e1b0104854faaef3f28ab468667fe3072227333f48d73e44ad9a4')
 
 package() {
-  local _gemdir="$(ruby -e'puts Gem.default_dir')"
+  local _gemdir="$(gem env gemdir)"
   gem install --ignore-dependencies --no-user-install -i "${pkgdir}${_gemdir}" -n "${pkgdir}/usr/bin" ${_gemname}-${pkgver}.gem
   install -Dm 644 "${pkgdir}${_gemdir}/gems/${_gemname}-${pkgver}/LICENSE.md" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
   install -Dm 644 "${pkgdir}${_gemdir}/gems/${_gemname}-${pkgver}/README.md" "${pkgdir}/usr/share/doc/${pkgname}/README"

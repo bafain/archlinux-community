@@ -2,17 +2,18 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=thefuck
-pkgver=3.18
+pkgver=3.25
 pkgrel=1
 pkgdesc="Magnificent app which corrects your previous console command"
 arch=('any')
 url="https://github.com/nvbn/thefuck"
 license=('MIT')
-depends=('python-setuptools' 'python-psutil' 'python-six' 'python-colorama' 'python-decorator')
+depends=('python-setuptools' 'python-psutil' 'python-six' 'python-colorama' 'python-decorator'
+         'python-pyte')
 makedepends=('python-pip')
 checkdepends=('python-pytest-mock' 'python-mock' 'python-pexpect')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/nvbn/thefuck/archive/$pkgver.tar.gz")
-sha512sums=('26a8abb705bd05f09375f3f0dbb0ab3f554e79ab8ba85023edf92252141ff23a11993bf75d582a59c598e3c22e7864cf72823b29be1abab347be2a5d5322a43b')
+sha512sums=('c7b215358c09e1fa5e6aae519e7d6c3fd50027b4c72bb1c128786cd2cff707196f2b9b2a23dfed34d841874caab9463791e82c9083f6aac9c90f26d12a4d4598')
 
 build() {
   cd thefuck-$pkgver

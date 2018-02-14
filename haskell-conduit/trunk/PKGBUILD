@@ -4,43 +4,43 @@
 
 _hkgname=conduit
 pkgname=haskell-conduit
-pkgver=1.2.11
-pkgrel=3
+pkgver=1.2.13
+pkgrel=6
 pkgdesc="Streaming data processing library."
-url="http://github.com/snoyberg/conduit"
+url="https://github.com/snoyberg/conduit"
 license=("MIT")
-arch=('i686' 'x86_64')
-depends=("ghc" "haskell-exceptions" "haskell-lifted-base" "haskell-mmorph"
-         "haskell-monad-control" "haskell-mtl" "haskell-primitive" "haskell-resourcet"
-         "haskell-transformers-base")
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-exceptions' 'haskell-lifted-base' 'haskell-mmorph'
+         'haskell-monad-control' 'haskell-mtl' 'haskell-primitive' 'haskell-resourcet'
+         'haskell-transformers-base' 'haskell-transformers-compat')
+makedepends=('ghc' 'haskell-hspec' 'haskell-quickcheck' 'haskell-safe' 'haskell-split')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('51c0508df13d75389568cd728cbb7ce310ded72676cafdcbe9cd98d61c5a545a3cdfdcf81780ffb48ee9150dd06ef717170dda65fb950cefd1ac01ab33ca0b4a')
+sha512sums=('bf77764919091668e35661e065cf809a803c6ff984f3b06ed3efc3bf812b15957a9fc711280690d0720e64d3f85e547fa9f1ac98abaf0d56fff5e90dcda091e0')
 
 build() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
-        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
+        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --enable-tests \
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
     sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
 }
 
+check() {
+    cd $_hkgname-$pkgver
+    runhaskell Setup test
+}
+
 package() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

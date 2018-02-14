@@ -4,22 +4,23 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=startdde
-pkgver=3.1.10
+pkgver=3.1.24
 pkgrel=1
 pkgdesc="starter of deepin desktop environment"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://github.com/linuxdeepin/startdde"
 license=('GPL3')
 depends=('deepin-daemon' 'deepin-wm-switcher')
-makedepends=('cmake' 'coffee-script' 'deepin-dbus-factory' 'deepin-gir-generator' 'deepin-go-lib'
-             'deepin-api' 'go' 'python2' 'git')
+makedepends=('cmake' 'coffeescript' 'deepin-dbus-factory' 'deepin-gir-generator' 'deepin-go-lib'
+             'deepin-api' 'go-pie' 'python2' 'git')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/startdde/archive/$pkgver.tar.gz")
-sha512sums=('6da1c1abedd2033714ab7518f43dcad67a4a9992dd1ded044ab2b6d7a66afff46ec2ded5848d6009ee2c12987966a5568ec618c88b7fbb566257ecf8aa9b5168')
+sha512sums=('03cf16c1595e39205e08d531d808923c0845e824658b3606bd55fb6336f4d0b19dd0d8d5b626623ec6414bf591fd4327815688b01448a2278fbf2d9aeb99e2b0')
 
 prepare() {
   export GOPATH="$srcdir/build:/usr/share/gocode"
-  go get github.com/BurntSushi/xgb github.com/BurntSushi/xgbutil github.com/howeyc/fsnotify
+  go get github.com/BurntSushi/xgb github.com/BurntSushi/xgbutil github.com/howeyc/fsnotify \
+         github.com/cryptix/wav
 }
 
 build() {
@@ -30,8 +31,4 @@ build() {
 package() {
   cd startdde-$pkgver
   make DESTDIR="$pkgdir" install
-
-  mv "$pkgdir"/lib/systemd "$pkgdir"/usr/lib/systemd
-  rmdir "$pkgdir"/lib
-  ln -sf ../dde-readahead.service "$pkgdir"/usr/lib/systemd/system/multi-user.target.wants/dde-readahead.service
 }

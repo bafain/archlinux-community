@@ -6,10 +6,10 @@
 # Contributor: Robert Emil Berge <filoktetes@linuxophic.org>
 
 pkgname=recoll
-pkgver=1.23.2
+pkgver=1.23.7
 pkgrel=1
 pkgdesc="Full text search tool based on Xapian backend"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.lesbonscomptes.com/recoll/"
 license=('GPL')
 depends=('xapian-core>=1.0.15-1' 'qt5-base' 'openssl' 'hicolor-icon-theme' 'qt5-webkit')
@@ -31,7 +31,7 @@ optdepends=('libxslt: for XML based formats (fb2,etc)'
 	    'python-lxml: indexing spreadsheets'
 	    'aspell-en: English stemming support')
 source=("https://www.lesbonscomptes.com/$pkgname/$pkgname-${pkgver/_/}.tar.gz")
-sha256sums=('0e93e6be0dc2225b03a4850887bd29da47a61e07652fde51be254ef9f8310048')
+sha256sums=('56eaa8695b8ac8f30a3f451688a3ae47da64637badfffd33878977d13f92cba0')
 
 prepare() {
   cd "$srcdir/$pkgname-${pkgver/_/}"

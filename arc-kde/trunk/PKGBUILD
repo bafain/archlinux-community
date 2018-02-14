@@ -1,24 +1,34 @@
 # Maintainer: Bruno Pagani <archange@archlinux.org>
 
-pkgname=arc-kde
-pkgver=20170423
+pkgbase=arc-kde
+pkgname=('arc-kde' 'kvantum-theme-arc')
+pkgver=20180201
 pkgrel=1
 pkgdesc="Arc theme for KDE Plasma 5"
 arch=('any')
-url="https://github.com/PapirusDevelopmentTeam/${pkgname}"
+url="https://github.com/PapirusDevelopmentTeam/${pkgbase}"
 license=('GPL3')
 options=('!strip')
-source=(${pkgname}-${pkgver}.tar.gz::"${url}/archive/${pkgver}.tar.gz")
-sha256sums=('bd6a139ef990f3a8acbc06a26c280c299ff705c6c56eb90af320507d2ecec7ae')
+source=(${pkgbase}-${pkgver}.tar.gz::"${url}/archive/${pkgver}.tar.gz")
+sha256sums=('d96480bd93cec79cb44cf5d8e15b4d4db857e6fcaee10c031a164f4567d9d842')
 
-package() {
-    cd ${pkgname}-${pkgver}
-    mkdir -p ${pkgdir}/usr/share
+package_arc-kde() {
+    optdepends=('kvantum-theme-arc: Arc theme for Kvantum Qt style (recommended)')
+    cd ${pkgbase}-${pkgver}
+    install -d "${pkgdir}"/usr/share
  
     cp -r plasma "${pkgdir}"/usr/share
     cp -r aurorae "${pkgdir}"/usr/share
     cp -r color-schemes "${pkgdir}"/usr/share
     cp -r konsole "${pkgdir}"/usr/share
-    # Not sure whether this is the right place to provide this script…
-    rm "${pkgdir}"/usr/share/plasma/desktoptheme/Arc-Dark/fix-menubar.sh
+    cp -r yakuake "${pkgdir}"/usr/share
+}
+
+package_kvantum-theme-arc() {
+    pkgdesc="Arc theme for Kvantum"
+    depends=('kvantum-qt5')
+    cd ${pkgbase}-${pkgver}
+    install -d "${pkgdir}"/usr/share
+
+    cp -r Kvantum "${pkgdir}"/usr/share
 }

@@ -1,40 +1,40 @@
-# Maintainer: Pierre Neidhardt <ambrevar@gmail.com>
+# Maintainer: Thore Bödecker <foxxx0@archlinux.org>
+# Contributor: Pierre Neidhardt <ambrevar@gmail.com>
 # Contributor: Hermann Zahnweh (eigengrau)
 # Contributor: Andy Weidenbaum <archbaum@gmail.com>
 # Contributor: foalsrock <foalsrock at gmail dot-com>
 # Contributor: jebaum <jebaum at ucla dot edu>
 
 pkgname=fzf
-pkgver=0.16.8
+pkgver=0.17.3
 pkgrel=1
 pkgdesc="Command-line fuzzy finder"
-arch=("i686" "x86_64")
+arch=("x86_64")
 url="https://github.com/junegunn/fzf"
 license=("MIT")
-makedepends=("git" "go")
+depends=("bash")
+makedepends=("git" "go-pie")
 optdepends=("fish: fish keybindings"
 	"tmux: fzf-tmux script for launching fzf in a tmux pane"
 	"vim: plugin"
 	"zsh: zsh keybindings")
-source=("$pkgname-$pkgver.tar.gz::https://github.com/junegunn/fzf/archive/$pkgver.tar.gz"
-	"git+https://github.com/junegunn/$pkgname.wiki")
-sha256sums=('daef99f67cff3dad261dbcf2aef995bb78b360bcc7098d7230cb11674e1ee1d4'
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/junegunn/fzf/archive/${pkgver}.tar.gz"
+	"git+https://github.com/junegunn/${pkgname}.wiki")
+sha256sums=('e843904417adf926613431e4403fded24fade56269446e92aac6ff1db86af81e'
             'SKIP')
 
 build() {
-	cd "$srcdir/$pkgname-$pkgver"
-
-	msg2 'Building...'
-	GOPATH="$srcdir" TMPDIR=/tmp go get -u github.com/junegunn/fzf/...
+	cd "${srcdir}/${pkgname}-${pkgver}"
+    GOPATH="$srcdir" TMPDIR=/tmp go get -u github.com/junegunn/fzf/...
 }
 
 package() {
-	cd "$srcdir/$pkgname-$pkgver"
+	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	## Doc
 	install -dm755 "$pkgdir/usr/share/doc/fzf/wiki"
 	install -m644 "$srcdir/fzf.wiki"/* "$pkgdir/usr/share/doc/fzf/wiki"
-	install -m644 README.md install uninstall "$pkgdir/usr/share/doc/fzf"
+	install -m644 README.md "$pkgdir/usr/share/doc/fzf"
 
 	## Man page
 	install -Dm644 "man/man1/fzf.1" "$pkgdir/usr/share/man/man1/fzf.1"

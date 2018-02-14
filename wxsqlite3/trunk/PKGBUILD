@@ -5,15 +5,15 @@
 # Contributor: Scott Furry <scott.wl.furry@gmail.com>
 
 pkgname=wxsqlite3
-pkgver=3.5.5
+pkgver=3.5.9
 pkgrel=1
 pkgdesc="wxWidgets wrapper for SQLite3"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://utelle.github.io/wxsqlite3"
 license=('custom:wxWindows')
 depends=('wxgtk3')
 source=($pkgname-$pkgver.tar.gz::https://github.com/utelle/$pkgname/archive/v$pkgver.tar.gz)
-sha256sums=('303aba23d5d3349335f6a9e56a35f0c55641b4af9c330f7074def71384e49303')
+sha256sums=('42cd64d978496d81e2e875ecdeed63abc2513c2eb810b570e6c84247a055d026')
 
 build() {
   cd $pkgname-$pkgver
@@ -29,5 +29,5 @@ package() {
   make DESTDIR="${pkgdir}" install
 
 # license
-  install -Dm644 LICENCE.txt "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
 }

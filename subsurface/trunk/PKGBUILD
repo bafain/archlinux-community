@@ -4,23 +4,20 @@
 
 pkgname=subsurface
 _pkgname=Subsurface
-pkgver=4.6.4
+pkgver=4.7.7
 pkgrel=1
 pkgdesc='Divelog program'
 url='https://subsurface-divelog.org/'
 license=('GPL2')
-arch=('i686' 'x86_64')
-makedepends=('cmake' 'asciidoc')
+arch=('x86_64')
+makedepends=('cmake' 'asciidoc' 'qt5-tools')
 depends=('libzip' 'libxml2' 'libxslt' 'sqlite' 'libusb' 'libgit2'
-         'subsurface-libdc' 'subsurface-marble'
-         'qt5-connectivity' 'grantlee')
+         'subsurface-libdc' 'qt5-svg' 'qt5-location'
+         'qt5-connectivity' 'qt5-webkit' 'grantlee' 'googlemaps')
 source=("https://subsurface-divelog.org/downloads/${_pkgname}-${pkgver}.tgz")
-sha256sums=('b9620931a7683e69a04c58ad5f5291722f51800d428dd6c6f945fb258ce49376')
+sha256sums=('7c59223a21a187ce7294c35f6b69a9ab418ea53fe95ec4a9f047c7ee8964077d')
 
-prepare() {
-	cd "${srcdir}/${_pkgname}-${pkgver}"
-	sed 's:<marble:<subsurface/marble:g' -i desktop-widgets/globe.*
-}
+# qt5-webkit still used for: printing, manual, facebook
 
 build() {
 	cd "${srcdir}/${_pkgname}-${pkgver}"
@@ -29,8 +26,7 @@ build() {
 	cmake \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DMARBLE_LIBRARIES=/usr/lib/libssrfmarblewidget.so \
-		-DMARBLE_INCLUDE_DIR=/usr/include/subsurface/marble \
+		-DLIBDIVECOMPUTER_INCLUDE_DIR=/usr/include/libdivecomputer \
 		..
 	make
 }

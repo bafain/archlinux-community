@@ -7,14 +7,14 @@ pkgname=freehdl
 pkgver=0.0.8
 pkgrel=8
 pkgdesc='An open-source (C++ generating) VHDL simulator'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://freehdl.seul.org'
 license=('GPL')
 depends=('perl')
 optdepends=('gtkwave: to view output when run standalone')
 options=('libtool')
-source=("http://downloads.sourceforge.net/qucs/$pkgname-$pkgver.tar.gz")
-md5sums=('aa1382b8b5c6a972e9652c648a9278b5')
+source=("https://downloads.sourceforge.net/qucs/$pkgname-$pkgver.tar.gz")
+sha256sums=('7f0978f8252329450de43e98c04c15fdd8a3f2bdc5ca91f75f8f5dd280c6ed84')
 
 build() {
   cd "${srcdir}"/$pkgname-$pkgver

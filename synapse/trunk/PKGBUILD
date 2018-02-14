@@ -3,26 +3,24 @@
 # Contributor: Alessio Sergi <asergi at archlinux dot us>
 
 pkgname=synapse
-pkgver=0.2.99.2
-pkgrel=2
+pkgver=0.2.99.3
+pkgrel=1
 pkgdesc="A semantic file launcher"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://launchpad.net/synapse-project"
 license=('GPL3')
 depends=('libkeybinder3' 'hicolor-icon-theme' 'json-glib' 'libgee' 'libnotify' \
          'zeitgeist' 'rest' 'xdg-utils')
 makedepends=('intltool' 'vala')
-optdepends=('banshee: banshee plugin'
-            'bc: calculator plugin'
+optdepends=('bc: calculator plugin'
             'devhelp: documentation plugin'
-            'gnome-screensaver: screensaver plugin'
             'gnome-dictionary: dictionary plugin'
             'openssh: ssh plugin'
             'pastebinit: pastebin plugin'
             'rhythmbox: rhythmbox plugin'
             'xnoise: xnoise plugin')
 source=("https://launchpad.net/$pkgname-project/0.3/$pkgver/+download/$pkgname-$pkgver.tar.xz")
-sha1sums=('6720537a239419833fc5b4e521b25935e30a3274')
+sha512sums=('4332b337079e241704f931835635a0c587c231faa815ff0fd9d722f2470a6999fcf89b9a62a2f7ba8a759de20d684ef6e811be3e858fc547c3591533e1907dfa')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"

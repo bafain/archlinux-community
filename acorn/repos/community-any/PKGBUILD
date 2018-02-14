@@ -2,7 +2,7 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=acorn
-pkgver=5.0.3
+pkgver=5.4.1
 pkgrel=1
 pkgdesc='A tiny, fast JavaScript parser, written completely in JavaScript.'
 arch=('any')
@@ -10,9 +10,9 @@ url='https://github.com/ternjs/acorn'
 license=('MIT')
 depends=('nodejs')
 makedepends=('npm')
-source=(http://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz)
+source=(https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz)
 noextract=($pkgname-$pkgver.tgz)
-sha512sums=('060f19accdd87d8d7698f66438d4b9b8a66c4e3f5cb4876e69bfab91f2226c4756795699b77ec77aab173dffbb7a4384084ecdc4e39ae15c6e64a4a44c6a3c4f')
+sha512sums=('5cb9aadc7fc156f5bafc66f12abc86c56391cf579b8a54ac5039720b6edb5e1586580656906c12e852c78ce970157345a1615010efc37f8bb46187742b705081')
 
 package() {
   npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz

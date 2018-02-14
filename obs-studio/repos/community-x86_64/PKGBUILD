@@ -2,19 +2,22 @@
 # Contributor: Benjamin Klettbach <b.klettbach@gmail.com>
 
 pkgname=obs-studio
-pkgver=19.0.3
+pkgver=21.0.2
 pkgrel=1
 pkgdesc="Free, open source software for live streaming and recording"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://obsproject.com"
 license=('GPL2')
 depends=('ffmpeg' 'jansson' 'libxinerama' 'libxkbcommon-x11'
          'qt5-x11extras' 'curl' 'jack' 'gtk-update-icon-cache')
-makedepends=('cmake' 'libfdk-aac' 'libxcomposite' 'x264')
+makedepends=('cmake' 'libfdk-aac' 'libxcomposite' 'x264' 'vlc' 'swig' 'python' 'luajit')
 optdepends=('libfdk-aac: FDK AAC codec support'
-            'libxcomposite: XComposite capture support')
+            'libxcomposite: XComposite capture support'
+            'luajit: scripting support'
+            'python: scripting support'
+            'vlc: VLC Media Source support')
 source=($pkgname-$pkgver.tar.gz::https://github.com/jp9000/obs-studio/archive/$pkgver.tar.gz)
-md5sums=('c0e2b4f7a18a9a4e1e15ab4c71dc95e7')
+md5sums=('b2a11f40d47e00b5e7c84228f73f683b')
 
 build() {
   cd $pkgname-$pkgver

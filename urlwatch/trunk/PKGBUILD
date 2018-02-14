@@ -4,15 +4,15 @@
 # Contributor: Allan McRae <allan@archlinux.org>
 
 pkgname=urlwatch
-pkgver=2.6
-pkgrel=2
+pkgver=2.8
+pkgrel=1
 pkgdesc="A tool for monitoring webpages for updates"
 arch=('any')
 url="https://thp.io/2008/urlwatch/"
 license=('BSD')
-depends=('python-keyring' 'python-minidb' 'python-requests' 'python-yaml')
-source=("https://thp.io/2008/urlwatch/$pkgname-$pkgver.tar.gz")
-sha256sums=('57a90a0a7a3f056bbf77c917621a124338de20e15ce356873b9abba72f57d6f4')
+depends=('python-appdirs' 'python-keyring' 'python-minidb' 'python-requests' 'python-yaml')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/thp/urlwatch/archive/$pkgver.tar.gz")
+sha256sums=('e0b75f81920f547b01e6bc1cfb34eff1a0c9513914ed61013876b8b8d2fe20fb')
 
 build() {
   cd $pkgname-$pkgver
@@ -21,6 +21,6 @@ build() {
 
 package() {
   cd $pkgname-$pkgver
-  python3 setup.py install --root="$pkgdir"
+  python3 setup.py install --root="$pkgdir" --optimize=1
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

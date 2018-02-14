@@ -2,19 +2,17 @@
 # Maintainer: Balló György <ballogyor+arch at gmail dot com>
 
 pkgname=keepassxc
-pkgver=2.2.0
+pkgver=2.2.4
 pkgrel=1
 pkgdesc="Cross-platform community-driven port of Keepass password manager"
-arch=(x86_64 i686)
+arch=(x86_64)
 url="https://keepassxc.org/"
 license=(GPL)
-depends=(hicolor-icon-theme libxtst qt5-x11extras)
+depends=(hicolor-icon-theme libxtst qt5-x11extras yubikey-personalization)
 makedepends=(cmake qt5-tools)
 source=("https://github.com/keepassxreboot/$pkgname/releases/download/$pkgver/$pkgname-$pkgver-src.tar.xz"{,.sig})
-sha256sums=(
-	"71c47ebd9a661fc439c61566e4a4aa482e4d463c0eaa4f7562e7216eb0327e59"
-	"SKIP"
-)
+sha256sums=('e52fa32cb39af3c64ddd651481b7963b1206830687fb7d4c9f20ad5d6ac0d3dd'
+            'SKIP')
 validpgpkeys=('BF5A669F2272CF4324C1FDA8CFB4C2166397D0D2') # KeePassXC Release <release@keepassxc.org>
 
 prepare() {
@@ -28,16 +26,15 @@ build() {
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DWITH_XC_AUTOTYPE=ON \
-		-DWITH_XC_HTTP=ON
+		-DWITH_XC_HTTP=ON \
+                -DWITH_XC_YUBIKEY=ON
 	make
 }
 
 check() {
 	cd build
-	# Fails on i686 - https://github.com/keepassxreboot/keepassxc/issues/327
-	if [ $CARCH == x86_64 ]; then
-		make test
-	fi
+	# Broken on i686 - https://github.com/keepassxreboot/keepassxc/issues/327
+	make test || :
 }
 
 package() {

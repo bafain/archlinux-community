@@ -1,0 +1,36 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+
+_gemname=async
+pkgname=ruby-${_gemname}
+pkgver=1.2.2
+pkgrel=1
+pkgdesc='Composable asynchronous I/O'
+url='https://github.com/socketry/async'
+arch=('any')
+license=('MIT')
+depends=('ruby' 'ruby-nio4r' 'ruby-timers' 'ruby-rdoc')
+options=('!emptydirs')
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/socketry/async/archive/v${pkgver}.tar.gz)
+sha256sums=('2d09019a833dff44fb506a5561bb7484efec72384c9b01dc5dbb0dd5319ca7c5')
+sha512sums=('f8a0e0e3fbd42c6ccfb210e625f6ec38d8127cadec3df26ad621b69350e0b6aad248ab3475f965d15eb6037a304e9a352d66563c53a228779c0357a2602605cd')
+
+prepare() {
+  cd ${_gemname}-${pkgver}
+  sed 's|git ls-files|find|' -i ${_gemname}.gemspec
+  sed 's|~>|>=|g' -i ${_gemname}.gemspec # don't give a fuck about rubys bla bla
+}
+
+build() {
+  cd ${_gemname}-${pkgver}
+  gem build ${_gemname}.gemspec
+}
+
+package() {
+  cd ${_gemname}-${pkgver}
+  local _gemdir="$(gem env gemdir)"
+  gem install --ignore-dependencies --no-user-install -i "${pkgdir}/${_gemdir}" -n "${pkgdir}/usr/bin" ${_gemname}-${pkgver}.gem
+  install -Dm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+  rm "${pkgdir}"/${_gemdir}/cache/${_gemname}-${pkgver}.gem
+}
+
+# vim: ts=2 sw=2 et:

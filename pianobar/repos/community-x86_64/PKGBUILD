@@ -5,22 +5,24 @@
 # Contributor: Patrick Palka <patrick@parcs.ath.cx>
 
 pkgname=pianobar
-pkgver=2016.06.02
-pkgrel=1
+pkgver=2017.08.30
+pkgrel=3
 pkgdesc="Console-based frontend for Pandora"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://6xq.net/pianobar/"
 license=('MIT')
-depends=('libao' 'ffmpeg' 'curl')
-source=(http://6xq.net/projects/pianobar/$pkgname-$pkgver.tar.bz2)
-sha256sums=('c6efb0d0fe36013c6506dadf3718e8ed9471b7839654c97027e036ed16212559')
+depends=('libao' 'ffmpeg' 'curl' 'json-c')
+source=(https://6xq.net/pianobar/$pkgname-$pkgver.tar.bz2{,.asc})
+sha256sums=('ec14db6cf1a7dbc1d8190b5ca0d256021e970587bcdaeb23904d4bca71a04674'
+            'SKIP')
+validpgpkeys=('017D74E27F5856963801781DF663943E08D8092A') # Lars-Dominik Braun <lars@6xq.net>
 
 build() {
   make -C ${pkgname}-${pkgver}
 }
 
 package() {
-  make -C ${pkgname}-${pkgver} DESTDIR="$pkgdir" PREFIX=/usr install
-  install -Dm644 $pkgname-$pkgver/COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm755 $pkgname-$pkgver/contrib/headless_pianobar "$pkgdir/usr/bin/pianoctl"
+  make -C ${pkgname}-${pkgver} DESTDIR="${pkgdir}" PREFIX=/usr install
+  install -Dm644 $pkgname-"${pkgver}"/COPYING "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm755 $pkgname-"${pkgver}"/contrib/headless_pianobar "${pkgdir}"/usr/bin/pianoctl
 }

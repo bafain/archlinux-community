@@ -2,7 +2,7 @@
 # Contributor: Alexander F Rødseth <xyproto@archlinux.org>
 
 pkgname=nimble
-pkgver=0.8.4
+pkgver=0.8.8
 pkgrel=1
 epoch=1
 pkgdesc='Package manager for the Nim programming language'
@@ -12,8 +12,8 @@ license=('BSD')
 depends=('glibc')
 makedepends=('nim')
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/nim-lang/nimble/archive/v${pkgver}.tar.gz)
-sha256sums=('ba47cee4f74c56d14d6142e9324b3a8fd5a0e6cd8cbcf81e04ae58543b848e5e')
-sha512sums=('93092b59926941b35d74cf678dc6c45e7c7d23654441fd59cf0794d0f9917fb1c13cf813e1109172981bb1da06f925116643b97141fdc039b43fbbcad7b583d7')
+sha256sums=('4a849370f58af0d6fe940c15536ab9487f75517c695dd845f84ad96e71f2f4bd')
+sha512sums=('4201ed0856b26505e83aa885624065a0200dead9cbc0d5bc0ba750da597b9c37708c1783f7fe518d2bdff954b53ccbc9f92d723f2ce41f4799c8fb9d895c1c6e')
 
 build() {
   cd ${pkgname}-${pkgver}

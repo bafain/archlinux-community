@@ -5,13 +5,13 @@ pkgname=netwatch
 pkgver=1.3.1_2
 pkgrel=1
 pkgdesc="monitor network connections"
-arch=(i686 x86_64)
+arch=(x86_64)
 url="http://www.slctech.org/~mackay/NETWATCH/netwatch.html"
 license=('GPL')
 options=(zipman)
 depends=(ncurses)
-source=(http://www.slctech.org/~mackay/NETWATCH/netwatch-${pkgver/_/-}.tgz)
-md5sums=('6147b0235207912ca941a4e45c9cee14')
+source=(https://www.slctech.org/~mackay/NETWATCH/netwatch-${pkgver/_/-}.tgz)
+sha256sums=('9374fa55a41a4addd8897f1ff10a3453c840bf28534f500e8661a614231cc161')
 
 prepare() {
   cd "$srcdir/$pkgname-${pkgver/_/-}"

@@ -3,16 +3,16 @@
 # Contributor: Federico Cinelli <cinelli@aur.archlinux.org>
 
 pkgname=texmaker
-pkgver=4.5
-pkgrel=3
+pkgver=5.0.2
+pkgrel=1
 pkgdesc='Free cross-platform LaTeX editor'
-arch=(i686 x86_64)
+arch=(x86_64)
 url="http://www.xm1math.net/texmaker/index.html"
 license=(GPL)
-depends=(poppler-qt5 qt5-webkit qt5-script desktop-file-utils)
+depends=(qt5-script)
 optdepends=('ghostscript: LaTeX to HTML conversion command')
 source=("http://www.xm1math.net/$pkgname/$pkgname-$pkgver.tar.bz2")
-md5sums=('156ffad5b7193e0cfecd2d3689f3a7a4')
+sha256sums=('a94e8d77a16fddd0789c452b0913bb098b1f895397b3ad53be29ad84aaac0179')
 
 build() {
   cd $pkgname-$pkgver

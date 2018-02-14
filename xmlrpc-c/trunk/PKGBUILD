@@ -7,10 +7,10 @@
 pkgname=xmlrpc-c
 # Using the Stable version
 pkgver=1.43.06
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc='XML-RPC for C and C++'
-arch=('x86_64' 'i686')
+arch=('x86_64')
 url='http://xmlrpc-c.sourceforge.net/'
 license=('custom')
 depends=('curl' 'libxml2')
@@ -58,4 +58,4 @@ package() {
 }
 
 # getver: -u 2 xmlrpc-c.sourceforge.net/change_stable.html
-# vim:set ts=2 sw=2 et:
+# vim: ts=2 sw=2 et:

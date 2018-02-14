@@ -5,32 +5,34 @@
 
 pkgbase=python-pyro
 pkgname=("$pkgbase" "${pkgbase/-/2-}")
-pkgver=4.60
-pkgrel=1
+pkgver=4.63
+pkgrel=2
 pkgdesc='Distributed object middleware for Python (RPC)'
 url='https://github.com/irmen/Pyro4'
 arch=('any')
 license=('MIT')
+makedepends=('git')
 depends=('python' 'python2')
-source=("https://github.com/irmen/Pyro4/archive/$pkgver.tar.gz")
-sha256sums=('b1a3f504aa1e6f803f3c1ba6baa00ad4368ffa5084ac08c09fba6ea6ae1b8aa6')
+source=("git+https://github.com/irmen/Pyro4#tag=$pkgver")
+sha256sums=('SKIP')
 
 package_python-pyro() {
-  depends=('python')
+  depends=('python' 'python-serpent')
 
-  cd "Pyro4-$pkgver"
+  cd Pyro4
 
-  python setup.py install --root="$pkgdir"
+  python setup.py install --root="$pkgdir" --optimize=1
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
 package_python2-pyro() {
-  depends=('python2')
+  depends=('python2' 'python2-serpent')
 
-  cd "Pyro4-$pkgver"
+  cd Pyro4
 
-  python2 setup.py install --root="$pkgdir"
+  python2 setup.py install --root="$pkgdir" --optimize=1
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
+# getver: github.com/irmen/Pyro4/tags
 # vim: ts=2 sw=2 et:

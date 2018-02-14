@@ -4,41 +4,45 @@
 
 _hkgname=HTTP
 pkgname=haskell-http
-pkgver=4000.3.7
-pkgrel=3
+pkgver=4000.3.9
+pkgrel=8
 pkgdesc="A library for client-side HTTP"
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=('custom:BSD3')
-arch=('i686' 'x86_64')
-depends=('ghc' 'sh' 'haskell-network' 'haskell-parsec' 'haskell-mtl' 'haskell-network-uri')
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-network' 'haskell-parsec' 'haskell-mtl' 'haskell-network-uri')
+makedepends=('ghc' 'haskell-hunit' 'haskell-httpd-shed' 'haskell-puremd5' 'haskell-split'
+             'haskell-test-framework' 'haskell-test-framework-hunit' 'haskell-case-insensitive'
+             'haskell-http-types' 'haskell-wai' 'haskell-warp' 'haskell-conduit'
+             'haskell-conduit-extra')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('8d2a3a3768fb0d63580dd8798cc15eaefe7d93adb061ba5d04584eb1359bcd8d9a1aa48879b800dc3f5e33757a55cacc2d5c773ae0f68085f597ccb483b9647f')
+sha512sums=('752fdcd95711c8b33f1e27dd3128beccf57db80c0e6341c02a418d180af3adf64eb85760d4d53984ba3072ac9f9ca047078b71ef42365ceaf63bd92c27fcaee3')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
-        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
+        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --enable-tests \
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid \
+            -f-mtl1 -f-warn-as-error -f-network23 -f-conduit10 -fwarp-tests -fnetwork-uri
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
     sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
 }
 
+check() {
+    cd $_hkgname-$pkgver
+    runhaskell Setup test
+}
+
 package() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
+
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

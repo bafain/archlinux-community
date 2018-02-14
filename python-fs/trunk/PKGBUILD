@@ -3,7 +3,7 @@
 
 pkgbase=python-fs
 pkgname=('python-fs' 'python2-fs')
-pkgver=2.0.4
+pkgver=2.0.18
 pkgrel=1
 pkgdesc="Filesystem abstraction layer"
 arch=('any')
@@ -14,7 +14,7 @@ makedepends=('python-appdirs' 'python2-appdirs' 'python2-enum34' 'python-pytz' '
 checkdepends=('python-nose' 'python2-nose' 'fuse2' 'python-mock' 'python2-mock' 'python-pyftpdlib'
               'python2-pyftpdlib')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/PyFilesystem/pyfilesystem2/archive/v$pkgver.tar.gz")
-sha512sums=('6eb0ba671f4da3d96ad2c24ce9aa17b0fe685a7ee98d1732d14a290ce828ff15e5b937db86cb19f700e530593f4372a09cd33818503684cc925c6200a3bfffb3')
+sha512sums=('68fadb3504e096867bb6ee120f1bf1d2c81d9f2d30c754408cf9ade54b51d6efe5684517c0f54664d4d59ed3cc9f201c816a7dac46460905d59e8b56e3a572a8')
 
 prepare() {
   cp -a pyfilesystem2-$pkgver{,-py2}
@@ -34,10 +34,12 @@ check() {
   export LC_CTYPE=en_US.UTF-8
 
   cd "$srcdir"/pyfilesystem2-$pkgver
-  nosetests3 -a "!slow" tests
+  python setup.py install --root="$PWD/tmp_install" --optimize=1
+  PYTHONPATH="$PWD/tmp_install/usr/lib/python3.6/site-packages:$PYTHONPATH" nosetests3 tests
 
   cd "$srcdir"/pyfilesystem2-$pkgver-py2
-  nosetests2 -a "!slow" tests
+  python2 setup.py install --root="$PWD/tmp_install" --optimize=1
+  PYTHONPATH="$PWD/tmp_install/usr/lib/python2.7/site-packages:$PYTHONPATH" nosetests2 tests
 }
 
 package_python-fs() {

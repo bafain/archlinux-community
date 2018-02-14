@@ -1,7 +1,7 @@
 #!/bin/sh
-shortname=`echo $LANG | cut -b1-2`
-if [[ -d /usr/share/netsurf/$shortname ]]; then
-  /usr/bin/netsurf-gtk3 "$@"
-else
-  LANG=en /usr/bin/netsurf-gtk3 "$@"
+shortlang=`echo $LANG | cut -b1-2`
+if [ ! -d "/usr/share/netsurf/$shortlang" ]; then
+  # Use /usr/share/netsurf/en
+  export LANG=en_US.UTF-8
 fi
+/usr/bin/netsurf-gtk3 "$@"

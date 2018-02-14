@@ -2,29 +2,30 @@
 # Maintainer: Massimiliano Torromeo <massimiliano.torromeo@gmail.com>
 
 pkgname=nginx-mod-njs
-pkgver=0.1.10 # http://hg.nginx.org/njs/tags
-pkgrel=1
+pkgver=0.1.12 # https://hg.nginx.org/njs/tags
+pkgrel=2
 
 _modname="${pkgname#nginx-mod-}"
-_nginxver=1.12.0
+_nginxver=1.12.2
 
 pkgdesc='nginScript module for nginx'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 depends=("nginx=$_nginxver")
-url="http://nginx.org/en/docs/njs_about.html"
+url="https://nginx.org/en/docs/njs_about.html"
 license=('CUSTOM')
 
 source=(
-	http://nginx.org/download/nginx-$_nginxver.tar.gz
-	njs-$pkgver.tar.gz::http://hg.nginx.org/njs/archive/$pkgver.tar.gz
+	https://nginx.org/download/nginx-$_nginxver.tar.gz{,.asc}
+	njs-$pkgver.tar.gz::https://hg.nginx.org/njs/archive/$pkgver.tar.gz
 )
-
-sha256sums=('b4222e26fdb620a8d3c3a3a8b955e08b713672e1bc5198d1e4f462308a795b30'
-            '17658ef9efa127f13b4d2541a69ddb4359267c63a11c19beda1d3220d4a2fe0d')
+validpgpkeys=(B0F4253373F8F6F510D42178520A9993A1C052F8) # Maxim Dounin <mdounin@mdounin.ru>
+sha256sums=('305f379da1d5fb5aefa79e45c829852ca6983c7cd2a79328f8e084a324cf0416'
+            'SKIP'
+            '8884507ef789ee36ee2635224df60b09746a37b20274b13b971dd306fe01bec0')
 
 build() {
 	cd "$srcdir"/nginx-$_nginxver
-	./configure $(nginx -V 2>&1 | grep 'configure arguments' | sed -r 's@^[^:]+: @@') --add-dynamic-module=../njs-$pkgver/nginx
+	./configure --with-compat --with-stream --add-dynamic-module=../njs-$pkgver/nginx
 	make modules
 }
 

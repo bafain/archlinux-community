@@ -2,18 +2,18 @@
 # Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
 
 pkgname=gnurl
-pkgver=7.54.0
+pkgver=7.58.0
 pkgrel=1
 pkgdesc="fork of libcurl, which is mostly for GNUnet"
-arch=(i686 x86_64)
+arch=(x86_64)
 url="https://gnunet.org/gnurl"
 license=('MIT')
 depends=('gnutls')
-source=(https://gnunet.org/sites/default/files/gnurl-${pkgver}.tar.bz2)
-sha256sums=('407d2844a72f386cdf404cb4ab79792cd68546e544a11270349676dd982183f3')
+source=("https://ftp.gnu.org/gnu/gnunet/gnurl-$pkgver.tar.bz2")
+sha512sums=('a4ef211f5715656e0fef99d96d405c66f6e9b73d9b058ca497c29e08f3efef9f0731b0437af45a4451e2b75f6e4fce0980ad1672a10f1a2bd81720b319ca12e7')
 
 build() {
-  cd "$srcdir/$pkgname-${pkgver}"
+  cd $pkgname-$pkgver
   ./buildconf
   ./configure \
         --prefix=/usr \
@@ -34,14 +34,14 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-${pkgver}"
+  cd $pkgname-$pkgver
   make DESTDIR="$pkgdir" install
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 
-  rm -rf "$pkgdir"/usr/share/man \
-    "$pkgdir"/usr/bin/curl \
-    "$pkgdir"/usr/share/aclocal
-  mkdir -p "$pkgdir"/usr/include/gnurl
-  mv "$pkgdir"/usr/include/curl "$pkgdir"/usr/include/gnurl/curl
-  sed -i 's|includedir=.*|includedir=/usr/include/gnurl|g' "$pkgdir"/usr/lib/pkgconfig/libgnurl.pc
+#  rm -rf "$pkgdir"/usr/share/man \
+#    "$pkgdir"/usr/bin/curl \
+#    "$pkgdir"/usr/share/aclocal
+#  mkdir -p "$pkgdir"/usr/include/gnurl
+#  mv "$pkgdir"/usr/include/curl "$pkgdir"/usr/include/gnurl/curl
+#  sed -i 's|includedir=.*|includedir=/usr/include/gnurl|g' "$pkgdir"/usr/lib/pkgconfig/libgnurl.pc
 }

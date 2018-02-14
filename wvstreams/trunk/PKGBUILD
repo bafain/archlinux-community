@@ -1,13 +1,13 @@
 # $Id$
-# Maintainer: Felix Yan <felixonmars@gmail.com>
+# Maintainer: Felix Yan <felixonmars@archlinux.org>
 # Contributor: Andrea Scarpino <andrea@archlinux.org>
 # Contributor: dorphell <dorphell@archlinux.org>
 
 pkgname=wvstreams
 pkgver=4.6.1
-pkgrel=13
+pkgrel=14
 pkgdesc="A network programming library written in C++"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://alumnit.ca/wiki/?page=WvStreams"
 license=('LGPL')
 depends=('zlib' 'pam' 'xplc' 'openssl-1.0' 'readline')

@@ -3,41 +3,42 @@
 
 _hkgname=th-orphans
 pkgname=haskell-th-orphans
-pkgver=0.13.3
-pkgrel=13
+pkgver=0.13.5
+pkgrel=4
 pkgdesc="Orphan instances for TH datatypes"
-url="http://github.com/ekmett/th-orphans/"
+url="https://github.com/ekmett/th-orphans/"
 license=('custom:BSD3')
-arch=('i686' 'x86_64')
-depends=('ghc' 'haskell-mtl' 'haskell-th-lift' 'haskell-th-lift-instances' 'haskell-th-reify-many')
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-mtl' 'haskell-th-lift' 'haskell-th-lift-instances'
+         'haskell-th-reify-many')
+makedepends=('ghc' 'haskell-hspec')
 source=(https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz)
-md5sums=('d56c8222885e82e47076a27224fd4ced')
+sha512sums=('896c32861a208e8388ef0239db6ecb8e6e20a11422bd37daf74ea16f38c4d864e4f9f0cee7a3946a30ca6fa7ffb00c160ccf8e6791ed2d388a749dd986c12d25')
 
 build() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
-        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
+        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --enable-tests \
         --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
     sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
 }
 
+check() {
+    cd $_hkgname-$pkgver
+    runhaskell Setup test
+}
+
 package() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

@@ -3,7 +3,7 @@
 
 _gemname=rspec-expectations
 pkgname=ruby-${_gemname}
-pkgver=3.5.0
+pkgver=3.7.0
 pkgrel=2
 pkgdesc='Provides a readable API to express expected outcomes of a code example'
 url='https://github.com/rspec/rspec-expectations'
@@ -13,7 +13,7 @@ depends=('ruby-rspec-support' 'ruby-diff-lcs')
 options=('!emptydirs')
 source=(https://rubygems.org/downloads/${_gemname}-${pkgver}.gem)
 noextract=(${_gemname}-${pkgver}.gem)
-sha512sums=('18a4c45bbc2bbc8207d8eaad42476eb516b54befc0c224640ada274ec6ba258838270557f89000cc5b565d1001179cce669fc69a1766303a0981117af4c77faf')
+sha512sums=('011575f87fb26ea3dd04ebff30f94c6686f07508c3adfd5b1fe6cde12758bd05773b685e45d4596ccccf860b85de74da14ea80072ac09932aa0ab30e06304a24')
 
 package() {
   local _gemdir="$(ruby -e'puts Gem.default_dir')"

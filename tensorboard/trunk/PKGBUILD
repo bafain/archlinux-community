@@ -1,0 +1,54 @@
+# $Id: PKGBUILD 244979 2017-07-13 15:39:06Z svenstaro $
+# Maintainer: Sven-Hendrik Haase <sh@lutzhaase.com>
+
+pkgname=tensorboard
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="TensorFlow's Visualization Toolkit"
+url='https://github.com/tensorflow/tensorboard'
+arch=('x86_64')
+license=('APACHE')
+depends=('python' 'python-werkzeug' 'python-numpy' 'python-bleach' 'python-wheel' 'python-markdown'
+         'python-html5lib' 'python-protobuf' 'python-setuptools' 'python-tensorflow')
+makedepends=('bazel')
+source=("https://github.com/tensorflow/tensorboard/archive/${pkgver}.tar.gz")
+sha512sums=('dbacd0e9d1604ba4ff6c5c61fd2122cd3181e57a7d7256f29d15b13ef7ab7aceb9f443a0c1ac120beca8313b4dc4d96c03dc48d81d3d9ecc83444bef6a7fd73f')
+
+build() {
+  cd "$pkgname-$pkgver"
+
+  bazel build tensorboard:tensorboard
+  bazel build //tensorboard/pip_package:build_pip_package
+
+  mkdir pypackage
+  cp -R bazel-bin/tensorboard/pip_package/build_pip_package.runfiles/org_tensorflow_tensorboard/external pypackage
+  cp -R bazel-bin/tensorboard/pip_package/build_pip_package.runfiles/org_tensorflow_tensorboard/tensorboard pypackage
+  cp tensorboard/pip_package/MANIFEST.in pypackage
+  cp README.md pypackage
+  cp tensorboard/pip_package/setup.py pypackage
+  cd pypackage
+  python setup.py build
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+  cd pypackage
+  python setup.py install --root="$pkgdir" --optimize=1
+
+  rm -rf "$pkgdir"/usr/lib/python3.6/site-packages/external/
+
+  _requires="$pkgdir"/usr/lib/python3.6/site-packages/tensorflow_tensorboard-${pkgver}-py3.6.egg-info/requires.txt
+  # This is ugly: We need to patch it to use current bleach and html5lib
+  # because old ones are not even compatible with Python 3.6 and we don't have
+  # those in Arch of course.
+  sed -i 's/bleach==.*/bleach/' ${_requires}
+  sed -i 's/html5lib==.*/html5lib/' ${_requires}
+  # Other ugly hack: workaround for issues 650
+  # https://github.com/tensorflow/tensorboard/issues/650
+  sed -i '/^futures/d' ${_requires}
+}
+
+# vim:set ts=2 sw=2 et:

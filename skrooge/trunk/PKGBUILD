@@ -5,31 +5,32 @@
 # Contributor: neuromante <lorenzo.nizzi.grifi@gmail.com>
 
 pkgname=skrooge
-pkgver=2.8.1
-pkgrel=2
+pkgver=2.11.0
+pkgrel=1
 pkgdesc="A personal finances manager for KDE"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://skrooge.org/"
 license=('GPL')
-depends=('qt5-base' 'qt5-tools' 'qca-qt5' 'qt5-script'  'qt5-webkit' 'libofx' 'grantlee'
-         'kross' 'knewstuff' 'krunner' 'knotifyconfig' 'kdelibs4support' 'sqlcipher')
-makedepends=('cmake' 'kdoctools' 'extra-cmake-modules' 'python' 'kdesignerplugin')
+depends=('qt5-base' 'qca-qt5' 'qt5-script' 'qt5-webkit' 'libofx'
+         'grantlee' 'kross' 'knewstuff' 'krunner' 'knotifyconfig'
+         'sqlcipher' 'python' 'hicolor-icon-theme')
+makedepends=('cmake' 'kdoctools' 'extra-cmake-modules' 'qt5-tools')
 options=('!emptydirs')
 install=$pkgname.install
 changelog=$pkgname.changelog
 source=(http://download.kde.org/stable/$pkgname/$pkgname-$pkgver.tar.xz{,.sig})
 validpgpkeys=('103DC6D087B3A4A2ED975D7EF0C8CED3382A5C4D') #Stephane MANKOWSKI (Perso) <stephane@mankowski.fr>
-sha256sums=('8f166db74a27db0ce0ea197f89dfd021224afc3e4875e36438a4496f10746460'
+sha256sums=('58614f82cd27ec73c3008baaff9894fa31e0ba28ed3bab51c32a01ad8704da86'
             'SKIP')
 
 build() {
   cd "${srcdir}"/$pkgname-$pkgver
 
-  export
+#   export
   cmake . -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=`kf5-config --prefix` \
-          -DKDE_INSTALL_QTPLUGINDIR=`kf5-config --qt-plugins` \
-          -DKDE_INSTALL_LIBDIR=/usr/lib
+          -DCMAKE_INSTALL_PREFIX=/usr \
+          -DKDE_INSTALL_LIBDIR=/usr/lib \
+          -DSKG_DESIGNER=OFF
   make
 }
 

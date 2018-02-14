@@ -1,18 +1,19 @@
+# Maintainer:
 # Contributor: Martin Wimpress <code@flexion.org>
 
 pkgname=libmateweather
-pkgver=1.18.1
+pkgver=1.20.0
 pkgrel=1
 pkgdesc="Provides access to weather information from the Internet."
-url="http://mate-desktop.org"
-arch=('i686' 'x86_64')
+url="https://mate-desktop.org"
+arch=('x86_64')
 license=('LGPL')
 depends=('gtk3' 'libsoup')
 makedepends=('intltool')
 conflicts=('libmateweather-gtk3')
 replaces=('libmateweather-gtk3')
-source=("http://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-sha1sums=('ad6536d05b257405ca7a5b64a0a122915f65a07e')
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('076eddad046454d8e8f90413b1b33594975fc2a51c2a0cec1fff40b09adf15b1')
 
 build() {
     cd ${pkgname}-${pkgver}

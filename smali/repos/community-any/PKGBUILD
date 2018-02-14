@@ -4,16 +4,17 @@
 # Contributor: Lekensteyn <lekensteyn@gmail.com>
 
 pkgname=smali
-pkgver=2.2.0
+pkgver=2.2.2
 pkgrel=1
-pkgdesc="An assembler/disassembler for Android's dex format"
-url="https://github.com/JesusFreke/smali"
+pkgdesc="Assembler/disassembler for Android's dex format"
+url='https://github.com/JesusFreke/smali'
 arch=('any')
 license=('BSD')
 depends=('java-runtime>=8' 'bash')
 makedepends=('java-environment>=8' 'gradle')
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/JesusFreke/${pkgname}/archive/v${pkgver}.tar.gz)
-sha512sums=('3219d72f542853d2f96521c167ae613d82dc054ced87d1a2564c1bfd739a71956041a29529229a9e1d561dc7dab10a3383ccfbc63e2d12fa9144f6b79b216f27')
+sha256sums=('c22943e2597979a3cbc646c8adec48458b3d3433afd260a39164fe8d9aeebfef')
+sha512sums=('04ad0dae97412965fbee958aaaca4ce45861c9bfa71a352d2cc4a9cf0a712c02af777b80460c0f70dac634004ca357ebf052bba3fa4dd9fd8cfe14c951a66e35')
 
 prepare() {
   cd ${pkgname}-${pkgver}
@@ -27,12 +28,12 @@ prepare() {
 
 build() {
   cd ${pkgname}-${pkgver}
-  gradle --gradle-user-home=. build
+  gradle build
 }
 
 check() {
   cd ${pkgname}-${pkgver}
-  gradle --gradle-user-home=. test
+  gradle test
 }
 
 package() {

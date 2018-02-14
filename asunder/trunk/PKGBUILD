@@ -5,10 +5,10 @@
 # Contributor: Sebastien Piccand <sebcactus gmail com>
 
 pkgname=asunder
-pkgver=2.9
-pkgrel=3
+pkgver=2.9.2
+pkgrel=1
 pkgdesc="a graphical CD ripper and encoder"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://littlesvr.ca/asunder/"
 license=('GPL2')
 depends=('gtk2' 'libcddb' 'cdparanoia')
@@ -19,7 +19,7 @@ optdepends=(
   'flac: for flac support'
 )
 source=(http://littlesvr.ca/asunder/releases/${pkgname}-${pkgver}.tar.bz2)
-sha512sums=('ac3f0265c31ee2ca9c57d9e189fa56b62113f2af541c7e17456f70ddff20994eeefbb74b3bb5deffed3aac6806bfd99493fb85411e42f9577c77d617bec246c1')
+sha512sums=('37b8ed7c7eed46e594807866d29c3bd37cba8d880c68e714168ae373a8d0dbc58cf837dbd704f95ddbe2544880470fb1f176ab6a67643a4a45b048eabb87e4c2')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

@@ -2,7 +2,7 @@
 # Contributor: Martin Wimpress <code@flexion.org>
 
 pkgname=mate-themes
-pkgver=3.22.12
+pkgver=3.22.15
 pkgrel=1
 pkgdesc="Default themes for the MATE desktop"
 url="http://mate-desktop.org"
@@ -15,7 +15,7 @@ optdepends=('gtk-engines: for gtk2 themes'
 options=('!emptydirs')
 groups=('mate')
 source=("http://pub.mate-desktop.org/releases/themes/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('04603907c8481bffe438a5f15a1cec93ee50c83d10ef9acd97368e607fd4f15a')
+sha256sums=('8f9bbdf3103a5843f06c61afec935c2154e02b7fdaf6c2726c5b4dba8d5cb432')
 
 build() {
     cd ${pkgname}-${pkgver}

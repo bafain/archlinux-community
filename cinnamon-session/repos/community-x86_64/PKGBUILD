@@ -3,17 +3,17 @@
 # Contributor: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 
 pkgname=cinnamon-session
-pkgver=3.4.1
+pkgver=3.6.1
 pkgrel=1
 pkgdesc="The Cinnamon Session Handler"
-arch=(i686 x86_64)
+arch=(x86_64)
 license=(GPL LGPL)
 depends=(dbus-glib cinnamon-desktop libsm libcanberra)
 makedepends=(intltool mesa json-glib xtrans gnome-common)
 options=('!emptydirs')
 url="https://github.com/linuxmint/cinnamon-session"
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/linuxmint/cinnamon-session/archive/${pkgver}.tar.gz)
-sha256sums=('20426fe91347193b13ede47d2b2f14af4321f95274267304dc9844e2a5178948')
+sha256sums=('1de855afe097c2fe4d63f0edd4f8876ace2d73620edb65b3c665e91e5a115d9e')
 
 build() {
   cd $pkgname-$pkgver

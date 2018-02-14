@@ -3,20 +3,22 @@
 # Contributor: Corrado Primier <cp663137@stud.polimi.it>
 
 pkgname=drupal
-pkgver=8.3.4
+pkgver=8.4.4
 pkgrel=1
 pkgdesc="A PHP-based content management platform"
 arch=('any')
 url="http://www.drupal.org/"
 license=('GPL')
-depends=('php' 'php-gd')
+depends=()
 install='drupal.install'
 backup=('etc/webapps/drupal/.htaccess')
 options=(!strip)
 source=(https://www.drupal.org/files/projects/$pkgname-$pkgver.tar.gz)
-sha256sums=('c3efdf6f309fdd2c652f18d8279fd8afeefc10855e36a9ace217eba174639988')
+sha256sums=('d2441f8e42f3dcb26f8ef00c8e07ee25c57f5437b0d9ac56119a4aa3930e7a5b')
 
 package() {
+  depends=('php71' 'php71-gd')
+
   _instdir="$pkgdir"/usr/share/webapps/drupal
   mkdir -p ${_instdir}
   cd ${_instdir}

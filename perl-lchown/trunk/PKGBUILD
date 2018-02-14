@@ -2,9 +2,9 @@
 
 pkgname=perl-lchown
 pkgver=1.01
-pkgrel=6
+pkgrel=8
 pkgdesc="use the lchown(2) system call from Perl"
-arch=(i686 x86_64)
+arch=(x86_64)
 license=(PerlArtistic GPL)
 options=(!emptydirs)
 depends=('perl')

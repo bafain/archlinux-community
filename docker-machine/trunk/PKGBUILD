@@ -3,18 +3,18 @@
 # Contributor: Dmitry Chusovitin <dchusovitin@gmail.com>
 
 pkgname=docker-machine
-pkgver=0.12.0
-pkgrel=1
+pkgver=0.13.0
+pkgrel=2
 pkgdesc='Machine management for a container-centric world'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='https://github.com/docker/machine'
 license=('Apache')
 depends=('glibc')
 optdepends=('net-tools: for VirtualBox support')
-makedepends=('go')
+makedepends=('go-pie')
 optdepends=('net-tools: required for VirtualBox driver')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/docker/machine/archive/v$pkgver.tar.gz")
-sha512sums=('5fd27fcae1a44ed45db229342c93b3d53f0c193eaaf95d8f12d6e2be830c14c13154fd9338050f28b52bc0a5f8586bd72b802afc042b8d7f6c4d5dd5bc4c12ac')
+sha512sums=('c31b3505e475f5e55310cc3b8805db8b94522703956a640954c3898c584fc3a07830c346535855cbb2fb10016dd0e7ef72e7174e919a3651f05e18b652132121')
 
 prepare() {
   export GOPATH="$srcdir/build"

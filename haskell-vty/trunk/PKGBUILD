@@ -4,30 +4,40 @@
 
 _hkgname=vty
 pkgname=haskell-vty
-pkgver=5.15.1
-pkgrel=2
+pkgver=5.19.2
+pkgrel=4
 pkgdesc="A simple terminal UI library"
 url="https://github.com/jtdaugherty/vty"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=('ghc' "haskell-blaze-builder" "haskell-microlens" "haskell-microlens-mtl"
-         "haskell-microlens-th" "haskell-hashable" "haskell-mtl" "haskell-parallel" "haskell-parsec"
-         "haskell-stm" "haskell-terminfo" "haskell-text" "haskell-utf8-string" "haskell-vector")
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-blaze-builder' 'haskell-microlens' 'haskell-microlens-mtl'
+         'haskell-microlens-th' 'haskell-hashable' 'haskell-mtl' 'haskell-parallel' 'haskell-parsec'
+         'haskell-stm' 'haskell-text' 'haskell-utf8-string' 'haskell-vector')
+makedepends=('ghc' 'haskell-hunit' 'haskell-quickcheck' 'haskell-smallcheck'
+             'haskell-quickcheck-assertions' 'haskell-test-framework'
+             'haskell-test-framework-smallcheck' 'haskell-test-framework-hunit' 'haskell-random'
+             'haskell-string-qq')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('244333de71c043395732cc400eede3739e2b109c2c1ce93e4bafc75496c5482d')
+sha512sums=('e162c3964a007792727866043ba0b8e9cb7dc031f14d0dc4eec45ce3996be8291d1d01844341d5d7742ff12dc47abb7e9652e622478720f1b9ff558c3597e042')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
 
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
         --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
     sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
+}
+
+check() {
+    # https://github.com/jtdaugherty/vty/issues/132
+    # https://github.com/haskell/cabal/issues/4918
+    cd $_hkgname-$pkgver
+    # runhaskell Setup test
 }
 
 package() {
@@ -35,12 +45,7 @@ package() {
 
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

@@ -3,14 +3,14 @@
 _target_arch=arm64
 _target=aarch64-linux-gnu
 pkgname=$_target-linux-api-headers
-pkgver=4.11
+pkgver=4.15
 pkgrel=1
 pkgdesc="Kernel headers sanitized for use in userspace ($_target)"
 arch=(any)
 url='http://www.kernel.org'
 license=(GPL2)
-source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz)
-sha1sums=('0d2594b7aa3e79521f229569f9e14dc56bdcbd78')
+source=(https://www.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz)
+sha1sums=('5cf2693d2c6bf1e69a9216dceca6183c60eb11d5')
 
 build() {
   cd linux-$pkgver

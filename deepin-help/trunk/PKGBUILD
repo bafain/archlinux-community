@@ -4,7 +4,7 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-help
-pkgver=15.4.4
+pkgver=15.5
 pkgrel=1
 pkgdesc='Help files for DDE'
 arch=('any')
@@ -13,7 +13,7 @@ license=('GPL3')
 depends=('deepin-manual')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/dde-help/archive/$pkgver.tar.gz")
-sha512sums=('2857bb78294bfda6f18e0a726dbe18e4c6ae99d1071f4dafd05371892aa3a3a3e0ff0b9e978aeee2e951291ff36844e7aac94bfe7a586b3ecc0a1db23efeba4b')
+sha512sums=('597a1138093541a5a9b8826ce1dab45645f6c841822ed5c955eb502157f4b995a948536dc110386908fc31fe38cf94eb8d56ebd47938129c0f5ca05f71cf9178')
 
 package() {
   cd dde-help-$pkgver

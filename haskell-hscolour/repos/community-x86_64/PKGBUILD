@@ -4,24 +4,24 @@
 
 _hkgname=hscolour
 pkgname=haskell-hscolour
-pkgver=1.24.1
-pkgrel=2
+pkgver=1.24.4
+pkgrel=1
 pkgdesc="Colourise Haskell code."
 url="http://code.haskell.org/~malcolm/hscolour/"
 license=("LGPL")
-arch=('i686' 'x86_64')
-depends=('ghc')
+arch=('x86_64')
+depends=('ghc-libs')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('e46fe3de8ed6f96e2216b94b7608d01919bc86b15dd8d0ec7e71c0e7e5bf79c8')
+sha512sums=('39b631c0a8346beff1c2e02ca8e72c1b1e3f7dafcedad7dc9de274e6750501de2bc553fe72a7d3459d4f9797e916f27e28ff96f705c2c0f9d3e0eec0ac6182c7')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
-        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
+        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --datasubdir="$pkgname" \
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -30,13 +30,8 @@ build() {
 
 package() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
+
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

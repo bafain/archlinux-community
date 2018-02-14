@@ -3,29 +3,30 @@
 # Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
 
 pkgname=haproxy
-pkgver=1.7.7
+pkgver=1.8.4
 pkgrel=1
 
 pkgdesc='Reliable, high performance TCP/HTTP load balancer'
-url='http://haproxy.org/'
-arch=('i686' 'x86_64')
+url='https://haproxy.org/'
+arch=('x86_64')
 license=('GPL')
 
-depends=('openssl' 'pcre' 'zlib' 'lua')
+depends=('openssl' 'pcre' 'zlib' 'lua' 'libsystemd')
 
 backup=('etc/haproxy/haproxy.cfg')
 
 install=haproxy.install
 
-source=(http://haproxy.org/download/${pkgver%.*}/src/haproxy-$pkgver.tar.gz
-        haproxy.cfg)
+source=(https://haproxy.org/download/${pkgver%.*}/src/haproxy-$pkgver.tar.gz
+        haproxy.cfg
+        haproxy.sysusers)
 
-md5sums=('a58a1a30dbd4682e660ddd9d70860a53'
-         '27941f31d25d5629f4bdef6bc4b2555a')
+md5sums=('540cd21169e8828d5d11894b2fa74ab4'
+         '27941f31d25d5629f4bdef6bc4b2555a'
+         '2f00e81ee2f3f6e51a0cd9acc6f3ff3e')
 
 prepare() {
   cd haproxy-$pkgver
-  sed -i 's:/usr/sbin/haproxy:/usr/bin/haproxy:' src/haproxy-systemd-wrapper.c
 }
 
 build() {
@@ -36,7 +37,8 @@ build() {
     USE_OPENSSL=1 \
     USE_PCRE=1 USE_PCRE_JIT=1 \
     USE_ZLIB=1 \
-    USE_LUA=1
+    USE_LUA=1 \
+    USE_SYSTEMD=1
 
   for contrib in halog iprange systemd; do
     make -C contrib/$contrib SBINDIR=/usr/bin
@@ -46,7 +48,6 @@ build() {
 package() {
   cd haproxy-$pkgver
   make \
-    EXTRA=haproxy-systemd-wrapper \
     PREFIX="$pkgdir"/usr \
     SBINDIR="$pkgdir"/usr/bin \
     DOCDIR="$pkgdir"/usr/share/$pkgname \
@@ -56,6 +57,7 @@ package() {
     install -Dm755 contrib/$contrib/$contrib "$pkgdir"/usr/bin/$contrib
   done
 
+  install -Dm644 ../haproxy.sysusers "$pkgdir"/usr/lib/sysusers.d/haproxy.conf
   install -Dm644 ../haproxy.cfg "$pkgdir"/etc/haproxy/haproxy.cfg
   install -Dm644 contrib/systemd/haproxy.service \
     "$pkgdir"/usr/lib/systemd/system/haproxy.service

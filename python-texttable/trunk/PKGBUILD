@@ -6,16 +6,16 @@
 # Contributor: Daniel YC Lin <dlin.tw at gmail>
 
 pkgname=(python-texttable python2-texttable)
-pkgver=0.9.1
+pkgver=1.2.1
 pkgrel=1
 pkgdesc="Generate a formatted text table using ASCII characters"
 arch=('any')
 url="https://pypi.python.org/pypi/texttable/"
 license=('LGPL')
-makedepends=('python' 'python2')
+makedepends=('python-cjkwrap' 'python2-cjkwrap')
 checkdepends=('python-pytest' 'python2-pytest')
 source=("https://pypi.io/packages/source/t/texttable/texttable-$pkgver.tar.gz")
-sha512sums=('7ec37336ef4b253879d0232dcdb4500cad33ecce1067dd7ea26c221dc2c003ee56360bdbd1dd1e00133301c51c67fb2fe9b1703628804a65f2a6ab8a1e830e50')
+sha512sums=('7c6a49264b3b458ff3012e378ad5d6b1d466be6d6381e67915bfbd89ad3454c8d0bdc22684854a37901ee679bbd88a307f772ce70bd3bbf21070f5b4a1c95f94')
 
 prepare() {
   cp -a texttable-$pkgver{,-py2}
@@ -39,6 +39,7 @@ check() {
 
 package_python-texttable() {
   depends=('python')
+  optdepends=('python-cjkwrap: for better CJK support')
 
   cd texttable-$pkgver
   python setup.py install --root="$pkgdir" --optimize=1
@@ -46,6 +47,7 @@ package_python-texttable() {
 
 package_python2-texttable() {
   depends=('python2')
+  optdepends=('python2-cjkwrap: for better CJK support')
 
   cd texttable-$pkgver-py2
   python2 setup.py install --root="$pkgdir" --optimize=1

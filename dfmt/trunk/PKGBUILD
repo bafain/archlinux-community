@@ -1,0 +1,47 @@
+# $Id$
+# Maintainer: Dan Printzell <arch@vild.io>
+
+pkgname=('dfmt')
+pkgver=0.5.3
+pkgrel=1
+_pkgcommit=6e598c197df780c8cd3496c3a663f602a2bd1e58
+pkgdesc="Dfmt is a formatter for D source code"
+arch=('x86_64')
+url="https://github.com/dlang-community/dfmt"
+license=("custom")
+groups=('dlang')
+makedepends=('dmd' 'git')
+depends=('libphobos')
+
+source=(
+	"git+https://github.com/dlang-community/dfmt#commit=$_pkgcommit"
+	"git+https://github.com/dlang-community/libdparse"
+	"git+https://github.com/sociomantic-tsunami/makd"
+)
+sha256sums=(
+	'SKIP'
+	'SKIP'
+	'SKIP'
+)
+
+prepare() {
+	cd "$srcdir/dfmt"
+
+	git submodule init
+	git config submodule.libdparse.url "$srcdir/libdparse"
+	git config submodule.makd.url "$srcdir/makd"
+	git submodule update
+}
+
+build() {
+	cd "$srcdir/dfmt"
+	make
+}
+
+package() {
+	# binaries
+	install -Dm755 "$srcdir/dfmt/bin/dfmt" "$pkgdir/usr/bin/dfmt"
+
+	# license
+	install -Dm644 "$srcdir/dfmt/LICENSE.txt" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

@@ -5,24 +5,24 @@
 _hkgname=monad-loops
 pkgname=haskell-monad-loops
 pkgver=0.4.3
-pkgrel=4
+pkgrel=7
 pkgdesc="Monadic loops"
 url="https://github.com/mokus0/monad-loops"
 license=("custom:PublicDomain")
-arch=('i686' 'x86_64')
-depends=("ghc")
+arch=('x86_64')
+depends=('ghc-libs')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('7eaaaf6bc43661e9e86e310ff8c56fbea16eb6bf13c31a2e28103138ac164c18')
+sha512sums=('41a1314777661a411acf62dfa25cbb1a59fedd5d60d1a2b8566a3dd64dec361ab1fe35827320529a723a612e0443571ce38b17fa900eb8d5289bc52f653d47a5')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid \
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid \
             -fbase4
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -34,10 +34,5 @@ package() {
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

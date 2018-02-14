@@ -4,27 +4,27 @@
 
 _hkgname=websockets
 pkgname=haskell-websockets
-pkgver=0.10.0.0
-pkgrel=18
+pkgver=0.12.3.1
+pkgrel=8
 pkgdesc="A sensible and clean way to write WebSocket-capable servers in Haskell."
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=('ghc' "haskell-attoparsec" "haskell-base64-bytestring" "haskell-blaze-builder"
+arch=('x86_64')
+depends=('ghc-libs' "haskell-attoparsec" "haskell-base64-bytestring" "haskell-blaze-builder"
          "haskell-case-insensitive" "haskell-entropy" "haskell-network" "haskell-random"
-         "haskell-sha" "haskell-text")
+         "haskell-sha" "haskell-streaming-commons" "haskell-text")
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('3ee56fa6683912928a7d336d591c43e4948886037b5aa72cbab2f33fb43fa2eb')
+sha512sums=('62a08ae9e257fad836be0bdfb0e652da807985416a9a298e9bbfe1750252016aaaf0d793e28b5ee4cf51ee9e2dac716a1ed773d5bf9433f9089d106d52fccb5d')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
 
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
         --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid \
             -f-Example
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -36,12 +36,7 @@ package() {
 
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENCE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENCE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENCE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

@@ -7,11 +7,11 @@
 # Contributor: Michael Fellinger <mf@rubyists.com>
 
 pkgname=haxe
-pkgver=3.4.2
+pkgver=3.4.4
 pkgrel=1
 pkgdesc='Cross-platform toolkit and programming language'
 arch=('x86_64' 'i686')
-url='http://haxe.org/'
+url='https://haxe.org/'
 license=('GPL' 'MIT' 'LGPL')
 groups=('devel')
 depends=('neko')
@@ -19,9 +19,9 @@ optdepends=('python' 'php' 'java-environment' 'mono')
 makedepends=('git' 'ocaml' 'camlp4' 'zlib' 'neko')
 provides=('haxe' 'haxelib')
 options=('!strip' '!makeflags')
-source=("$pkgname-$pkgver::git+https://github.com/HaxeFoundation/haxe.git#commit=890f8c70cf"
-  'git+https://github.com/HaxeFoundation/haxelib.git#commit=b0b6057d24'
-  'git+https://github.com/HaxeFoundation/ocamllibs.git#commit=ea953db15a'
+source=("$pkgname-$pkgver::git+https://github.com/HaxeFoundation/haxe.git#tag=3.4.4"
+  'git+https://github.com/HaxeFoundation/haxelib.git#commit=9056886d636e9d7d0e1759195c60b0260b8c67c0'
+  'git+https://github.com/HaxeFoundation/ocamllibs.git#commit=21d6a6673a49f024ccb8306d08927fc3fabe81af'
   'haxe.sh'
 )
 md5sums=('SKIP'
@@ -55,4 +55,4 @@ package() {
   install -Dm 644 "$srcdir/haxe.sh" "$pkgdir/etc/profile.d/haxe.sh"
 }
 
-# vim:set ts=2 sw=2 et:
+# vim: ts=2 sw=2 et:

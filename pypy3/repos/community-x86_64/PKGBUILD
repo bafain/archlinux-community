@@ -2,26 +2,22 @@
 # Maintainer: Sven-Hendrik Haase <sh@lutzhaase.com>
 
 pkgname=pypy3
-pkgver=5.8.0
+pkgver=5.10.1
 pkgrel=1
 pkgdesc="A Python3 implementation written in Python, JIT enabled"
-url="http://pypy.org"
+url="https://pypy.org"
 arch=('x86_64')
-depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'zlib')
+depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'zlib' 'ncurses')
 makedepends=('python2' 'sqlite' 'tk' 'python2-pycparser')
 optdepends=('sqlite: sqlite module'
             'tk: tk module')
 options=(!buildflags)
-license=('custom:MIT')
-source=("https://bitbucket.org/pypy/pypy/downloads/pypy3-v${pkgver}-src.tar.bz2"
-        "opensslfix.patch::https://bitbucket.org/pypy/pypy/commits/29c9a89359e4cd684f586ceaf8d99ff28fd8aa6d/raw")
-sha512sums=('d78b4c899a5643028664365ed973a7b292a8e5b3989cc75203cd381ea3cda7dd73121c574726e23dca86e8364fcfcf42c372c9deee438c805f30d6e1c4ac115a'
-            '2860e20c3fba647c9857046d8808c2f3f88e34b29087dffb59c387f98b48b86f28f0d0c802b02885606716586e5536820e3ea75777ba37b2a458e65da04997cd')
+license=('MIT')
+source=("https://bitbucket.org/pypy/pypy/downloads/pypy3-v${pkgver}-src.tar.bz2")
+sha512sums=('91b0ed25130bdbb46d5e577136b5fe63d5162917dcc2d0b69f5cac2a283ece9d0bfd3c7c8dc61ff391e0550fa1603326f6edeb2df3159d71617fefe6c07439f5')
 
 prepare() {
   cd pypy3-v${pkgver}-src
-
-  patch -Np1 < ${srcdir}/opensslfix.patch
 }
 
 build() {
@@ -44,13 +40,14 @@ package() {
   # Install pypy
   cd unpacked
   install -Dm755 pypy/bin/pypy3 "${pkgdir}"/opt/pypy3/bin/pypy3
-  install -Dm755 pypy/bin/libpypy3-c.so "${pkgdir}"/usr/lib/libpypy3-c.so
+  install -Dm755 pypy/bin/libpypy3-c.so "${pkgdir}"/opt/pypy3/bin/libpypy3-c.so
   cp -r pypy/include pypy/lib_pypy pypy/lib-python pypy/site-packages "${pkgdir}"/opt/pypy3
   cd ..
 
-  # Install symlink
-  mkdir -p "${pkgdir}"/usr/bin
+  # Install symlinks
+  mkdir -p "${pkgdir}"/usr/bin "${pkgdir}"/usr/lib
   ln -s /opt/pypy3/bin/pypy3 "${pkgdir}"/usr/bin/pypy3
+  ln -s /opt/pypy3/bin/libpypy3-c.so "${pkgdir}"/usr/lib/libpypy3-c.so
 
   # Install misc stuff
   install -Dm644 README.rst "${pkgdir}"/opt/pypy3/README.rst

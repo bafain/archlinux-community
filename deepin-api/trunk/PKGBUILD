@@ -4,19 +4,21 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-api
-pkgver=3.1.9
+pkgver=3.1.20
 pkgrel=1
 pkgdesc='Go-lang bindings for dde-daemon'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://github.com/linuxdeepin/dde-api"
 license=('GPL3')
-depends=('glib2' 'gdk-pixbuf2' 'gtk3' 'libcanberra-pulse' 'libxi' 'libxfixes' 'rfkill' 'poppler-glib' 'xcur2png' 'blur-effect') # 'gcc-libs>=5.3.0-3')
-makedepends=('git' 'deepin-dbus-factory' 'deepin-gir-generator' 'deepin-go-lib' 'bzr' 'go') # 'gcc-go')
+depends=('glib2' 'gdk-pixbuf2' 'gtk3' 'libcanberra-pulse' 'libxi' 'libxfixes' 'rfkill'
+         'poppler-glib' 'xcur2png' 'blur-effect') # 'gcc-libs>=5.3.0-3')
+makedepends=('git' 'deepin-gettext-tools' 'deepin-dbus-factory' 'deepin-gir-generator'
+             'deepin-go-lib' 'bzr' 'go-pie') # 'gcc-go')
 conflicts=('dde-api')
 replaces=('dde-api')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/dde-api/archive/$pkgver.tar.gz")
-sha512sums=('461b821342f39740d692d8b28c4a8c6f9f165b079067c337a08d422225982703d21f34e0969ae22ea35426f3687fc77d21502ab8be4867545a7b67cfe23fb2d1')
+sha512sums=('fde59393cf9602288ad5631ae7721cdd8acf4ad7d946578066fe5c781faea52f36a507a7a1ace380a8deb3683bde3703598689935f999c1d68b241cadef22023')
 
 prepare() {
   export GOPATH="$srcdir/build:/usr/share/gocode"
@@ -28,7 +30,7 @@ prepare() {
 
   cd "$srcdir"/dde-api-$pkgver
   make build-dep
-  go get gopkg.in/alecthomas/kingpin.v2
+  go get gopkg.in/alecthomas/kingpin.v2 github.com/nfnt/resize github.com/cryptix/wav
 }
 
 build(){

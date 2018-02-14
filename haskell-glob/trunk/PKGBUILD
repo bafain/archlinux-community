@@ -4,41 +4,42 @@
 
 _hkgname=Glob
 pkgname=haskell-glob
-pkgver=0.7.14
+pkgver=0.9.1
 pkgrel=2
 pkgdesc="Globbing library"
 url="http://iki.fi/matti.niemenmaa/glob/"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=("ghc" "haskell-dlist" "haskell-transformers-compat")
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-dlist' 'haskell-transformers-compat')
+makedepends=('ghc' 'haskell-hunit' 'haskell-quickcheck' 'haskell-test-framework'
+             'haskell-test-framework-hunit' 'haskell-test-framework-quickcheck2')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('2837b88916e8ba4314fdbb556de8b0e7f577b848d3e80a08959b6ef47e1c842b')
+sha512sums=('3c6396a8037b91c2bbafe22a26997ac69b6b78b2d82dfe79aa56b7ee269edea53721676862f5059890377b84d284d695b4623803edba4acd924078ae29dcdb1e')
 
 build() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
-        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
+        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --enable-tests \
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
     sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
 }
 
+check() {
+    cd $_hkgname-$pkgver
+    runhaskell Setup test
+}
+
 package() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE.txt"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

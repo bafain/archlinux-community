@@ -3,15 +3,15 @@
 
 pkgbase=python-process-tests
 pkgname=('python-process-tests' 'python2-process-tests')
-pkgver=1.2.1
-pkgrel=2
+pkgver=2.0.0
+pkgrel=1
 pkgdesc="Tools for testing processes"
 arch=('any')
 url="https://pypi.python.org/pypi/process-tests"
 license=('BSD')
 makedepends=('python-setuptools' 'python2-setuptools')
 source=("https://pypi.io/packages/source/p/process-tests/process-tests-$pkgver.tar.gz")
-md5sums=('97d523a15befaaf5f846b7b1a88d8e2c')
+sha512sums=('456238c9fe29dac2d03acb4f8b26d3801cf3cf997210a5de6634d9a86e8b6f2d29db4042ccc1721caa880b31f8d4131d5c121bab84033625a9ce0e80fd379f8a')
 
 prepare() {
   cp -a process-tests-$pkgver{,-py2}

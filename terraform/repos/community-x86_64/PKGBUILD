@@ -2,22 +2,21 @@
 # Maintainer: Jerome Leclanche <jerome@leclan.ch>
 
 pkgname=terraform
-pkgver=0.9.9
+pkgver=0.11.3
 pkgrel=1
 pkgdesc="Tool for building, changing, and versioning infrastructure safely and efficiently"
 url="http://www.terraform.io/"
-arch=("i686" "x86_64")
+arch=("x86_64")
 license=("MPL")
-makedepends=("go" "godep" "git" "mercurial")
-conflicts=("terraform-bin")
-_gourl=github.com/hashicorp
-source=("https://github.com/hashicorp/terraform/archive/v$pkgver.tar.gz")
-sha256sums=("f5318fd720cb7c1a005f3afa782c6d39fd1ee9a001cacea4e43cd43f56d4f369")
+makedepends=("go-pie" "godep" "git" "mercurial")
+_gourl="github.com/hashicorp"
+source=("$pkgname-$pkgver.tar.gz::https://github.com/hashicorp/terraform/archive/v$pkgver.tar.gz")
+sha256sums=("5c4ac2fef753eeb0d09a6c2772b81720719c698287d46a625cb5050815dbd63b")
 
 
 prepare() {
 	mkdir -p "$srcdir/src/$_gourl"
-	rm -rf "${srcdir}/src/$_gourl/$pkgname"
+	rm -rf "$srcdir/src/$_gourl/$pkgname"
 	mv -f "terraform-$pkgver" "$srcdir/src/$_gourl/$pkgname"
 	msg2 "Fetching dependencies"
 	cd "$srcdir/src/$_gourl/$pkgname"

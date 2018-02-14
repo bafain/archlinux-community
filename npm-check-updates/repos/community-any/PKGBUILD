@@ -3,7 +3,7 @@
 
 pkgname=npm-check-updates
 pkgdesc='Find newer versions of dependencies than what your package.json or bower.json allows'
-pkgver=2.12.1
+pkgver=2.14.0
 pkgrel=1
 arch=('any')
 url='https://github.com/tjunnone/npm-check-updates'
@@ -11,7 +11,7 @@ license=('Apache')
 depends=('semver' 'npm')
 source=(http://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz)
 noextract=($pkgname-$pkgver.tgz)
-sha512sums=('4c95f285f99e68a5295af681b4d33e91d7b14786d8c7de8363c8f2e7c96fb101845179efaf14eeb95e9bd45d666c708eecd67bdc25431f9879b9923a4e5661ae')
+sha512sums=('5a65caf9b6452b182f7e77d50df32c1d4788c7f7321961012e5dafa58526a18eddfa87aa14b8d44ea63a6b638ca8ebb4742bd722bcae8a55cee3f6b5c341317d')
 
 package() {
   npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
@@ -21,7 +21,6 @@ package() {
   cd "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules
   for dep in npm semver; do
     rm -r $dep;
-    npm link $dep;
   done
 
   # Fix npm derp

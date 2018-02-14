@@ -2,7 +2,7 @@
 # Maintainer: Alexander F Rødseth <xyproto@archlinux.org>
 
 pkgname=duktape
-pkgver=2.1.0
+pkgver=2.2.0
 pkgrel=1
 pkgdesc='Embeddable Javascript engine'
 arch=('x86_64' 'i686')
@@ -12,19 +12,20 @@ depends=('glibc')
 license=('MIT')
 source=("http://duktape.org/duktape-$pkgver.tar.xz" # no https available
         'duktape.pc')
-sha256sums=('e02364cd72077e34e204b8375c8bd7c461eb13cb623c7dc1a74d253d84b1446b'
-            '2b2b8c690f19587b2976617a03b60f172eb6f3612a6920eaedad61a4f93f33d2')
+sha256sums=('62f72206427633077cb02e7ccd2599ace4d254db409334593b86d262c0d50c14'
+            '7d06661869537a34f3aaf30146f8fbf76b29ef1fc43b6d1371dbb621f1a375b6')
 
 prepare() {
   cd "$pkgname-$pkgver"
 
   mv Makefile.sharedlibrary Makefile
+  sed 's/-Wall -Wextra/$(CFLAGS)/g' -i Makefile
   setconf Makefile INSTALL_PREFIX="$pkgdir/usr"
-  setconf "$srcdir/duktape.pc" Version "$pkgver"
+  setconf "$srcdir/duktape.pc" Version="$pkgver"
 }
 
 build() {
-  make -C "$pkgname-$pkgver"
+  CFLAGS="$CFLAGS -D DUK_USE_FASTINT -w" make -C "$pkgname-$pkgver"
 }
 
 package() {
@@ -37,4 +38,4 @@ package() {
 }
 
 # getver: github.com/svaarala/duktape
-# vim:set ts=2 sw=2 et:
+# vim: ts=2 sw=2 et:

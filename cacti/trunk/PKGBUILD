@@ -1,34 +1,60 @@
 # $Id$
-# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Maintainer: David Runge <dave@sleepmap.de>
+# Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
 # Contributor: tuxbubling <tuxbubling@jabber.fr>
 
 pkgname=cacti
-pkgver=1.1.10
+pkgver=1.1.33
 pkgrel=1
-pkgdesc="complete network graphing solution designed to harness the power of RRDTool's data storage and graphing functionality"
-arch=(any)
-url="http://www.cacti.net"
-license=('GPL')
-depends=('rrdtool' 'mariadb' 'php' 'php-gd' 'net-snmp' 'xorg-fonts-100dpi')
+pkgdesc="Complete network graphing solution designed to harness the power of RRDTool's data storage and graphing functionality."
+arch=('any')
+url="https://www.cacti.net"
+license=('GPL2')
+depends=('rrdtool' 'mariadb' 'php-gd' 'net-snmp' 'xorg-fonts-100dpi')
 backup=('etc/webapps/cacti/.htaccess'
-	'etc/webapps/cacti/config.php')
-install=cacti.install
-source=("http://www.cacti.net/downloads/$pkgname-${pkgver/_/}.tar.gz")
-sha256sums=('37f247f6083d45f433c5526ac3c81f851eb1ee170366cae3642425d59bf6674a')
+        'etc/webapps/cacti/config.php')
+source=("https://www.${pkgname}.net/downloads/${pkgname}-${pkgver}.tar.gz"
+        'tmpfiles.conf')
+sha512sums=('f68c3fef9b483234e18e0e79565d6d51a0731fa50406e45d528a41888d46cbce86bcb1d8507fbdc130b9f6e099ae2337eea8940bcae1f0fbcc7ea94d56ea4b91'
+            '6d25f182141ca7d13388f7241eb27d783ea99b991c0b147382f8ec9eeeb521303531f8ad9dd7c968cb36b7bb657cb517b8c7f46fd1d777e1b10923d76e4efbd6')
+
+prepare() {
+  cd "${pkgname}-${pkgver}"
+  # remove unneeded executable bits
+  find . -executable -type f -and -not -path "*scripts*" -exec chmod -c 644 {} \;
+}
 
 package() {
-  mkdir -p "$pkgdir"/usr/share/webapps/cacti "$pkgdir"/etc/webapps/cacti
-  mv "$srcdir"/$pkgname-${pkgver/_/}/* "$pkgdir"/usr/share/webapps/cacti
-  echo "Require all denied" >> "$pkgdir"/etc/webapps/cacti/.htaccess
-  mv "$pkgdir"/usr/share/webapps/cacti/include/config.php "$pkgdir"/etc/webapps/cacti
-  ln -s /etc/webapps/cacti/.htaccess "$pkgdir"/usr/share/webapps/cacti/.htaccess
-  ln -s /etc/webapps/cacti/config.php "$pkgdir"/usr/share/webapps/cacti/include/config.php
+  # create directories
+  install -vdm0755 "${pkgdir}/usr/share/webapps/${pkgname}" \
+    "${pkgdir}/etc/webapps/${pkgname}" \
+    "${pkgdir}/var/log/" "${pkgdir}/var/lib/${pkgname}/"
 
-  install -dm0755 "$pkgdir"/var/log/ "$pkgdir"/var/lib/cacti/
+  # move sources
+  mv -v "$srcdir/${pkgname}-${pkgver}"/* \
+    "${pkgdir}/usr/share/webapps/${pkgname}"
 
-  mv "$pkgdir"/usr/share/webapps/cacti/rra "$pkgdir"/var/lib/cacti/rra
-  ln -s /var/lib/cacti/rra "$pkgdir"/usr/share/webapps/cacti/rra
+  # move and symlink configuration
+  echo "Require all denied" >> "${pkgdir}/etc/webapps/${pkgname}/.htaccess"
+  mv "${pkgdir}/usr/share/webapps/${pkgname}/include/config.php" \
+    "${pkgdir}/etc/webapps/${pkgname}"
+  ln -s "/etc/webapps/${pkgname}/.htaccess" \
+    "${pkgdir}/usr/share/webapps/${pkgname}/.htaccess"
+  ln -s "/etc/webapps/${pkgname}/config.php" \
+    "${pkgdir}/usr/share/webapps/${pkgname}/include/config.php"
 
-  mv "$pkgdir"/usr/share/webapps/cacti/log "$pkgdir"/var/log/cacti
-  ln -s /var/log/cacti "$pkgdir"/usr/share/webapps/cacti/log
+  # move and symlink var directory
+  mv -v "${pkgdir}/usr/share/webapps/${pkgname}/rra" \
+    "${pkgdir}/var/lib/${pkgname}/rra"
+  ln -vs "/var/lib/${pkgname}/rra" \
+    "${pkgdir}/usr/share/webapps/${pkgname}/rra"
+
+  # move and symlink log directory
+  mv -v "${pkgdir}/usr/share/webapps/${pkgname}/log" \
+    "${pkgdir}/var/log/${pkgname}"
+  ln -vs "/var/log/${pkgname}" "${pkgdir}/usr/share/webapps/${pkgname}/log"
+
+  # tmpfiles.d
+  install -vDm644 "${srcdir}/tmpfiles.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
 }

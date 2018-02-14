@@ -7,7 +7,7 @@ pkgname=planner
 pkgver=0.14.6
 pkgrel=4
 pkgdesc='Project management application for GNOME'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 url='https://wiki.gnome.org/Apps/Planner'
 depends=('libgnomecanvas' 'libxslt' 'gconf')
@@ -44,7 +44,8 @@ build() {
   cd $pkgname-$pkgver
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
               --disable-update-mimedb --disable-schemas-install \
-              --with-gconf-schema-file-dir=/usr/share/gconf/schemas
+              --with-gconf-schema-file-dir=/usr/share/gconf/schemas \
+              PYTHON=/usr/bin/python2
 
   #https://bugzilla.gnome.org/show_bug.cgi?id=656231
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool

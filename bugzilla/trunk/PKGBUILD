@@ -4,7 +4,7 @@
 
 pkgname=bugzilla
 pkgver=5.0.3
-pkgrel=1
+pkgrel=2
 pkgdesc="bug tracker"
 arch=('any')
 url="http://www.bugzilla.org"
@@ -17,17 +17,17 @@ depends=(perl perl-timedate perl-datetime
 	 perl-email-simple-creator perl-gd perl-gdgraph perl-gdtextutil perl-patchreader
 	 perl-return-value perl-template-gd perl-ldap perl-soap-lite perl-authen-sasl
 	 perl-xml-twig perl-html-scrubber perl-authen-radius perl-template-toolkit
-	 perl-data-dumper perl-math-random-isaac perl-email-sender)
+	 perl-data-dumper perl-math-random-isaac perl-email-sender perl-json-xs perl-file-slurp)
 optdepends=('perl-dbd-pg'
 	    'perl-dbd-mysql'
-	    'perl-dbd-oracle'
+#	    'perl-dbd-oracle'
 	    'python2'
 	    'ruby'
-	    'perl-class-trigger'
-	    'perl-data-objectdriver'
-	    'perl-html-formattext-withlinks'
-	    'perl-test-taint'
-	    'perl-theschwartz'
+#	    'perl-class-trigger'
+#	    'perl-data-objectdriver'
+#	    'perl-html-formattext-withlinks'
+#	    'perl-test-taint'
+#	    'perl-theschwartz'
 	    'perl-xmlrpc-lite')
 options=(!strip)
 backup=('srv/http/bugzilla/.htaccess')
@@ -36,13 +36,9 @@ md5sums=('b78365742a85cd030c87af12c196e8e9')
 
 prepare() {
   cd "$srcdir"/$pkgname-$pkgver
-  find . -type d -name CVS -exec rm -rf {} \; || true
-  find . -type f -name .cvsignore -exec rm -f {} \; || true
-  rm -rf .bzr
-  rm -rf .bzrrev
-  rm -rf .bzrignore
   rm -rf .git
   rm -rf .gitignore
+  rm -rf .bzrignore
 }
 
 package() {

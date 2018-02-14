@@ -1,4 +1,5 @@
 # Maintainer: Jelle van der Waa <jelle@archlinux.org>
+# Maintainer: Eli Schwartz <eschwartz@archlinux.org>
 # Contributor: Nikola Milinković <nikmil@gmail.com>
 # Submitter: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 
@@ -6,41 +7,62 @@ _pkgbase=regex
 pkgbase=python-regex
 pkgname=('python-regex' 'python2-regex')
 pkgname=python-regex
-pkgver=2017.06.20
+pkgver=2018.02.08
 pkgrel=1
 pkgdesc="Alternative python regular expression module."
-arch=('x86_64' 'i686')
+arch=('x86_64')
 url="https://bitbucket.org/mrabarnett/mrab-regex"
 license=('Python')
 makedepends=('python-setuptools' 'python2-setuptools')
 options=(!emptydirs)
 source=(https://pypi.io/packages/source/r/${_pkgbase}/${_pkgbase}-${pkgver}.tar.gz)
-sha256sums=('9a12cee0166af890bf416ae8027e2e920f2571a0b7b59357b8f4c2d139dd946b')
+sha256sums=('2353c0e983c4029caf32016f1dddef623c3117ac282a818468c6d2f5d541698d')
+
+build() {
+  cd "regex-${pkgver}"
+
+  python setup.py build
+  python2 setup.py build
+}
+
+check() {
+  cd "regex-${pkgver}"
+
+  pushd build/lib.linux-${CARCH}-3*/
+  python test_regex.py
+  popd
+
+  pushd build/lib.linux-${CARCH}-2*/
+  python2 test_regex.py
+  popd
+}
 
 package_python2-regex() {
   depends=('python2')
-  conflicts=('python2-regex-hg')
   pkgdesc="Alternative python regular expression module. (python2 version)"
 
   cd "regex-${pkgver}"
-  python2 setup.py install --root="${pkgdir}/" --optimize=1
+  python2 setup.py install --root="${pkgdir}/" --optimize=1 --skip-build
 
   install -v -m755 -d "${pkgdir}/usr/share/doc/python2-regex"
   install -v -m644 ./docs/Features.html "${pkgdir}/usr/share/doc/python2-regex/"
   install -v -m644 ./docs/Features.rst "${pkgdir}/usr/share/doc/python2-regex/"
   install -v -m644 ./docs/UnicodeProperties.txt "${pkgdir}/usr/share/doc/python2-regex/"
+
+  sed -n '1,/^$/p' regex_2/regex.py | install -Dm644 /dev/stdin "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }
 
 package_python-regex() {
   depends=('python')
-  conflicts=('python-regex-hg')
   pkgdesc="Alternative python regular expression module. (python3 version)"
 
   cd "regex-${pkgver}"
-  python setup.py install --root="${pkgdir}/" --optimize=1
+  python setup.py install --root="${pkgdir}/" --optimize=1 --skip-build
 
   install -v -m755 -d "${pkgdir}/usr/share/doc/python-regex"
   install -v -m644 ./docs/Features.html "${pkgdir}/usr/share/doc/python-regex/"
   install -v -m644 ./docs/Features.rst "${pkgdir}/usr/share/doc/python-regex/"
   install -v -m644 ./docs/UnicodeProperties.txt "${pkgdir}/usr/share/doc/python-regex/"
+
+  sed -n '1,/^$/p' regex_3/regex.py | install -Dm644 /dev/stdin "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }

@@ -1,21 +1,24 @@
-# $Id: PKGBUILD 133367 2015-05-13 12:31:10Z arodseth $
+# $Id$
 # Maintainer: Alexander F Rødseth <xyproto@archlinux.org>
 
 pkgname=moosefs
-pkgver=3.0.92_1
+pkgver=3.0.100
 pkgrel=1
 pkgdesc='High performing and fault tolerant distributed file system'
 url='http://moosefs.com/'
 replaces=('mfs-master' 'mfs-chunkserver' 'mfs-client')
 conflicts=('mfs-master' 'mfs-chunkserver' 'mfs-client')
-arch=('x86_64' 'i686')
+arch=('x86_64')
 license=('GPL2')
-depends=('fuse2' 'python2' 'bash' 'xfsprogs')
-source=("http://ppa.moosefs.com/src/moosefs-${pkgver/_/-}.tar.gz") # no https available
-sha256sums=('4a80170797cdd4afe4cf84601440e49d5e3ba879926d9525dbbedf5c5e6d8c85')
+makedepends=('git')
+depends=('fuse2' 'python2' 'xfsprogs')
+source=("git+https://github.com/moosefs/moosefs#tag=v$pkgver"
+        'moosefs.sysusers')
+sha256sums=('SKIP'
+            'c7fb746f904bf4ecaaa6b15b9bce7a5b3bbe3008247148c561280eba8df250dc')
 
 build() {
-  cd "moosefs-${pkgver%_*}"
+  cd moosefs
 
   ./configure \
     --prefix=/usr \
@@ -29,12 +32,15 @@ build() {
 }
 
 package() {
-  make DESTDIR="$pkgdir" -C "moosefs-${pkgver%_*}" install
+  make DESTDIR="$pkgdir" -C moosefs install
 
-  # Move mount.moosefs from sbin to usr/bin
+  # Move mount.moosefs from sbin to usr/bin. They end up in
+  # /usr/bin just the same, but this silences a warning.
   mv "$pkgdir/sbin/"* "$pkgdir/usr/bin/"
   mv "$pkgdir/usr/sbin/"* "$pkgdir/usr/bin/"
   rmdir "$pkgdir/sbin" "$pkgdir/usr/sbin"
+
+  install -Dm644 "$pkgname.sysusers" "$pkgdir/usr/lib/sysusers.d/$pkgname.conf"
 }
 
 # getver: moosefs.com/download/sources.html

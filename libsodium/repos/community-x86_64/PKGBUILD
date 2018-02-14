@@ -4,15 +4,22 @@
 # Contributor: Alessio Sergi <asergi at archlinux dot us>
 
 pkgname=libsodium
-pkgver=1.0.12
+pkgver=1.0.16
 pkgrel=1
 pkgdesc="P(ortable|ackageable) NaCl-based crypto library"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://github.com/jedisct1/libsodium"
 license=('custom:ISC')
 depends=('glibc')
-source=("http://download.libsodium.org/$pkgname/releases/$pkgname-${pkgver}.tar.gz")
-sha512sums=('1e63960da42bcc90945463ae1f5b1355849881dce5bba6d293391f8d6f0932063a5bfd433a071cb184af90ebeab469acc34710587116922144d61f3d7661901b')
+makedepends=('minisign')
+source=("https://download.libsodium.org/libsodium/releases/libsodium-$pkgver.tar.gz"{,.minisig})
+sha512sums=('eab917d599c9c1fe971a6ecf915b9a6476ccec2d46cf23cbfbf06dd3833089b422f192de4d55f17b93362f1251ba8d5ddeb95ced1a422a3a2631b4b82553907f'
+            '5facb6be0c4e8d390f685a1fce506a46e2768e7eae02b3b67ce7a168c6fbcd16c24d8a52fdbf330209bf9598ab8e4043c55a839795a17062b6f7e892d7a68bd6')
+_validminisignkey='RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+
+prepare() {
+  minisign -Vm $pkgname-$pkgver.tar.gz -P $_validminisignkey
+}
 
 build() {
   cd "$pkgname-$pkgver"

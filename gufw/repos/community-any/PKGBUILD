@@ -2,17 +2,18 @@
 # Contributor : Martin Wimpress <code@flexion.org>
 
 pkgname=gufw
-_pkgver=17.04
-pkgver=${_pkgver}.1
-pkgrel=3
+_pkgver=18.04
+pkgver=${_pkgver}.0
+pkgrel=1
 pkgdesc='Uncomplicated way to manage your Linux firewall'
 url='https://gufw.org/'
 arch=('any')
 license=('GPL3')
-depends=('gtk3' 'polkit' 'python-gobject' 'ufw' 'webkit2gtk' 'net-tools' 'desktop-file-utils' 'gtk-update-icon-cache')
+depends=('gtk3' 'polkit' 'python-gobject' 'ufw' 'webkit2gtk' 'desktop-file-utils' 'gtk-update-icon-cache')
 makedepends=('intltool' 'python-distutils-extra')
-source=(https://launchpad.net/gui-ufw/${_pkgver}/${_pkgver}/+download/gui-ufw-${pkgver}.tar.gz)
-sha512sums=('f8168652d6bfc0b50de3a74e1db08539642347b652af1d18310bc1fcaa774da5c72fef57778562f042bf19eb329fd0d576c15ce6200ee87ce48700fa02a7104c')
+source=(https://launchpad.net/gui-ufw/trunk/${_pkgver}/+download/gui-ufw-${pkgver}.tar.gz)
+sha256sums=('b6b12524d3d2c6035288f15003c97aa23eef862fdaa78fb621e045cd793374fc')
+sha512sums=('86154bd802e87ecd4bb6cfe74ae50d716d96bf33ca21847d439f602a4d318f7fcfa1f8a7222567ba194dba479f217842be7f1538ad725256458ebc428a33e831')
 
 prepare() {
   cd gui-ufw-${pkgver}

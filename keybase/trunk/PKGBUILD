@@ -4,15 +4,15 @@
 
 pkgname=keybase
 pkgdesc='CLI tool for GPG with keybase.io'
-pkgver=1.0.22
+pkgver=1.0.41
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://keybase.io/'
 license=('BSD')
 depends=('gnupg')
-makedepends=('go' 'git' 'mercurial')
+makedepends=('go-pie' 'git' 'mercurial')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/keybase/client/archive/v$pkgver.tar.gz")
-sha512sums=('2144c03f19ba79f0dba40d46d19f661454a9e62cbbf04083e887edeca182a71816e9fde465554dcad77ebae34ae04f83d4426890826567f3498a96c653582219')
+sha512sums=('1382f008089d8704167842960aec9e4007ac32db589bad45944428ad92ac90b1802338ff6ccc0c570d40b9c9115170a2e15c590f875cdc8261d203c01402385c')
 
 prepare() {
   cd client-$pkgver

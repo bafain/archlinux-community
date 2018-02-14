@@ -1,62 +1,63 @@
 # $Id$
 # Maintainer: Nicola Squartini <tensor5@gmail.com>
 
-_chromiumver=53.0.2785.143
+_chromiumver=58.0.3029.110
 pkgname=electron
-pkgver=1.4.16
-pkgrel=3
+pkgver=1.7.12
+pkgrel=1
 pkgdesc='Build cross platform desktop apps with web technologies'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://electron.atom.io/'
 license=('MIT' 'custom')
-depends=('c-ares' 'ffmpeg' 'gtk3' 'http-parser' 'libevent' 'libvpx' 'libxslt'
+depends=('c-ares' 'ffmpeg' 'gtk3' 'http-parser' 'libevent' 'libxslt'
          'libxss' 'minizip' 'nss' 're2' 'snappy')
 makedepends=('clang' 'gconf' 'git' 'gperf' 'gtk2' 'harfbuzz-icu' 'jsoncpp'
              'libexif' 'libgnome-keyring' 'libnotify' 'ninja' 'npm' 'pciutils'
-             'python2' 'yasm')
+             'python2' 'wget' 'yasm')
 optdepends=('gvfs: file deletion support (gvfs-trash)'
             'kde-cli-tools: file deletion support (kioclient5)'
             'kdebase-runtime: file deletion support (kioclient)'
             'trash-cli: file deletion support (trash-put)')
 source=("git+https://github.com/electron/electron.git#tag=v${pkgver}"
         'git+https://github.com/boto/boto.git'
-        'git+https://github.com/electron/brightray.git'
         'breakpad::git+https://github.com/electron/chromium-breakpad.git'
+        'git+https://chromium.googlesource.com/chromium/src/tools/grit.git'
         'git+https://github.com/electron/gyp.git'
         "git+https://github.com/electron/libchromiumcontent.git"
-        'native_mate::git+https://github.com/zcbenz/native-mate.git'
+        'native_mate::git+https://github.com/electron/native-mate.git'
         'git+https://github.com/electron/node.git'
+        'pdf_viewer::git+https://github.com/electron/pdf-viewer.git'
         'git+https://github.com/kennethreitz/requests.git'
         'google-breakpad::git+https://chromium.googlesource.com/breakpad/breakpad/src'
-        "https://github.com/zcbenz/chromium-source-tarball/releases/download/${_chromiumver}/chromium-${_chromiumver}.tar.xz"
+        "electron-chromium-${_chromiumver}.tar.xz::https://github.com/zcbenz/chromium-source-tarball/releases/download/${_chromiumver}/chromium-${_chromiumver}.tar.xz"
         'electron.desktop'
         'default_app-icon.patch'
         'dont-bootstrap-libchromiumcontent.patch'
         'dont-update-submodules.patch'
         'dont-use-sysroot.patch'
-        'allow-i686.patch'
         'gtk3-menu-bar.patch'
+        'gtk3-message-box.patch'
         'gtk3-warnings.patch'
-        'use-system-clang.patch'
+        'no-whole-archive.patch'
         'use-system-libraries-in-node.patch'
         'use-system-ninja.patch'
         'use-system-ffmpeg.patch'
-        'brightray-dont-update-submodules.patch'
-        'brightray-no-whole-archive.patch'
-        'brightray-use-system-ffmpeg.patch'
+        'breakpad-glibc2.26.patch'
         'gyp-no-rpath.patch'
+        'libchromiumcontent-chdir.patch'
+        'libchromiumcontent-no-depot_tools.patch'
+        'libchromiumcontent-settings.patch'
         'libchromiumcontent-sort-filenames.patch'
         'libchromiumcontent-static-library-only.patch'
-        'libchromiumcontent-use-system-ffmpeg.patch'
         'libchromiumcontent-use-system-tools.patch'
-        'chromium-cups.patch'
+        'chromium-gn-bootstrap-r2.patch'
         'chromium-gtk3.patch'
-        'chromium-unset-madv_free.patch'
+        'chromium-include-functional.patch'
         'chromium-use-system-ffmpeg.patch'
         'chromium-use-system-minizip.patch'
         'chromium-use-system-re2.patch'
        )
-noextract=("chromium-${_chromiumver}.tar.xz")
+noextract=("electron-chromium-${_chromiumver}.tar.xz")
 sha256sums=('SKIP'
             'SKIP'
             'SKIP'
@@ -67,172 +68,183 @@ sha256sums=('SKIP'
             'SKIP'
             'SKIP'
             'SKIP'
-            '2929d23425e35b4d91199dfa05ed642c5567863d1982c72055f339c794027c98'
+            'SKIP'
+            '9cbbf8dd7939448a2efb26f96c8d709e57803ca4dfb72074e544b3942d937f12'
             '5270db01f3f8aaa5137dec275a02caa832b7f2e37942e068cba8d28b3a29df39'
-            'a86c9855efc321d6ba0c6ea38c5c4feadfc6fdeb6eaef2bb100d97face20db13'
+            '38b3e4c296a9be43ba1cb7a51cbad14de9e82ed7a94d3877e6cb46a1ac537fef'
             '14dbd1eecb7034d9e19e1f0c61b0a36ed3b9c610db008ff2a6da2a540ade1221'
             '2a2bc09a40415fd0d57cc8815a158bf32eb4cc2add3b655dddf568c7dc795ff3'
-            '182a2eeb784630e6aa3378a54c5709629658eac8e146764008cb2f2214cd5427'
-            'c209475c16b506d8d888a54c8564718cf9775f450d1867e19e86a03d99a119be'
-            '3f9bc0e3ee316f172b390584287fb93778ad8923f99f8e80ead8cfd5fa23127a'
-            'f7c61f61cfbb9b1605f4d43d8d1166c1bcc4a292b8445ee6cf1f816a0cd90f78'
-            'ce78850a2d2fe343febee597f0fce361ff99be63f6f720fa844d64efc7abb84e'
-            '730f48c52e9a2bf71c46f4594ec0ccdb3382fe35301000e6e16389f36df348e3'
+            '8792c99cdeff176d6ce5ec5f0f682713f9f809985a26b47655a6d38cb0111015'
+            'e18b81d584684657bf0a1af000d22f3c0963250c77ec9d72a4c877eabf032cd2'
+            '473f740b2b73cad131a38bd56bfa84e7905378187ef4586ea5eff18342b2ba8a'
+            'ea2942e980328ffb989abb32e5aa0991363178b9c455b931ab726e1c3039ec96'
+            '9bbdb185b8230b50b7ed7d85215cb795a84c347031cc3cf934ae209652cd9dad'
+            '541d3c11ff4b540f37e066e695cdcc053d069ee09b64dfe170b0fa236b7a1eee'
             'dc3286a1947240ab6ec562263af0b3c9971da2a4ab45970e3e664563e877280f'
-            '8191483a1f51ee4a5dd1e7e6bb699ad52321291ef79ffed11bbf8f2b6fb89034'
-            '3bf045dc4ac1cb32491c4a20de313c3056824e75308f97b9e869fd5a2a166480'
-            '47371fb1061cfd8fd4b4f9f4477eb3ea119be1c84554fb2e590e73eda38aa2c2'
-            'ebb8ecae1544997d39525c57eca644edc57f567e4ddac8b69e5c0ea85c428998'
+            'ba8717cf3f34e19bccc042c97ca57a0cceb254f48be01bcc8ad6901622a4b313'
+            '21d9ea4d9bb62450ae1bd82839ec322e542b6b1a2d629f7668e066c94947d47d'
             '68977a78fb41a549eb449dd35f94e0168d647245516397f0ecdfa7a03a147045'
+            'b5f181e1f662dd77045c1edd696f4bd51ce59f378692b4978600340b1347bd8b'
+            '3df7035dd52353cba74bd696a1e42cb6138beba0f04ada21961df42515dda3be'
+            'ecdb9b118ad9d5043359bfb849532d777a7865d88f4ed6c9fe9fc5ad20a340df'
             '4de540ec76736ef3e14475090916a42c03692c542822b430f1ab3f6d36655511'
-            '7bc4cc154643712556f2cfbcba72bc08d032a52a39bccc61c91a7b230fe9a80e'
-            '56522aeb26fc5d6d70ed2b476e292b0ac24740f64e9e0384b501ba648bb8d9fa'
-            '2fb2157c854dab173a2ef9b4aa0ab5bb3c0dd077447c4719c7554eee6e0546b6'
-            'f0db776be86c01020c6d28c9b4d2f53391692698231655003dcde43dea4eacb6'
-            '5573da0c0f1120ecbc0b20798c7342a06a978bb39d4e4362ea465244a8683c5f'
-            'ccba3002243fb1f9a67c8a60af310706caa591d12aef45f1d0f4bda47626f3ab'
-            '7cda59fe372b37beca079adf55b951b4f3a6c7a5490813b729fa145562d2ba12'
-            'bc78d7af8e514ea28caa6c6ccaf78cc3e80044ef862e2ca7978439f183e36179'
-            'bdbc9107800caf6040f5acdc4982c2a3a5cf61d00e4141b590cb9bcb87353429')
+            'dc1dc6a675d67be89394864b1e72fdaf260eef9caf8282dddf694b4e713d4a26'
+            'e119c09e65bbc70bc7e70a8ce9e68de001c8921dde25c6e0475d46362368cadd'
+            '64d743c78183c302c42d1f289863e34c74832fca57443833e46a0a3157e2b5de'
+            '29fd754f8912c8b263e8038ac6eb1d89d7bae11f894079f2da1f0074696bcfb2'
+            '43116692892bb85646ebf34ce91d47233203e9c9fa887d6993ecbbb5033dcd27'
+            'b45dc199aa43b5336ae2bd222c610f808cc48294434cfdafac64a4bdb8c4e2cf'
+            '76fb05484a4e9faaad0763b65b6ad84224a9f74aff9227c7a3dc1c15eea324c4'
+            'b9fcfa7f25f0b49dd44e13b86e5f160e1e73cef0af5227840a4c2d2329e092c9'
+           )
 
-_chromium_flags=('fastbuild=2'
-                 'host_clang=0'
-                 'linux_use_bundled_binutils=0'
-                 'linux_use_bundled_gold=0'
-                 'release_extra_cflags="-O3"'
-                 'remove_webcore_debug_symbols=1'
-                 'use_gconf=0'
-                 'use_gtk3=1'
-                 'use_sysroot=0'
-                 'use_system_expat=1'
-                 'use_system_ffmpeg=1'
-                 'use_system_flac=1'
-                 'use_system_harfbuzz=1'
-                 'use_system_jsoncpp=1'
-                 'use_system_libevent=1'
-                 'use_system_libjpeg=1'
-                 'use_system_libpng=1'
-                 'use_system_libvpx=1'
-                 'use_system_libwebp=1'
-                 'use_system_libxml=1'
-                 'use_system_libxslt=1'
-                 'use_system_re2=1'
-                 'use_system_snappy=1'
-                 'use_system_yasm=1'
-                 'use_system_zlib=1'
-                 'werror=""'  # required by bundled ICU and i686 build
-                )
+_system_libs=('ffmpeg'
+              'flac'
+              'harfbuzz-ng'
+#              'icu'
+              'libevent'
+              'libjpeg'
+              'libpng'
+#              'libvpx'
+              'libwebp'
+              'libxml'
+              'libxslt'
+              're2'
+              'snappy'
+              'yasm'
+              'zlib'
+             )
 
 prepare() {
   cd "${srcdir}"/electron
 
   patch -Np1 -i "${srcdir}"/default_app-icon.patch  # Icon from .desktop file
   patch -Np1 -i "${srcdir}"/gtk3-menu-bar.patch
+  patch -Np1 -i "${srcdir}"/gtk3-message-box.patch
   patch -Np1 -i "${srcdir}"/gtk3-warnings.patch
-  patch -Np1 -i "${srcdir}"/use-system-clang.patch
   patch -Np1 -i "${srcdir}"/use-system-libraries-in-node.patch
   patch -Np1 -i "${srcdir}"/use-system-ninja.patch
   patch -Np1 -i "${srcdir}"/use-system-ffmpeg.patch
   patch -Np1 -i "${srcdir}"/dont-update-submodules.patch
   patch -Np1 -i "${srcdir}"/dont-use-sysroot.patch
   patch -Np1 -i "${srcdir}"/dont-bootstrap-libchromiumcontent.patch
-  patch -Np1 -i "${srcdir}"/allow-i686.patch
+  patch -Np1 -i "${srcdir}"/no-whole-archive.patch
+
+  # Add extra libraries for unbundling
+  sed -e "s/'-lexpat',/'-lexpat', '<\!@(pkg-config --libs-only-l libavcodec libavformat libavutil libevent flac harfbuzz-icu jsoncpp minizip libpng libpulse libwebpdemux libxml-2.0 libxslt)', '-ljpeg', '-lre2', '-lsnappy', '-latomic',/" \
+      -e 's/gtk+-2\.0/gtk+-3.0/' \
+      -i brightray/brightray.gyp
 
   mkdir -p "${srcdir}"/python2-path
   ln -sf /usr/bin/python2 "${srcdir}/python2-path/python"
 
-  for m in boto breakpad brightray native_mate node requests; do
+  for m in boto breakpad gyp libchromiumcontent native_mate node pdf_viewer requests; do
     git submodule init vendor/${m}
     git config submodule.vendor/${m}.url "${srcdir}/${m}"
   done
+  git submodule update
+
+  cd "${srcdir}"/electron/vendor/pdf_viewer
+  git submodule init vendor/grit
+  git config submodule.vendor/grit.url "${srcdir}/grit"
   git submodule update
 
   cd "${srcdir}"/electron/vendor/breakpad
   git submodule init src
   git config submodule.src.url "${srcdir}"/google-breakpad
   git submodule update
+  patch -Np1 -i "${srcdir}"/breakpad-glibc2.26.patch
 
-  cd "${srcdir}"/electron/vendor/brightray
-  patch -Np1 -i "${srcdir}"/brightray-dont-update-submodules.patch
-  patch -Np1 -i "${srcdir}"/brightray-use-system-ffmpeg.patch
-  patch -Np1 -i "${srcdir}"/brightray-no-whole-archive.patch
-  for m in libchromiumcontent gyp; do
-    git submodule init vendor/${m}
-    git config submodule.vendor/${m}.url "${srcdir}/${m}"
-  done
-  git submodule update
-  # Add extra libraries for unbundling
-  sed -e "s/'-lexpat',/'-lexpat', '<\!@(pkg-config --libs-only-l libavcodec libavformat libavutil libevent flac harfbuzz-icu jsoncpp minizip libpng vpx libwebpdemux libxml-2.0 libxslt)', '-ljpeg', '-lre2', '-lsnappy', '-latomic',/" \
-      -e 's/gtk+-2\.0/gtk+-3.0/' \
-      -i brightray.gyp
-
-  cd "${srcdir}"/electron/vendor/brightray/vendor/gyp
+  cd "${srcdir}"/electron/vendor/gyp
   # Remove a useless $ORIGIN/lib/ rpath from the electron binary
   patch -Np1 -i "${srcdir}"/gyp-no-rpath.patch
 
-  cd "${srcdir}"/electron/vendor/brightray/vendor/libchromiumcontent
-  git checkout 97e32dafa4a1112f14eef61a663cf39a03ed4c97
-  git submodule update --init vendor/python-patch
+  cd "${srcdir}"/electron/vendor/libchromiumcontent
+  patch -Np1 -i "${srcdir}"/libchromiumcontent-chdir.patch
+  patch -Np1 -i "${srcdir}"/libchromiumcontent-no-depot_tools.patch
+  patch -Np1 -i "${srcdir}"/libchromiumcontent-settings.patch
   patch -Np1 -i "${srcdir}"/libchromiumcontent-sort-filenames.patch  # deterministic build
   patch -Np1 -i "${srcdir}"/libchromiumcontent-use-system-tools.patch
-  patch -Np1 -i "${srcdir}"/libchromiumcontent-use-system-ffmpeg.patch
   patch -Np1 -i "${srcdir}"/libchromiumcontent-static-library-only.patch
-  rm patches/third_party/ffmpeg/ffmpeg.patch  # Use system ffmpeg
+  rm patches/third_party/ffmpeg/build_gn.patch  # Use system ffmpeg
   echo 'Extracting chromium source...'
-  tar -xJf "${srcdir}"/chromium-${_chromiumver}.tar.xz
+  tar -xJf "${srcdir}"/electron-chromium-${_chromiumver}.tar.xz
   mv chromium-${_chromiumver} src
-  if [ ! -e src/.version ]; then
-    echo "${_chromiumver}" > src/.version
-  fi
   cd src
-  patch -Np1 -i "${srcdir}"/chromium-cups.patch  # fixes build with CUPS 2.2
+  patch -Np1 -i "${srcdir}"/chromium-gn-bootstrap-r2.patch
   patch -Np1 -i "${srcdir}"/chromium-gtk3.patch
-  patch -Np1 -i "${srcdir}"/chromium-unset-madv_free.patch  # fixes crash with kernels < 4.5
+  patch -Np1 -i "${srcdir}"/chromium-include-functional.patch
   patch -Np1 -i "${srcdir}"/chromium-use-system-ffmpeg.patch
   patch -Np1 -i "${srcdir}"/chromium-use-system-minizip.patch
   patch -Np1 -i "${srcdir}"/chromium-use-system-re2.patch
-  python2 build/linux/unbundle/replace_gyp_files.py "${_chromium_flags[@]/#/-D}"
+
+  for lib in "${_system_libs[@]}" libjpeg_turbo; do
+      find -type f -path "*third_party/${lib}/*" \
+          \! -path "*third_party/${lib}/chromium/*" \
+          \! -path "*third_party/${lib}/google/*" \
+          \! -path "*base/third_party/icu/*" \
+          \! -path "*base/third_party/libevent/*" \
+          \! -regex '.*\.\(gn\|gni\|isolate\|py\)' \
+          -delete
+  done
+  python2 build/linux/unbundle/replace_gn_files.py --system-libraries "${_system_libs[@]}"
+
+  # Create sysmlink to system Node.js
+  mkdir -p third_party/node/linux/node-linux-x64/bin
+  ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin
+  cd third_party/node
+  npm install
+  patch -d node_modules/vulcanize -p1 < patch_vulcanize.diff
 }
 
 build() {
   export PATH="${srcdir}/python2-path:${PATH}"
 
-  if [ "${CARCH}" == 'x86_64' ]; then
-    _target=x64
-  else
-    _target=ia32
-  fi
+  # Build GN
+  cd "${srcdir}/electron/vendor/libchromiumcontent/src"
+  gn_flags=(
+    'clang_base_path="/usr"'
+    'clang_use_chrome_plugins=false'
+    'treat_warnings_as_errors=false'
+    'use_sysroot=false'
+  )
+  python2 tools/gn/bootstrap/bootstrap.py --gn-gen-args "${gn_flags[*]}"
+  # libevent not needed anymore
+  find -type f -path "*base/third_party/libevent/*" \
+    \! -regex '.*\.\(gn\|gni\|isolate\|py\)' \
+    -delete
 
   cd "${srcdir}"/electron
   LDFLAGS="${LDFLAGS} -Wl,-z,noexecstack"
   script/bootstrap.py --verbose \
-                      --target_arch=${_target} \
                       --clang_dir=/usr \
-                      --build_libchromiumcontent \
-                      --defines="${_chromium_flags[*]}"
+                      --build_libchromiumcontent
   script/build.py -c Release
 }
 
 package() {
   cd "${srcdir}"/electron
 
-  _cc="${srcdir}"/electron/vendor/brightray/vendor/libchromiumcontent/dist/main
+  _cc="${srcdir}"/electron/vendor/libchromiumcontent/dist/main
 
   install -d -m755 "${pkgdir}"/usr/share/licenses/electron
   install -m644 LICENSE "${_cc}"/LICENSES.chromium.html \
           "${pkgdir}"/usr/share/licenses/electron
-  for lib in brightray native_mate node; do
+  for lib in native_mate node; do
     install -m644 vendor/${lib}/LICENSE \
             "${pkgdir}"/usr/share/licenses/electron/LICENSE-${lib}
   done
-  install -m644 vendor/brightray/vendor/libchromiumcontent/src/LICENSE \
+  install -m644 vendor/libchromiumcontent/src/LICENSE \
           "${pkgdir}"/usr/share/licenses/electron/LICENSE-chromium
 
   cd out/R
   install -d -m755 "${pkgdir}"/usr/lib/electron
   install -m644 blink_image_resources_200_percent.pak \
           content_resources_200_percent.pak content_shell.pak icudtl.dat \
-          natives_blob.bin snapshot_blob.bin ui_resources_200_percent.pak \
+          natives_blob.bin \
+          pdf_viewer_resources.pak \
+          snapshot_blob.bin \
+          ui_resources_200_percent.pak \
           views_resources_200_percent.pak \
           "${pkgdir}"/usr/lib/electron
   install -m755 electron "${pkgdir}"/usr/lib/electron

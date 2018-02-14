@@ -1,3 +1,15 @@
+2018-01-16 Jaroslav Lichtblau <svetlemodry@archlinux.org>
+	* tellico 3.1.1-1
+
+2018-01-11 Jaroslav Lichtblau <svetlemodry@archlinux.org>
+	* tellico 3.1-3 libcdio API and ABI changes rebuild
+
+2017-12-02 Jaroslav Lichtblau <svetlemodry@archlinux.org>
+	* tellico 3.1-2 FS#56026 fix
+
+2017-10-18 Jaroslav Lichtblau <svetlemodry@archlinux.org>
+	* tellico 3.1-1
+
 2017-03-31 Jaroslav Lichtblau <svetlemodry@archlinux.org>
 	* tellico 3.0.2-1
 

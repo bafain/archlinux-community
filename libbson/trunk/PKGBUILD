@@ -4,24 +4,24 @@
 # Contributor: monty <linksoft [at] gmx [dot] de>
 
 pkgname=libbson
-pkgver=1.6.3
+pkgver=1.9.2
 pkgrel=1
 pkgdesc='A BSON utility library.'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://www.mongodb.org/display/DOCS/C+Language+Center'
 license=('Apache')
 depends=('glibc')
-makedepends=('python' 'git')
-source=("git+https://github.com/mongodb/$pkgname.git#tag=$pkgver")
-sha512sums=('SKIP')
+makedepends=('python')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/mongodb/$pkgname/archive/$pkgver.tar.gz")
+sha512sums=('a05f1e8fbabb34e847692397e2e41fc5923ddd18dba861e5ab8a31acdf6738e13ab719eae8f9f8563f08fc43aab5c8d1f53cb6a47c38c96e132fa4a62a48d2bf')
 
 build() {
-    cd "$srcdir/$pkgname"
-    ./autogen.sh --prefix=/usr
-    make
+  cd $pkgname-$pkgver
+  ./autogen.sh --prefix=/usr
+  make
 }
 
 package() {
-    cd "$srcdir/$pkgname"
-    make DESTDIR="$pkgdir/" install
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
 }

@@ -4,7 +4,7 @@
 
 pkgbase=python-acme
 pkgname=('python-acme' 'python2-acme')
-pkgver=0.15.0
+pkgver=0.21.1
 pkgrel=1
 pkgdesc="ACME protocol implementation in Python"
 arch=('any')
@@ -12,14 +12,13 @@ license=('Apache')
 url="https://github.com/certbot/certbot"
 makedepends=('python-setuptools' 'python2-setuptools' 'python-pyopenssl' 'python2-pyopenssl'
              'python-pyrfc3339' 'python2-pyrfc3339' 'python-pytz' 'python2-pytz' 'python-requests'
-             'python2-requests' 'python-six' 'python2-six' 'python-werkzeug' 'python2-werkzeug'
+             'python2-requests' 'python-six' 'python2-six' 'python-josepy' 'python2-josepy'
              'python-mock' 'python2-mock')
-checkdepends=('python-nose' 'python2-nose')
+checkdepends=('python-pytest-runner' 'python2-pytest-runner')
 source=("https://pypi.io/packages/source/a/acme/acme-$pkgver.tar.gz")
-sha512sums=('dfe4082b272fbc47def699d5df0cd04910a0a5e00563d4de14edaea820201c08707ca1f4a0dfc13d0af0c95066ef3e3937dd22a323b607a46cd8ee68960d6495')
+sha512sums=('2f659e259fccec438516deff257c7f6bce560a65e5258cd293019a0159c09ce2cfc45111ea8e1d07b53181eabde68c3c71fd7b160845be7634e53a758615cf63')
 
 prepare() {
-  sed -i "/'argparse',/d" acme-$pkgver/setup.py
   cp -a acme-$pkgver{,-py2}
 }
 
@@ -33,15 +32,15 @@ build() {
 
 check() {
   cd "$srcdir"/acme-$pkgver
-  python setup.py nosetests
+  python setup.py pytest
 
   cd "$srcdir"/acme-$pkgver-py2
-  python2 setup.py nosetests
+  python2 setup.py pytest
 }
 
 package_python-acme() {
   depends=('python-setuptools' 'python-pyopenssl' 'python-pyrfc3339' 'python-pytz' 'python-requests'
-           'python-six' 'python-werkzeug' 'python-mock')
+           'python-six' 'python-josepy' 'python-mock')
 
   cd acme-$pkgver
   python setup.py install --root="$pkgdir" --optimize=1
@@ -49,10 +48,8 @@ package_python-acme() {
 
 package_python2-acme() {
   depends=('python2-setuptools' 'python2-pyopenssl' 'python2-pyrfc3339' 'python2-pytz'
-           'python2-requests' 'python2-six' 'python2-werkzeug' 'python2-mock')
+           'python2-requests' 'python2-six' 'python2-josepy' 'python2-mock')
 
   cd acme-$pkgver-py2
   python2 setup.py install --root="$pkgdir" --optimize=1
-
-  mv "$pkgdir"/usr/bin/jws{,2}
 }

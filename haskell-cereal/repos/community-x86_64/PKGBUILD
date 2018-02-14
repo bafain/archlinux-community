@@ -4,25 +4,25 @@
 
 _hkgname=cereal
 pkgname=haskell-cereal
-pkgver=0.5.4.0
-pkgrel=2
+pkgver=0.5.5.0
+pkgrel=1
 pkgdesc="A binary serialization library"
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=("ghc")
+arch=('x86_64')
+depends=('ghc-libs')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('daca6c5aeff21ca233bebe006c158b0e4421b239c722768b568fca9b32cafee7')
+sha512sums=('b22518ab50055fcbcc746baae6596f5ae2a784cb343b1f0b735ab1f19f4c06b0ccd42180a951d5925551b46b23e6fa3f33242f0e89267c2f674fce8db12a55fa')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid \
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid \
             -fsplit-base -f-bytestring-builder
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -31,15 +31,10 @@ build() {
 
 package() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
+
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

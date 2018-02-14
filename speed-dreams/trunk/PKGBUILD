@@ -5,9 +5,9 @@
 pkgname=speed-dreams
 pkgver=2.2.1
 _pkgver=2.2.1-r6404
-pkgrel=1
+pkgrel=3
 pkgdesc="A racing simulator with rich graphics and physics"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://speed-dreams.sourceforge.net/"
 license=('GPL2')
 depends=('sdl2' 'freealut' 'freeglut' 'libpng' 'libxi' 'libxmu' 'libxrandr' 'plib>=1.8.3' 'libjpeg' 'zlib' 'enet' 'speed-dreams-data' 'libvorbis' 'glu' 'openscenegraph')
@@ -18,11 +18,11 @@ noextract=("${pkgname}-src-base-${_pkgver}.tar.xz"
            "${pkgname}-src-wip-cars-and-tracks-${_pkgver}.tar.xz"
            "${pkgname}-src-hq-cars-and-tracks-${_pkgver}.tar.xz"
            "${pkgname}-src-more-hq-cars-and-tracks-${_pkgver}.tar.xz")
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-base-${_pkgver}.tar.xz"
-        "http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-unmaintained-${_pkgver}.tar.xz"
-        "http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-wip-cars-and-tracks-${_pkgver}.tar.xz"
-        "http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-hq-cars-and-tracks-${_pkgver}.tar.xz"
-        "http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-more-hq-cars-and-tracks-${_pkgver}.tar.xz"
+source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-base-${_pkgver}.tar.xz"
+        "https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-unmaintained-${_pkgver}.tar.xz"
+        "https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-wip-cars-and-tracks-${_pkgver}.tar.xz"
+        "https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-hq-cars-and-tracks-${_pkgver}.tar.xz"
+        "https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-src-more-hq-cars-and-tracks-${_pkgver}.tar.xz"
         "${pkgname}.desktop")
 md5sums=('a1a296ab737d5144f1f570f4cabc7937'
          '0a9b1572d0660c60fa0553195578a36a'
@@ -47,8 +47,9 @@ build() {
     -DSD_BINDIR=/usr/bin \
     -DSD_DATADIR=/usr/share/speed-dreams-2 \
     -DSD_LIBDIR=/usr/lib/speed-dreams-2 \
-    -DOPTION_OFFICIAL_ONLY=ON
-
+    -DOPTION_OFFICIAL_ONLY=ON \
+    -DCMAKE_CXX_FLAGS="-fpermissive" \
+    -DCMAKE_C_FLAGS="-fpermissive"
   make
 }
 

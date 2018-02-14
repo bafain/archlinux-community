@@ -3,8 +3,8 @@
 # Contributor: Jens Pranaitis <jens@jenux.homelinux.org>
 
 pkgname=busybox
-pkgver=1.26.2
-pkgrel=2
+pkgver=1.27.2
+pkgrel=1
 pkgdesc="Utilities for rescue and embedded systems"
 arch=("i686" "x86_64")
 url="https://www.busybox.net"
@@ -13,8 +13,8 @@ makedepends=("make" "gcc" "sed" "ncurses" "musl" "kernel-headers-musl")
 install=busybox.install
 source=("$url/downloads/$pkgname-$pkgver.tar.bz2"
 	"config")
-sha256sums=('da3e44913fc1a9c9b7c5337ea5292da518683cbff32be630777f565d6036af16'
-            '42e3d2756774c038e86c9fc6b228f6db4f6b75217ff403ac64d71a8bd0543286')
+sha256sums=('9d4be516b61e6480f156b11eb42577a13529f75d3383850bb75c50c285de63df'
+            'ecc280befe45bd5892dbdc3cd4204ca7b564710d209630df3121a68ce851a0cb')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"

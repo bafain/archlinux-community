@@ -3,25 +3,25 @@
 # Contributor: Arch Haskell Team <arch-haskell@haskell.org>
 
 pkgname=agda-stdlib
-pkgver=0.13
-pkgrel=3
+pkgver=0.14
+pkgrel=2
 pkgdesc="Agda standard libraries"
 url="https://github.com/agda/agda-stdlib"
 license=("MIT")
-arch=('i686' 'x86_64')
-depends=("agda")
-makedepends=("ghc" "git" "haskell-filemanip")
+arch=('x86_64')
+depends=('agda')
+makedepends=('ghc' 'haskell-filemanip')
 options=('staticlibs')
 install=$pkgname.install
-source=("git+https://github.com/agda/agda-stdlib.git#tag=v$pkgver"
+source=("$pkgname-$pkgver.tar.gz::https://github.com/agda/agda-stdlib/archive/v$pkgver.tar.gz"
         "standard-library.agda-lib")
-sha256sums=('SKIP'
-            '9a88f76a516f8d497ed37790eae3f4dceb3a2ac854535d6a5f8c1f7528494521')
+sha512sums=('fcb785110c72fa8d298346150827766bdcb308502a4b915b56b6bb43aff9b5f93fd23932e08a78d97ec723ad0f2ea49c7f132b3b8cc8a535f9cde49387c95c51'
+            '92fad2f9b941af4506bb0d5d9d533d09823df89f7530ee5d787b741816ba07e68f25b96d6653ae6ed949ec23484c1fba47a63cc6401311462a55b5e06cfc032c')
 
 build() {
-    cd "${srcdir}/${pkgname}"
-    
-    runhaskell Setup configure --enable-executable-dynamic
+    cd $pkgname-$pkgver
+
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanill
     runhaskell Setup build
 
     dist/build/GenerateEverything/GenerateEverything
@@ -31,11 +31,10 @@ build() {
 }
 
 package() {
-    cd "${srcdir}"
-    install -D -m644 "standard-library.agda-lib" "${pkgdir}/usr/share/agda/lib/standard-library.agda-lib"
+    install -D -m644 standard-library.agda-lib "$pkgdir"/usr/share/agda/lib/standard-library.agda-lib
 
-    cd "${srcdir}/${pkgname}"
-    install -dm755 "$pkgdir/usr/share/agda/lib/stdlib"
-    cp -pr Everything.agda* src/* "$pkgdir/usr/share/agda/lib/stdlib"
-    install -D -m644 "LICENCE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENCE"
+    cd $pkgname-$pkgver
+    install -dm755 "$pkgdir"/usr/share/agda/lib/stdlib
+    cp -pr Everything.agda* src/* "$pkgdir"/usr/share/agda/lib/stdlib
+    install -D -m644 LICENCE "$pkgdir"/usr/share/licenses/$pkgname/LICENCE
 }

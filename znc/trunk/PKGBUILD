@@ -5,11 +5,11 @@
 
 pkgname=znc
 pkgver=1.6.5
-pkgrel=4
+pkgrel=7
 pkgdesc='An IRC bouncer with modules & scripts support'
 url='http://wiki.znc.in/'
 license=('GPL2')
-arch=('i686' 'x86_64')
+arch=('x86_64')
 depends=('libsasl' 'icu')
 makedepends=('tcl' 'python' 'perl')
 optdepends=('tcl: modtcl module'

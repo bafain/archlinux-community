@@ -6,17 +6,17 @@
 
 pkgbase=python-html2text
 pkgname=('python-html2text' 'python2-html2text')
-pkgver=2016.9.19
-pkgrel=2
+pkgver=2018.1.9
+pkgrel=1
 pkgdesc="A HTML to markdown-structured text converter"
 arch=('any')
 url="https://pypi.python.org/pypi/html2text/"
 license=('GPL3')
-makedepends=('python-setuptools' 'python2-setuptools')
+makedepends=('python-setuptools' 'python2-setuptools' 'python-coverage' 'python2-coverage')
 provides=('html2text')
 replaces=('html2text')
-source=(https://github.com/Alir3z4/html2text/archive/$pkgver.tar.gz)
-sha256sums=('21c0237fae4f640eef53343a2965f44bfd907f0e1b956cd1171fb3884541767a')
+source=($pkgname-$pkgver.tar.gz::https://github.com/Alir3z4/html2text/archive/$pkgver.tar.gz)
+sha256sums=('9ad585bb7fda536ce231349e5046aefec7ccc2d111d11b859c9040edab94416b')
 
 prepare() {
   cp -a html2text-$pkgver{,-py2}

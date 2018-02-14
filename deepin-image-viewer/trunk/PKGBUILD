@@ -2,18 +2,18 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=deepin-image-viewer
-pkgver=1.2.13
+pkgver=1.2.16.8
 pkgrel=1
 pkgdesc='Deepin Image Viewer'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://github.com/linuxdeepin/deepin-image-viewer"
 license=('GPL3')
-depends=('deepin-tool-kit' 'libexif' 'freeimage' 'libraw' 'qt5-svg' 'deepin-shortcut-viewer'
+depends=('deepin-qt5integration' 'libexif' 'freeimage' 'libraw' 'qt5-svg' 'deepin-shortcut-viewer'
          'deepin-manual')
 makedepends=('qt5-tools')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-image-viewer/archive/$pkgver.tar.gz")
-sha512sums=('06db596c69995fbd414e309fa21ef918399d88cc921385df43a3c5af2f8dcd288e3908a58d07956d2ec9868576c61cc93f13f2d361a7906f0cb04452de3cdf08')
+sha512sums=('2a4f85e5b5d69c469771e669b0efb03ed6ec4ac143a555ac9d26f3ec59f727fbb3d203ffca57d00ef70511da62c94d0acbc33b4a02aace6a3e41a9666b21370d')
 
 build() {
   cd deepin-image-viewer-$pkgver

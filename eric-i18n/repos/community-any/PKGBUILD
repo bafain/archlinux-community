@@ -3,7 +3,7 @@
 # Contributor: M0Rf30
 
 pkgbase=eric-i18n
-pkgver=17.06
+pkgver=18.01
 pkgrel=1
 pkgdesc="Language pack for the Eric IDE"
 arch=('any')
@@ -14,20 +14,14 @@ license=('GPL3')
 depends=()
 changelog=ChangeLog
 
-_languages=('cs             "Czech"'
-            'de             "German"'
+_languages=('de             "German"'
             'en             "English"'
             'es             "Spanish"'
-            'fr             "French"'
-            'it             "Italian"'
-            'pt             "Portuguese"'
-            'ru             "Russian"'
-            'tr             "Turkish"'
-            'zh_CN          "Chinese (Simplified)"')
+            'ru             "Russian"')
 
 pkgname=()
 source=()
-_url=http://downloads.sourceforge.net/eric-ide/
+_url="https://downloads.sourceforge.net/eric-ide"
 
 for _lang in "${_languages[@]}"; do
   _locale=${_lang%% *}
@@ -48,13 +42,7 @@ _package() {
                  "${pkgdir}/usr/share/qt/translations/eric6_${1}.qm"
 }
 
-md5sums=('6b3a34bbf311d7ac38be4dad69331897'
-         '2c3b8635bb8aa67828900699847edaf3'
-         '9674ceb133ce799a25350c55b31b10dd'
-         'afc98e0441b56ca9967e960583403761'
-         '0ccb17d174e1d6e456326bdf583611f2'
-         'bf795aefac0557ccf2bb768ef9ddd59f'
-         'b877b0b4dc5fae13e91379e22f506d34'
-         '4cf21235fa72155915657939cc9aef34'
-         '44c3ee23e0931ee36216a970d89c7dfd'
-         '757c17f4e90c1a2baf45ecc31c166ea9')
+sha512sums=('6666b198f37dfd2ca265cd031d7bac7e6f6ca0ab5516e39cf6e9ccaae011396f12ae075e9c3f8427c218dbbfe048bbfe956c0298a244519daa46d540d25bb26a'
+            '55ad42f25d9283eccf4f38be75e6545a3562835012e64eb1a31db4ca822fc3c06e19618794967cee7d9606f122b652ae2e3867db19054438d97394ad6dedc724'
+            '393b70874e3252e063bd857ba508161f07120b346d51e36f1ccb684dbb748f2d8de8e9993b3013978c4f552f2d149f6a17b1888c6611c62c3f1ab766135d8b8d'
+            '7ce90af3e8c8f18c8fc2e5eda1f3df4ff99ecfb432d5db9f51894bf9e566463b7be3a3ffc0411852f1f48ec5f5d6a65cf9b1fe2cbdcbd3511a7914ad0fe3bf9a')

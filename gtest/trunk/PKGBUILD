@@ -1,4 +1,4 @@
-# Maintainer: Felix Yan <felixonmars@gmail.com>
+# Maintainer: Felix Yan <felixonmars@archlinux.org>
 # Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
 # Contributor: Alexandre Bique <bique.alexandre@gmail.com>
 # Contributor: Louis R. Marascio <lrm@fitnr.com>
@@ -10,7 +10,7 @@ pkgver=1.8.0
 pkgrel=1
 pkgdesc='Google Test - C++ testing utility'
 url='https://github.com/google/googletest/'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('BSD')
 makedepends=('python2' 'cmake' 'gcc-libs' 'sh')
 options=(!makeflags)

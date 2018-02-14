@@ -2,7 +2,7 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=phonegap
-pkgver=6.5.1
+pkgver=7.1.1
 pkgrel=1
 pkgdesc="PhoneGap command-line interface and node.js library"
 arch=('i686' 'x86_64')
@@ -13,7 +13,7 @@ makedepends=('python2')
 install=${pkgname}.install
 source=(https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz)
 noextract=($pkgname-$pkgver.tgz)
-sha512sums=('c6ef8066766109fb0089f3a4718f261ccbe1403ebc0eecb1d7fb90f584e25194f500c134552d624db158a92eca6e967eca58cbe72d3cd03542ba33dc3095b162')
+sha512sums=('0b91e5a28e22b1e5fc48f0a012aa8fed3ed3da810b7d3497a948125f06c14c1aacbe75389b93971dcefdd9b6055139cee2befd63425b3e45ed45fb037023c972')
 
 package() {
   PYTHON=python2 npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
@@ -23,43 +23,36 @@ package() {
   cd "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules
   for dep in acorn semver cordova npm browserify; do
     rm -r $dep;
-    npm link $dep;
   done
 
   cd "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/syntax-error/node_modules
   for dep in acorn; do
     rm -r $dep;
-    npm link $dep;
   done
 
   cd "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/cordova-lib/node_modules
   for dep in semver; do
     rm -r $dep;
-    npm link $dep;
   done
 
   cd "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/npm-package-arg/node_modules
   for dep in semver; do
     rm -r $dep;
-    npm link $dep;
   done
 
   cd "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/normalize-package-data/node_modules
   for dep in semver; do
     rm -r $dep;
-    npm link $dep;
   done
 
   cd "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/init-package-json/node_modules
   for dep in semver; do
     rm -r $dep;
-    npm link $dep;
   done
 
   cd "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/semver-diff/node_modules
   for dep in semver; do
     rm -r $dep;
-    npm link $dep;
   done
 }
 

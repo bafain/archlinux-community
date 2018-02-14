@@ -7,11 +7,11 @@
 # Contributor: atweiden <archbaum@gmail.com>
 
 pkgname=(ansible python-ansible)
-pkgver=2.3.1.0
+pkgver=2.4.3.0
 pkgrel=1
 pkgdesc='Radically simple IT automation platform'
 arch=('any')
-url='http://www.ansible.com'
+url='https://www.ansible.com'
 license=('GPL3')
 depends=('python2' 'python2-yaml' 'python2-paramiko' 'python2-jinja' 'python2-crypto')
 optdepends=('sshpass: for ssh connections with password'
@@ -19,13 +19,14 @@ optdepends=('sshpass: for ssh connections with password'
             'python2-netaddr: for the ipaddr filter'
             'python2-systemd: log to journal'
             'python2-pywinrm: connect to Windows machines'
+            'python2-dnspython: for dig lookup'
             'python2-ovirt-engine-sdk: ovirt support'
             'python2-jmespath: json_query support')
 makedepends=('asciidoc' 'fakeroot' 'python' 'python2-setuptools'
              'python-setuptools')
 backup=('etc/ansible/ansible.cfg')
 source=("https://releases.ansible.com/ansible/ansible-${pkgver}.tar.gz")
-sha512sums=('7b4b33c56a15c41d756f095944d7a0dbf894557350879430df21061b717b9574aae624a276bf7e1a13d043b718aeaccac1ce510a3cb085983311ddf06fa832bc')
+sha512sums=('a7cda358c67c519c7e5ba248bf47070f21a27203fb29d70d9d75ecf027ba1275d71c0f96493e047281211d172a3be8273d7e08144446284695fb0bc8b94daa82')
 
 prepare() {
   cp -r ${pkgname}-${pkgver} "${srcdir}"/${pkgname}-${pkgver}-python

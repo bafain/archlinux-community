@@ -4,29 +4,25 @@
 
 _hkgname=profunctors
 pkgname=haskell-profunctors
-pkgver=5.2
-pkgrel=29
+pkgver=5.2.2
+pkgrel=6
 pkgdesc="Profunctors"
-url="http://github.com/ekmett/profunctors/"
+url="https://github.com/ekmett/profunctors/"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=("ghc" "haskell-base-orphans" "haskell-bifunctors" "haskell-comonad" "haskell-contravariant"
-         "haskell-distributive" "haskell-tagged")
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-base-orphans' 'haskell-bifunctors' 'haskell-comonad'
+         'haskell-contravariant' 'haskell-distributive' 'haskell-semigroups' 'haskell-tagged')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('87a7e25c4745ea8ff479dd1212ec2e57710abb3d3dd30f948fa16be1d3ee05a4')
-
-prepare() {
-    sed -i 's/base-orphans        >= 0.4   && < 0.6,/base-orphans        >= 0.4   \&\& < 0.7,/' ${_hkgname}-${pkgver}/${_hkgname}.cabal
-}
+sha512sums=('5b67bb2a63b618e0efaf2aa889a80349549f136670ae598cd90e5f20e9d6dce4ad7b2cdf3af08b03c73ca1e1355fc7dc99a9efc885458037329d81e1b59fe1e0')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -38,12 +34,7 @@ package() {
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

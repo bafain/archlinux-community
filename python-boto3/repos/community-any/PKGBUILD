@@ -1,9 +1,10 @@
 # $Id$
-# Maintainer: Felix Yan <felixonmars@archlinux.org>
+# Maintainer: Jonathan Steel <jsteel at archlinux.org>
+# Contributor: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=python-boto3
-pkgver=1.4.4
-pkgrel=2
+pkgver=1.5.25
+pkgrel=1
 pkgdesc='The AWS SDK for Python'
 arch=('any')
 license=('Apache')
@@ -12,7 +13,7 @@ depends=('python-botocore' 'python-jmespath' 'python-s3transfer')
 makedepends=('python-setuptools')
 # checkdepends=('python-coverage' 'python-nose' 'python-mock')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/boto/boto3/archive/$pkgver.tar.gz")
-sha512sums=('948d753809e41bad39fdf3da9646b62ff2fbc9d23966cdd0e46b2df18b07ff8c8af11bb777aa0cd1fea5bcdbc2d43f3f3d06012e30327e3c55b36f7bba815a61')
+sha512sums=('ffdde3f50ddb3718fff3fd48839cf4f2a5900e1361becf4dd50752eb7970d9ae81ecba9ea9c2765e1f67dcade74cb03ad1e3011ae31346e196b5c6d3a0284d31')
 
 build() {
   cd "$srcdir"/boto3-$pkgver

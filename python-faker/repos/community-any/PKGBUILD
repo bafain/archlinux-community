@@ -5,18 +5,19 @@
 
 pkgbase=python-faker
 pkgname=(python-faker python2-faker)
-pkgver=0.7.17
+pkgver=0.8.10
 pkgrel=1
 pkgdesc='Faker generates fake data for you.'
 arch=('any')
 url='http://www.joke2k.net/faker/'
 license=('MIT')
-makedepends=('python-setuptools' 'python2-setuptools' 'python-dateutil' 'python2-dateutil')
+makedepends=('python-setuptools' 'python2-setuptools' 'python-dateutil' 'python2-dateutil'
+             'python-text-unidecode' 'python2-text-unidecode')
 checkdepends=('python-ukpostcodeparser' 'python2-ukpostcodeparser'
               'python-mock' 'python2-mock' 'python-email-validator' 'python2-email-validator'
               'python2-ipaddress')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/joke2k/faker/archive/v$pkgver.tar.gz")
-sha512sums=('977fe1ab40d36720449dd0d8c98f6399ca6f19b2f5283ccc9076e3ca8976fabd0265131bf6805891016e83134ca0a503a55dc0e74973587f7ad5548638d41ce7')
+sha512sums=('fc5b2f1f2d75e9aa7501b7bd6e9fc1557e137eed575bcd08c21c05fc9ab977742f58c65fa398f427f5ce0d0593ff8b24041eaf4c184cbe40b9b4fba648e44353')
 
 prepare() {
   cp -a faker-$pkgver{,-py2}
@@ -39,7 +40,7 @@ check() {
 }
 
 package_python-faker() {
-  depends=('python-setuptools' 'python-dateutil')
+  depends=('python-setuptools' 'python-dateutil' 'python-text-unidecode')
   provides=("python-fake-factory=$pkgver")
   conflicts=('python-fake-factory')
   replaces=('python-fake-factory')
@@ -50,7 +51,7 @@ package_python-faker() {
 }
 
 package_python2-faker() {
-  depends=('python2-setuptools' 'python2-dateutil' 'python2-ipaddress')
+  depends=('python2-setuptools' 'python2-dateutil' 'python2-text-unidecode' 'python2-ipaddress')
   provides=("python2-fake-factory=$pkgver")
   conflicts=('python2-fake-factory')
   replaces=('python2-fake-factory')

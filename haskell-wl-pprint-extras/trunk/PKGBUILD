@@ -4,14 +4,15 @@
 _hkgname=wl-pprint-extras
 pkgname=haskell-wl-pprint-extras
 pkgver=3.5.0.5
-pkgrel=13
+pkgrel=29
 pkgdesc="A free monad based on the Wadler/Leijen pretty printer"
-url="http://github.com/ekmett/wl-pprint-extras/"
+url="https://github.com/ekmett/wl-pprint-extras/"
 license=('custom:BSD3')
-arch=('i686' 'x86_64')
-depends=('ghc' 'haskell-semigroups' 'haskell-semigroupoids' 'haskell-utf8-string' 'haskell-text')
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-semigroups' 'haskell-semigroupoids' 'haskell-utf8-string' 'haskell-text')
+makedepends=('ghc')
 source=(https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz)
-md5sums=('03a7c3b6700f5c729229c7652a0e85cd')
+sha512sums=('705107842ccbf4eb23d0b9e8069fd4d5bb1b03ffecbf9efaa8a579fd977380913d590fa370cc42476d5b28fde98fc44e7879fe343f761cd1751ebeb0b8c0e242')
 
 prepare() {
     sed -i '/nats/d' ${_hkgname}-${pkgver}/${_hkgname}.cabal
@@ -20,11 +21,10 @@ prepare() {
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -36,12 +36,7 @@ package() {
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

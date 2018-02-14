@@ -4,26 +4,26 @@
 
 _hkgname=wai-logger
 pkgname=haskell-wai-logger
-pkgver=2.3.0
-pkgrel=18
+pkgver=2.3.1
+pkgrel=5
 pkgdesc="A logging system for WAI"
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=('ghc' "haskell-blaze-builder" "haskell-byteorder" "haskell-case-insensitive"
+arch=('x86_64')
+depends=('ghc-libs' "haskell-blaze-builder" "haskell-byteorder" "haskell-case-insensitive"
          "haskell-fast-logger" "haskell-http-types" "haskell-network" "haskell-unix-time"
          "haskell-wai")
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('90cd993c657e72a0480a988220b288aeb2561efa53d2c8f819197b6de3060bf0')
+sha512sums=('250737dd326920efbb78dcd1ec270b49e53717091c95498b202452a95d0a811cc5757d32cebfcc8f0ba512c2e9d1c8994ca64a7426df2f1272225f6c276dd61e')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
         --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -35,12 +35,7 @@ package() {
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

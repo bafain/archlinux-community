@@ -8,12 +8,12 @@ pkgname=astromenace
 pkgver=1.3.2
 pkgrel=2
 pkgdesc="Hardcore 3D space shooter with spaceship upgrade possibilities"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.viewizard.com/astromenace/index_linux.php"
 license=('GPL3')
 depends=('sdl' 'freealut' 'libjpeg' 'libvorbis' 'glu' 'freetype2' 'libxinerama')
 makedepends=('cmake' 'mesa')
-source=(http://downloads.sourceforge.net/openastromenace/astromenace-src-$pkgver.tar.bz2
+source=(https://downloads.sourceforge.net/openastromenace/astromenace-src-$pkgver.tar.bz2
         astromenace.desktop)
 md5sums=('a1481ca7cf498773fddc16a3b41c9b9b'
          '1edc9367564a6c639a2b8199adf26a08')

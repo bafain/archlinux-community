@@ -3,19 +3,19 @@
 
 pkgbase=zint
 pkgname=(zint zint-qt)
-pkgver=2.6.0
+pkgver=2.6.2
 pkgrel=1
 pkgdesc="Barcode encoding library supporting over 50 symbologies"
-arch=('x86_64' 'i686')
+arch=('x86_64')
 url="http://zint.org.uk/"
 license=('GPL')
 depends=('qt5-base')
 makedepends=('cmake' 'qt5-tools')
 source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.src.tar.gz")
-sha256sums=('4e00e652f69012c856a8aa047ae213b4593ab28766adaaca89bf840c37b77376')
+sha256sums=('bcbaad61f64bf9153603fe453924038aeefabc62c674a178b4af9dd95a779530')
 
 build() {
-	cd $pkgbase-$pkgver
+	cd $pkgbase-$pkgver.src
 	cmake -DCMAKE_INSTALL_PREFIX=/usr
 	make
 }
@@ -23,7 +23,7 @@ build() {
 package_zint() {
 	depends=('libpng')
 
-	cd $pkgbase-$pkgver
+	cd $pkgbase-$pkgver.src
 	make DESTDIR="$pkgdir" install
 
 	rm "$pkgdir/usr/bin/zint-qt" \
@@ -35,7 +35,7 @@ package_zint-qt() {
 	pkgdesc="Zint Barcode Studio GUI"
 	depends=('qt5-base' 'zint')
 
-	cd $pkgbase-$pkgver
+	cd $pkgbase-$pkgver.src
 	make -C backend_qt DESTDIR="$pkgdir" install
 	make -C frontend_qt DESTDIR="$pkgdir" install
 	install -Dm644 zint.png "$pkgdir/usr/share/pixmaps/zint.png"

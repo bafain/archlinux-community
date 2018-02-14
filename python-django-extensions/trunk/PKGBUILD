@@ -8,7 +8,7 @@
 
 pkgbase=python-django-extensions
 pkgname=('python-django-extensions' 'python2-django-extensions')
-pkgver=1.7.9
+pkgver=1.9.7
 pkgrel=1
 pkgdesc='A collection of custom extensions for the Django Framework'
 arch=('any')
@@ -17,7 +17,7 @@ license=('MIT')
 makedepends=('python-setuptools' 'python2-setuptools')
 optdepends=('graphviz: graph_models extension')
 source=("django-extensions-${pkgver}.tar.gz::https://github.com/django-extensions/django-extensions/archive/${pkgver}.tar.gz")
-sha256sums=('8fa3200ea029f41bedd90d0898141a2b10147f278b42be7193834823a800f189')
+sha256sums=('78ddc577b16fb08cad2fccb506078b9ef77e0ea9c6d063d4f60a775937e1cba4')
 
 prepare() {
   cp -r {,python-}django-extensions-${pkgver}

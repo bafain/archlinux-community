@@ -13,13 +13,13 @@ pkgname=kompozer
 pkgver=0.8b3
 pkgrel=19
 pkgdesc="A Dreamweaver style WYSIWYG web editor; Nvu unofficial bug-fix release"
-arch=('x86_64' 'i686')
+arch=('x86_64')
 license=('GPL')
 url="http://www.kompozer.net"
 depends=('gtk2' 'nss' 'libxt' 'libidl2')
 makedepends=('zip' 'pangox-compat')
 options=('!buildflags')
-source=("http://downloads.sourceforge.net/kompozer/${pkgname}-${pkgver}-src.tar.bz2" 
+source=("https://downloads.sourceforge.net/kompozer/${pkgname}-${pkgver}-src.tar.bz2" 
         'kompozer.desktop' 
         'mozconfig.patch' 
         'kompozer-libpng15.patch' 

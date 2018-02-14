@@ -6,12 +6,12 @@ pkgname=rng-tools
 pkgver=5
 pkgrel=4
 pkgdesc="Random number generator related utilities"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://sourceforge.net/projects/gkernel/"
 license=('GPL')
 depends=('libgcrypt')
 backup=(etc/conf.d/rngd)
-source=(http://downloads.sourceforge.net/sourceforge/gkernel/$pkgname-$pkgver.tar.gz
+source=(https://downloads.sourceforge.net/sourceforge/gkernel/$pkgname-$pkgver.tar.gz
         rngd.conf
         rngd.service
         rngd-test-signal-in-loop.patch)

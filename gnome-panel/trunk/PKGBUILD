@@ -3,18 +3,18 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 
 pkgname=gnome-panel
-pkgver=3.24.1
+pkgver=3.26.0
 pkgrel=2
 pkgdesc="Panel of GNOME Flashback"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://wiki.gnome.org/Projects/GnomePanel"
 license=('GPL')
 depends=('evolution-data-server' 'gnome-desktop' 'gnome-menus' 'libgdm' 'libwnck3' 'nautilus' 'polkit')
-makedepends=('intltool' 'itstool')
+makedepends=('intltool' 'itstool' 'python')
 optdepends=('alacarte: Main menu editor'
             'gnome-applets: Extra applets for the panel')
 source=(https://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz)
-sha256sums=('795a50bae2e072159cfaf4c37909981cdde4463953c2d27ef9af53d6b353251a')
+sha256sums=('ada88f8c7c55ab5f8b1879efe9276c45abedf5db9c317c1a3616877f6ed76271')
 
 build() {
   cd $pkgname-$pkgver

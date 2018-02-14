@@ -1,26 +1,24 @@
 # Maintainer: Bruno Pagani (a.k.a. ArchangeGabriel) <archange@archlinux.org>
 
 pkgname=nodejs-lts-argon
-pkgver=4.8.3
+pkgver=4.8.7
 pkgrel=1
 pkgdesc='Evented I/O for V8 javascript (LTS release: Argon)'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='https://nodejs.org/'
 license=('MIT')
 depends=('openssl-1.0' 'zlib' 'icu' 'libuv' 'http-parser')
 makedepends=('python2' 'procps-ng')
 optdepends=('npm: nodejs package manager')
-provides=('nodejs')
+provides=("nodejs=${pkgver}")
 conflicts=('nodejs')
-source=("${url}/dist/v${pkgver}/node-v${pkgver}.tar.xz"
-        'nodejs-v8-icu59.patch')
-sha256sums=('d84e7544c2e31a2d0825b4f8b093d169bf8bdb1881ee8cf75ff937918e59e9cb'
-            '3b4d747522f655054829a67b5358f6f1c8bcbb2845f8e0f9866c9c78e55e1be8')
+source=("${url}/dist/v${pkgver}/node-v${pkgver}.tar.xz")
+# https://nodejs.org/download/release/latest-argon/SHASUMS256.txt.asc
+sha256sums=('03479a8ce6affedde75d80a6c8c351a7afb5a85b8d7e5119ab6f349100e641f8')
+#validpgpkeys=('C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8') # Myles Borins <mylesborins@google.com>
 
 prepare() {
   cd node-v${pkgver}
-
-  patch -p1 -i ../nodejs-v8-icu59.patch
 
   msg 'Fixing for python2 name'
   find -type f -exec sed \
@@ -60,5 +58,5 @@ package() {
 
   make DESTDIR="${pkgdir}" install
 
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/nodejs/LICENSE
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }

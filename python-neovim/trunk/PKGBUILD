@@ -3,17 +3,18 @@
 pkgbase=python-neovim
 pkgname=('python-neovim' 'python2-neovim')
 _realname=python-client
-pkgver=0.1.13
-pkgrel=2
+pkgver=0.2.1
+pkgrel=1
 pkgdesc='Python client for Neovim'
 url='https://github.com/neovim/python-client'
 arch=('any')
 license=('Apache')
 makedepends=('python-setuptools' 'python2-setuptools')
 source=("https://github.com/neovim/python-client/archive/${pkgver}.tar.gz")
-sha256sums=('b2f78226d0b3c57d1e53e26828f5fa5665c0655725fbadd43aea87f5ce93ef3b')
+sha256sums=('fe19aec131ac42b762ca198bd644bf7d092e269b793559db6ba97364d5c0ae09')
 
 prepare() {
+  sed -i "s/msgpack-python/msgpack/g" ${_realname}-${pkgver}/setup.py
   cp -a ${_realname}-${pkgver}{,-python2}
 }
 

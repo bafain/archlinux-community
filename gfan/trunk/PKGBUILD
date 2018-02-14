@@ -2,15 +2,15 @@
 # Contributor: Rémy Oudompheng <remy@archlinux.org>
 
 pkgname=gfan
-pkgver=0.6
-pkgrel=3
+pkgver=0.6.2
+pkgrel=1
 pkgdesc="A software package for computing Gröbner fans and tropical varieties"
-arch=(i686 x86_64)
+arch=(x86_64)
 url="http://home.imf.au.dk/jensen/software/gfan/gfan.html"
 license=(GPL)
 depends=(cddlib)
-source=("http://home.imf.au.dk/jensen/software/gfan/gfan${pkgver}.tar.gz")
-sha256sums=('ff5d6b038b6fc9d3ad2d3054670b129e6327450128b9e75ab41478eefe6ea609')
+source=("http://home.imf.au.dk/jensen/software/gfan/gfan$pkgver.tar.gz")
+sha256sums=('a674d5e5dc43634397de0d55dd5da3c32bd358d05f72b73a50e62c1a1686f10a')
 
 build() {
   cd gfan$pkgver

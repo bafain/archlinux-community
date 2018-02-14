@@ -4,22 +4,19 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-gettext-tools
-pkgver=1.0.5
+pkgver=1.0.7
 pkgrel=1
 pkgdesc='Deepin Gettext Tools'
 arch=('any')
 url="https://github.com/linuxdeepin/deepin-gettext-tools"
 license=('GPL3')
-depends=('gettext' 'python2' 'perl-config-tiny' 'perl-xml-libxml' 'perl-xml-libxml-prettyprint')
+depends=('gettext' 'python' 'perl-config-tiny' 'perl-xml-libxml')
 makedepends=('git')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-gettext-tools/archive/$pkgver.tar.gz")
-sha512sums=('1f06f2d08e0f0299250b5ea41d049cebcbc726f1529b9e1188f8dfaf0c05f0688d1439edc114b3d23563942a8f2651aeb03b20d8491f2161f5e1817e8e5439fe')
+sha512sums=('59a2b8d89afb4b7f14211c4ef678958f392d89be30ea71b74f6b546678aa6a031c369f1a672a3ba29e1f0744f4fa122852f147cf736e263aec172a5ad0a8f06c')
 
 prepare() {
   cd deepin-gettext-tools-$pkgver
-
-  # fix python version
-  find -iname "*.py" | xargs sed -i 's=\(^#! */usr/bin.*\)python *$=\1python2='
 
   sed -e 's/sudo cp/cp/' -i src/generate_mo.py
   sed -e 's/qmake/qmake-qt5/' -e '/lupdate/d' -i Makefile
@@ -27,9 +24,9 @@ prepare() {
 
 check() {
   cd deepin-gettext-tools-$pkgver
-  perl desktop_ts/src/desktop_ts_convert.pl --help
-  python2 src/generate_mo.py --help
-  python2 src/update_pot.py --help
+  perl src/desktop_ts_convert.pl --help
+  python src/generate_mo.py --help
+  python src/update_pot.py --help
 }
 
 package() {

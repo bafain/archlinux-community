@@ -3,8 +3,8 @@
 # Contributor: Norberto Lopes <shelika@mail.telepac.pt>
 
 pkgname=wanderlust
-pkgver=20170424
-_commit=0a324086eb9cf2d357d3c8a431e80cd45fce016a
+pkgver=20180116
+_commit=2a058670d9f65e7c9e5b203b31d5946bcb2bf144
 pkgrel=1
 pkgdesc="Mail/News reader supporting IMAP4rev1 for emacs."
 arch=(any)
@@ -12,7 +12,7 @@ url="https://github.com/wanderlust/wanderlust/"
 license=('GPL')
 depends=('emacs' 'emacs-apel>=10.7' 'flim' 'semi')
 makedepends=('git')
-optdepends=('bbdb: contact management utility')
+#optdepends=('bbdb: contact management utility')
 install=wanderlust.install
 source=("wanderlust::git://github.com/wanderlust/wanderlust.git#commit=${_commit}")
 md5sums=('SKIP')

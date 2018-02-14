@@ -1,22 +1,23 @@
+# Maintainer:
 # Contributor: Martin Wimpress <code@flexion.org>
 
 pkgname=mate-settings-daemon
-pkgver=1.18.1
+pkgver=1.20.0
 pkgrel=1
 pkgdesc="The MATE Settings daemon"
-url="http://mate-desktop.org"
-arch=('i686' 'x86_64')
+url="https://mate-desktop.org"
+arch=('x86_64')
 license=('GPL')
 depends=('dbus-glib' 'libcanberra' 'libmatekbd' 'libmatemixer' 'libnotify'
          'mate-desktop' 'nss' 'polkit')
-makedepends=('intltool')
+makedepends=('intltool' 'python')
 optdepends=('libcanberra-pulse: PulseAudio support'
             'pulseaudio-alsa: PulseAudio support')
 groups=('mate')
 conflicts=('mate-settings-daemon-gtk3')
 replaces=('mate-settings-daemon-gtk3')
-source=("http://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-sha1sums=('6bac65c5b702e45e809f43fc4ae732dc88549a9b')
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('c5e9918ce1623953f7cf807c659406b401316b4fa7f8366bd692c9f9b4c88e5c')
 
 build() {
     cd ${pkgname}-${pkgver}

@@ -4,17 +4,17 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-calendar
-pkgver=1.0.8
-pkgrel=1
+pkgver=1.1.1
+pkgrel=2
 pkgdesc='Calendar for Deepin Desktop Environment'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://github.com/linuxdeepin/dde-calendar"
 license=('GPL3')
-depends=('deepin-tool-kit')
-makedepends=('qt5-tools')
+depends=('deepin-qt5integration')
+makedepends=('qt5-tools' 'deepin-gettext-tools')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/dde-calendar/archive/$pkgver.tar.gz")
-sha512sums=('6c6f02fdec683b28f6882267bfe0b96c24c7438b82d0f6ea739dee38e2d40e747b9a65d63eadb7fadccd251456091676a6b58f6d851dadbf375671f00ed3dde7')
+sha512sums=('59af8ec9e4273b77366b366b68e6bdb44337de4482f1a2a621706e2aa68d10d759e8e147b876fe4ab7f6b62f653088d86e82014e327f10e0163fb845f145cb73')
 
 build() {
   cd dde-calendar-$pkgver

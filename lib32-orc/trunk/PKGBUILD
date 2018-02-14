@@ -1,38 +1,46 @@
-# Maintainer: Maxime Gauduin <alucryd@gmail.com>
+# $Id$
+# Maintainer: Maxime Gauduin <alucryd@archlinux.org>
 
 pkgname=lib32-orc
-pkgver=0.4.26
+pkgver=0.4.27
 pkgrel=1
 pkgdesc='The Oild Runtime Compiler'
+url="https://cgit.freedesktop.org/gstreamer/orc"
 arch=('x86_64')
 license=('custom')
 url='https://code.entropywave.com/projects/orc/'
 depends=('lib32-glibc' 'orc')
-makedepends=('valgrind')
-source=("https://gstreamer.freedesktop.org/data/src/orc/orc-${pkgver}.tar.xz"{,.asc})
-validpgpkeys=('7F4BC7CC3CA06F97336BBFEB0668CC1486C2D7B5') # Sebastian Dröge
-sha256sums=('7d52fa80ef84988359c3434e1eea302d077a08987abdde6905678ebcad4fa649'
-            'SKIP')
+makedepends=('gtk-doc' 'meson' 'valgrind-multilib')
+#source=("https://gstreamer.freedesktop.org/data/src/orc/orc-${pkgver}.tar.xz"{,.asc})
+source=("https://github.com/GStreamer/orc/archive/orc-${pkgver}.tar.gz")
+validpgpkeys=('D637032E45B8C6585B9456565D2EEE6F6F349D7C') # Tim-Philipp Müller
+sha256sums=('49f331f1edbd43a0d8fae2634ded9c4a0fc8558a3388f6cbb203858e69165652')
+
+prepare() {
+  if [[ -d build ]]; then
+    rm -rf build
+  fi
+  mkdir build
+}
 
 build() {
-  cd orc-${pkgver}
+  cd build
 
   export CC='gcc -m32'
   export CXX='g++ -m32'
   export PKG_CONFIG_PATH='/usr/lib32/pkgconfig'
 
-  ./configure \
+  meson ../orc-orc-${pkgver} \
+    --buildtype='release' \
     --prefix='/usr' \
-    --libdir='/usr/lib32' \
-    --disable-static \
-    --enable-backend='mmx,sse,altivec'
-  make
+    --libdir='/usr/lib32'
+  ninja
 }
 
 package() {
-  cd orc-${pkgver}
+  cd build
 
-  make DESTDIR="$pkgdir" install
+  DESTDIR="$pkgdir" ninja install
   rm -rf "${pkgdir}"/usr/{bin,include,share}
 
   install -dm 755 "${pkgdir}"/usr/share/licenses

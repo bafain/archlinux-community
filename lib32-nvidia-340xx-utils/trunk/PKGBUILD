@@ -5,8 +5,8 @@
 _pkgbasename=nvidia-340xx-utils
 pkgbase=lib32-$_pkgbasename
 pkgname=('lib32-nvidia-340xx-utils' 'lib32-opencl-nvidia-340xx')
-pkgver=340.102
-pkgrel=3
+pkgver=340.106
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -14,8 +14,8 @@ options=('!strip')
 
 _arch='x86'
 _pkg="NVIDIA-Linux-${_arch}-${pkgver}"
-source=("http://us.download.nvidia.com/XFree86/Linux-${_arch}/${pkgver}/${_pkg}.run")
-sha512sums=('bea700c925a6044fcded40324bb389c5fa1aadc40831f685a76e7b0ded11161f492960950c201467e564d157dcbe0c330d13a2014f51d0073002c5a262a6f0ca')
+source=("https://us.download.nvidia.com/XFree86/Linux-${_arch}/${pkgver}/${_pkg}.run")
+sha512sums=('923da7d61ef89a7bd83e0223c72fcdc556ef31cb97015a129a3adbdc3aad29dbf49f6fd23dc5188a53722e22cf4ba35c6a98e6ca9fdc6c24bb72ab87153d8bc4')
 
 create_links() {
     # create soname links
@@ -41,7 +41,7 @@ package_lib32-opencl-nvidia-340xx() {
 
     # OpenCL
     install -D -m755 "libnvidia-compiler.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-compiler.so.${pkgver}"
-    install -D -m755 "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-opencl.so.${pkgver}" 
+    install -D -m755 "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib32/libnvidia-opencl.so.${pkgver}"
 
     create_links
 
@@ -52,11 +52,11 @@ package_lib32-opencl-nvidia-340xx() {
 package_lib32-nvidia-340xx-utils() {
     pkgdesc="NVIDIA drivers utilities (32-bit)"
     depends=('lib32-zlib' 'lib32-gcc-libs' 'nvidia-340xx-utils')
-    conflicts=('lib32-nvidia-340xx-libgl')
+    conflicts=('lib32-nvidia-340xx-libgl' 'lib32-nvidia-utils')
     provides=('lib32-libgl' 'lib32-libegl' 'lib32-libgles' 'lib32-nvidia-340xx-libgl')
     replaces=('lib32-nvidia-340xx-libgl')
     optdepends=('lib32-opencl-nvidia-340xx')
-    
+
     cd "${_pkg}"
 
     # OpenGL libraries

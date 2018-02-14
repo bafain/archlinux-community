@@ -4,24 +4,24 @@
 
 _hkgname=monad-journal
 pkgname=haskell-monad-journal
-pkgver=0.7.2
-pkgrel=24
+pkgver=0.8.1
+pkgrel=2
 pkgdesc="Pure logger typeclass and monad transformer"
-url="http://github.com/phaazon/monad-journal"
+url="https://github.com/phaazon/monad-journal"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=("ghc" "haskell-either" "haskell-monad-control" "haskell-mtl" "haskell-transformers-base")
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-monad-control' 'haskell-mtl' 'haskell-transformers-base')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('72b1a676bd994198544c4861a05b1d1b4f7ae55ea35a837cace539b8d6c69d08')
+sha512sums=('3fbc984b3f74d24fca71bc2530832f3748a64e636adfd504fe48e86fefabe53b0911e5b173b6acbbd85128c11f5bd2a7079d6c3fd622148aee7b56f26173379d')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -30,15 +30,10 @@ build() {
 
 package() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
+
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

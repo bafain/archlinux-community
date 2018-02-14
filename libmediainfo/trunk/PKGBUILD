@@ -1,32 +1,40 @@
 # $Id$
-# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
-# Maintainer:  hydro <hydro@freenet.de>
+# Maintainer: Johannes Löthberg <johannes@kyriasis.com>
+# Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor:  hydro <hydro@freenet.de>
 
 pkgname=libmediainfo
-pkgver=0.7.96
+pkgver=17.12
 pkgrel=1
+
 pkgdesc="shared library for mediainfo"
-arch=('i686' 'x86_64')
 url="http://mediaarea.net"
+arch=('x86_64')
 license=('GPL')
-depends=( 'curl' 'libmms' 'libzen')
+
+depends=('curl' 'libmms' 'libzen')
 makedepends=('libtool' 'automake' 'autoconf')
-source=(https://mediaarea.net/download/source/libmediainfo/$pkgver/libmediainfo_$pkgver.tar.bz2
-	libmediainfo-0.7.50-libmms.patch)
-sha256sums=('87e0979e5a430dcbb3c5857ce000be0436dc96fc4e18044134045e85b61a759e'
-            '0adfbac0efee13e1f58dcfa5d2e50b3bc30029a9b1cf812e2d62d1e3308beeeb')
+
+source=(https://mediaarea.net/download/source/libmediainfo/$pkgver/libmediainfo_$pkgver.tar.xz)
+
+sha256sums=('b482bb34df5d59ae8b735b9631ad0ad150dc71b715e851f1d3155ceb4921a452')
 
 build() {
-  cd "$srcdir"/MediaInfoLib/Project/GNU/Library
+  cd MediaInfoLib/Project/GNU/Library
+
   sh ./autogen.sh
-  ./configure --prefix=/usr --enable-shared --disable-static --with-libcurl --with-libmms
-  make clean
-  (cd ../../.. && patch -p1 <"$srcdir"/libmediainfo-0.7.50-libmms.patch)
+  ./configure --prefix=/usr \
+              --enable-shared \
+              --disable-static \
+              --with-libcurl \
+              --with-libmms
+
   make
 }
 
 package() {
-  cd "$srcdir"/MediaInfoLib/Project/GNU/Library
+  cd MediaInfoLib/Project/GNU/Library
+
   make DESTDIR="$pkgdir" install
   for i in MediaInfo MediaInfoDLL; do
     install -dm 755 "$pkgdir"/usr/include/$i

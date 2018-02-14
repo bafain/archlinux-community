@@ -3,16 +3,16 @@
 # Contributor: James Spencer <james.s.spencer@gmail.com>
 
 pkgname=jmol
-pkgver=14.19.1
+pkgver=14.29.5
 pkgrel=1
 pkgdesc="a Java 3D viewer for chemical structures"
 arch=(any)
-url="http://jmol.sourceforge.net"
+url="https://jmol.sourceforge.net"
 license=(LGPL)
 depends=(java-runtime)
 makedepends=(unzip)
-source=("http://sourceforge.net/projects/jmol/files/Jmol/Version%20${pkgver%.*}/Jmol%20$pkgver/Jmol-$pkgver-binary.tar.gz")
-sha256sums=('5b1710997fb6753f06f9205b02ac548cd76056e2a28a3e435030399780059e9c')
+source=("https://sourceforge.net/projects/jmol/files/Jmol/Version%20${pkgver%.*}/Jmol%20$pkgver/Jmol-$pkgver-binary.tar.gz")
+sha256sums=('5c350aa6ff0133c539d874bd1d6db0e1726335b45262c9c96449c843b0374e11')
 
 package() {
   cd $pkgname-$pkgver

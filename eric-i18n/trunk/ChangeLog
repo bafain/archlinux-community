@@ -1,3 +1,28 @@
+18.01-1:
+* upstream update
+* drop cs, fr, it pt, tr and zh_CN translations since they are no longer supported by upstream
+
+17.12-1:
+upstream update
+
+17.11.1-1:
+upstream update
+
+17.11-1:
+upstream update
+
+17.10-1:
+upstream update
+
+17.09-1:
+upstream update
+
+17.08-1:
+upstream update
+
+17.07-1:
+upstream update
+
 17.06-1:
 upstream update
 

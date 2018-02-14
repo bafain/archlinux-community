@@ -2,10 +2,10 @@
 # Maintainer: Alexander F Rødseth <xyproto@archlinux.org>
 
 pkgname=processing
-pkgver=3.3.4
-_rev=0261
+pkgver=3.3.6
+_rev=0263
 pkgrel=1
-arch=('x86_64' 'i686')
+arch=('x86_64')
 pkgdesc='Programming environment for creating images, animations and interactions'
 url='http://www.processing.org/'
 license=('GPL' 'LGPL')
@@ -13,7 +13,7 @@ makedepends=('gendesk' 'java-openjfx' 'java-environment=8' 'apache-ant' 'rsync')
 depends=('libgl' 'java-runtime=8')
 options=('!strip')
 source=("https://github.com/$pkgname/$pkgname/archive/$pkgname-$_rev-$pkgver.tar.gz")
-sha256sums=('3e7913632895af01bfba3868801f29320ed3332f04d6b13d3b59a5b83466a64b')
+sha256sums=('948361e39169d2d59ecd3c3266a526472520c886760e9563ea2d09723d59b178')
 
 prepare() {
   gendesk -f -n --pkgname="$pkgname" --pkgdesc="$pkgdesc"

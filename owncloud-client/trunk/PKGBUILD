@@ -4,18 +4,20 @@
 
 _name=owncloudclient
 pkgname=owncloud-client
-pkgver=2.3.2
+pkgver=2.4.0
 pkgrel=1
 pkgdesc='ownCloud client based on mirall'
-arch=(i686 x86_64)
+arch=(x86_64)
 url='http://owncloud.org/'
 license=(GPL2)
-depends=(qtkeychain qt5-webkit hicolor-icon-theme xdg-utils)
+depends=(qtkeychain qt5-webkit hicolor-icon-theme)
 makedepends=(extra-cmake-modules python-sphinx qt5-tools doxygen kio)
 optdepends=('python2-nautilus: integration with Nautilus' 'nemo-python: integration with Nemo' 'python2-caja: integration with Caja')
 backup=('etc/ownCloud/sync-exclude.lst')
-source=("https://download.owncloud.com/desktop/stable/$_name-$pkgver.tar.xz")
-sha256sums=('a1199d2b957a28081aff11a2a7e471ca09c965bbb1b51b1b7b7a8706304f5f09')
+source=(https://download.owncloud.com/desktop/stable/owncloudclient-$pkgver.tar.xz{,.asc})
+sha256sums=('61193a7d152ae4078824b6c2be8acf4f871e26db72f2c80d7da68b813554ba51'
+            'SKIP')
+validpgpkeys=(F05F7DD7953A07DF36579DAA498C45EBE94E7B37) # ownCloud Client Team (Signing Key) <info@owncloud.com>
 
 prepare() {
   mkdir -p build

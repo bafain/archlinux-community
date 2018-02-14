@@ -2,10 +2,10 @@
 
 pkgname=nginx-mod-naxsi
 pkgver=0.55.3
-pkgrel=1
+pkgrel=3
 
 _modname=naxsi
-_nginxver=1.12.0
+_nginxver=1.12.2
 
 pkgdesc='Nginx Anti XSS & SQL Injection'
 arch=('i686' 'x86_64')
@@ -15,16 +15,17 @@ license=('GPL3')
 backup=('etc/nginx/naxsi_core.rules')
 
 source=(
-	http://nginx.org/download/nginx-$_nginxver.tar.gz
+	https://nginx.org/download/nginx-$_nginxver.tar.gz{,.asc}
 	https://github.com/nbs-system/$_modname/archive/$pkgver/$_modname-$pkgver.tar.gz
 )
-
-sha256sums=('b4222e26fdb620a8d3c3a3a8b955e08b713672e1bc5198d1e4f462308a795b30'
+validpgpkeys=(B0F4253373F8F6F510D42178520A9993A1C052F8) # Maxim Dounin <mdounin@mdounin.ru>
+sha256sums=('305f379da1d5fb5aefa79e45c829852ca6983c7cd2a79328f8e084a324cf0416'
+            'SKIP'
             '0b3c95d250772dc89ad8b49e47c1e024c5ae2c76c0cffa445e9fe05c4dd13495')
 
 build() {
 	cd "$srcdir"/nginx-$_nginxver
-	./configure $(nginx -V 2>&1 | grep 'configure arguments' | sed -r 's@^[^:]+: @@') --add-dynamic-module=../$_modname-$pkgver/naxsi_src
+	./configure --with-compat --add-dynamic-module=../$_modname-$pkgver/naxsi_src
 	make modules
 }
 

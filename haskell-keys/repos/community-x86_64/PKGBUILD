@@ -4,25 +4,26 @@
 
 _hkgname=keys
 pkgname=haskell-keys
-pkgver=3.11
-pkgrel=36
+pkgver=3.12
+pkgrel=7
 pkgdesc="Keyed functors and containers"
-url="http://github.com/ekmett/keys/"
+url="https://github.com/ekmett/keys/"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=('ghc' "haskell-comonad" "haskell-free" "haskell-hashable" "haskell-semigroupoids"
-         "haskell-semigroups" "haskell-transformers-compat" "haskell-unordered-containers")
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-comonad' 'haskell-free' 'haskell-hashable' 'haskell-semigroupoids'
+         'haskell-semigroups' 'haskell-tagged' 'haskell-transformers-compat'
+         'haskell-unordered-containers')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('0cf397b7e6eb8cda930a02118c0bf262f9ef80c5a2f91822238b7778042cc4b2')
+sha512sums=('7d8ce7b6366b60d11eb839d7e7ef60ec6ac7370c641f0ec2d4acaa0fd37119f37aae4e570cf55a835bf8aaf9895de3ed0747070d6afc7f38faa12122935df49a')
 
 build() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
         --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -30,16 +31,11 @@ build() {
 }
 
 package() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

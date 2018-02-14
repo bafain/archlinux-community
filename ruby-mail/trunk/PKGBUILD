@@ -4,17 +4,17 @@
 # Contributor: Alexsandr Pavlov <kidoz@mail.ru>
 
 pkgname=ruby-mail
-pkgver=2.6.4
-pkgrel=2
+pkgver=2.7.0
+pkgrel=3
 pkgdesc='A really Ruby Mail handler'
 arch=('any')
 url='http://github.com/mikel/mail'
 license=('MIT')
-depends=('ruby-mime-types' 'ruby-treetop')
+depends=('ruby-mini_mime')
 options=('!emptydirs')
 source=("http://rubygems.org/downloads/${pkgname#*-}-${pkgver}.gem")
 noextract=("${pkgname#*-}-${pkgver}.gem")
-sha256sums=('77d6a70c45d435dde688f841a9aa955571b8f3c624966812282b290bbcc33b31')
+sha256sums=('1f2ae391ca04b0a3c78905ce5b2ebc951332ee211781dd7e7b3569fd958bbe81')
 
 package() {
   local _gemdir="$(ruby -e'puts Gem.default_dir')"

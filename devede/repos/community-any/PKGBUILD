@@ -1,24 +1,35 @@
 # $Id$
-# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Maintainer: Balló György <ballogyor+arch at gmail dot com>
+# Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
 # Contributor: Andrea Scarpino <andrea@archlinux.org>
 # Contributor: Javier 'Phrodo_00' Aravena <phrodo.00@gmail.com>
-# Maintainer: Daniel J Griffiths <ghost1227@archlinux.us>
+# Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=devede
-pkgver=4.8.8
+_pkgname=devedeng
+pkgver=4.8.12
 pkgrel=1
-pkgdesc="A program to create VideoDVDs and CDs"
+pkgdesc='Program to create VideoDVDs and CDs'
 arch=('any')
 url="http://www.rastersoft.com/programas/devede.html"
 license=('GPL3')
-depends=('mencoder' 'ffmpeg' 'dvdauthor' 'vcdimager'
-	 'cdrkit' 'ttf-dejavu'
-	 'gtk3' 'python-cairo' 'python-gobject' 'python-setuptools')
-optdepends=('mplayer' 'vlc' 'mpv')
-source=($pkgname-$pkgver.tar.gz::https://github.com/rastersoft/devedeng/archive/$pkgver.tar.gz)
-sha256sums=('3650751da3d9764e767725b6a744b16395bfce43b6243a75b2b8a1ea6dfcbd56')
+depends=('gtk3' 'python-cairo' 'python-gobject' 'ffmpeg' 'cdrtools' 'dvdauthor' 'vcdimager')
+source=($pkgname-$pkgver.tar.gz::https://github.com/rastersoft/$_pkgname/archive/$pkgver.tar.gz)
+sha256sums=('4b01434e705bde59138caebde6c838017664a0e0a12ef11ec85161c03ea19a99')
+
+prepare() {
+  cd $_pkgname-$pkgver
+  # Remove dependency on python-setuptools
+  sed -i "/import pkg_resources/d
+          s/self.version = .*$/self.version = '$pkgver' /" src/devedeng/configuration_data.py
+}
+
+build() {
+  cd $_pkgname-$pkgver
+  python3 setup.py build
+}
 
 package() {
-  cd "$srcdir"/${pkgname}ng-$pkgver
-  python setup.py install --root="$pkgdir"
+  cd $_pkgname-$pkgver
+  python3 setup.py install --root="$pkgdir" --optimize=1
 }

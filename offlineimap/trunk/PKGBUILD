@@ -5,7 +5,7 @@
 # Contributor: mucknert <mucknert@gmx.net>
 
 pkgname=offlineimap
-pkgver=7.1.1
+pkgver=7.1.5
 pkgrel=1
 pkgdesc='Synchronizes emails between two repositories'
 arch=('any')
@@ -13,9 +13,10 @@ url='http://offlineimap.org/'
 license=('GPL')
 depends=('python2-six')
 makedepends=('asciidoc')
+optdepends=('python2-pysocks: for SOCKS5 proxy functionality')
 changelog=$pkgname.changelog
 source=($pkgname-$pkgver.tar.gz::https://github.com/OfflineIMAP/offlineimap/archive/v${pkgver}.tar.gz)
-sha256sums=('a624f8a77eae664dd458be47c5306c28911d4a1f788ff5641d7bb37e01ecb703')
+sha256sums=('8e28e786a00768e8a97d9f049406744829212cffb69903ffbb15faa1479d43e1')
 
 prepare() {
   cd "${srcdir}"/${pkgname}-${pkgver}
@@ -40,11 +41,10 @@ package() {
   install -Dm644 offlineimap.conf.minimal "${pkgdir}"/usr/share/offlineimap/offlineimap.conf.minimal
 
 #systemd files
-  install -Dm644 contrib/systemd/mail.target "${pkgdir}"/usr/lib/systemd/user/mail.target
   install -Dm644 contrib/systemd/$pkgname.service "${pkgdir}"/usr/lib/systemd/user/$pkgname.service
-  install -Dm644 contrib/systemd/$pkgname.timer "${pkgdir}"/usr/lib/systemd/user/$pkgname.timer
   install -Dm644 contrib/systemd/$pkgname@.service "${pkgdir}"/usr/lib/systemd/user/$pkgname@.service
-  install -Dm644 contrib/systemd/$pkgname@.timer "${pkgdir}"/usr/lib/systemd/user/$pkgname@.timer
   install -Dm644 contrib/systemd/$pkgname-oneshot.service "${pkgdir}"/usr/lib/systemd/user/$pkgname-oneshot.service
+  install -Dm644 contrib/systemd/$pkgname-oneshot.timer "${pkgdir}"/usr/lib/systemd/user/$pkgname-oneshot.timer
   install -Dm644 contrib/systemd/$pkgname-oneshot@.service "${pkgdir}"/usr/lib/systemd/user/$pkgname-oneshot@.service
+  install -Dm644 contrib/systemd/$pkgname-oneshot@.timer "${pkgdir}"/usr/lib/systemd/user/$pkgname-oneshot@.timer
 }

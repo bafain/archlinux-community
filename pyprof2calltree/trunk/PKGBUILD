@@ -5,7 +5,7 @@
 
 pkgbase=pyprof2calltree
 pkgname=(pyprof2calltree python2-pyprof2calltree)
-pkgver=1.4.1
+pkgver=1.4.3
 pkgrel=1
 pkgdesc="Help visualize profiling data from cProfile with kcachegrind"
 url="https://pypi.python.org/pypi/pyprof2calltree/"
@@ -13,7 +13,7 @@ arch=('any')
 license=('BSD')
 makedepends=('python-setuptools' 'python2-setuptools')
 source=("https://pypi.io/packages/source/p/pyprof2calltree/pyprof2calltree-$pkgver.tar.gz")
-sha512sums=('1e5a1e749ed20941355a38dbd2c46cd1c51182aebb82b8ddab3ad43f14c3b34dba6063fa6e9772685a784a0518f820fdf371d42773deb4c0cee108e32e894533')
+sha512sums=('25b56460c613944259b4b763167b187fe9a6b010e5713cb411facc5d9b0f4157539f8d2fa6eafd4d1c243ae29b4cdcce79bf6dbc14ed7b4abeb93a91e9710e2d')
 
 prepare() {
   sed -n '/# Copyright/,/# THE SOFTWARE\./p' pyprof2calltree-$pkgver/pyprof2calltree.py > LICENSE

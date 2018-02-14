@@ -1,26 +1,24 @@
 # Maintainer: Bruno Pagani (a.k.a. ArchangeGabriel) <archange@archlinux.org>
 
 pkgname=nodejs-lts-boron
-pkgver=6.11.0
+pkgver=6.12.3
 pkgrel=1
 pkgdesc='Evented I/O for V8 javascript (LTS release: Boron)'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='https://nodejs.org/'
 license=('MIT')
 depends=('openssl-1.0' 'zlib' 'icu' 'libuv' 'http-parser' 'c-ares')
 makedepends=('python2' 'procps-ng')
 optdepends=('npm: nodejs package manager')
-provides=('nodejs')
+provides=("nodejs=$pkgver")
 conflicts=('nodejs')
-source=("${url}/dist/v${pkgver}/node-v${pkgver}.tar.xz"
-        'fix-gcc7.patch')
-sha256sums=('02ba35391edea2b294c736489af01954ce6e6c39d318f4423ae6617c69ef0a51'
-            'f2044670abfda0d17690bb36c4124f97e4a915e726de6fa0a12da70d018863b3')
+source=("${url}/dist/v${pkgver}/node-v${pkgver}.tar.xz")
+# https://nodejs.org/download/release/latest-boron/SHASUMS256.txt.asc
+sha256sums=('1a58672fa2178098c30306862cccdf02b8803dafe1d2e9f51c8c96749f3ddcdc')
+#validpgpkeys=('C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8') # Myles Borins <mylesborins@google.com>
 
 prepare() {
   cd node-v${pkgver}
-
-  patch -p1 -i ../fix-gcc7.patch
 
   msg 'Fixing for python2 name'
   find -type f -exec sed \
@@ -52,7 +50,7 @@ build() {
 
 check() {
   cd node-v${pkgver}
-  # At least two expected failures because of OpenSSL 1.1 vs 1.0
+  # Some network related errors
   make test || warning "Tests failed"
 }
 
@@ -61,5 +59,5 @@ package() {
 
   make DESTDIR="${pkgdir}" install
 
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/nodejs/LICENSE
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
 }

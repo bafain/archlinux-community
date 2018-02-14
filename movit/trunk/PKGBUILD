@@ -1,19 +1,19 @@
 # $Id$
 # Maintainer: Jaroslav Lichtblau <svetlemodry@archlinux.org>
-# Contributor: Evert Vorster (evorster@gmail.com)
+# Contributor: Evert Vorster <evorster@gmail.com>
 # Contributor: Martin Sandsmark <martin.sandsmark@kde.org>
 
 pkgname=movit
-pkgver=1.5.1
+pkgver=1.6.0
 pkgrel=1
 pkgdesc="The modern video toolkit"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://movit.sesse.net/"
 license=('GPL')
 depends=('fftw' 'libepoxy')
 makedepends=('eigen' 'gtest' 'sdl2')
 source=(https://movit.sesse.net/$pkgname-$pkgver.tar.gz)
-sha256sums=('8434edd81c2226c8d6fa7f4715b0d4818bb76cbceafa632b99f9c61e058ea988')
+sha256sums=('65dda436570ecfb6df9627e6101c9d792e929ce9abe9afaaa85c513401583538')
 
 build() {
   cd $pkgname-$pkgver

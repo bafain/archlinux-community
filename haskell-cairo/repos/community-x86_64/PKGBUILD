@@ -2,28 +2,27 @@
 # Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
 
 pkgname=haskell-cairo
-pkgver=0.13.3.1
-pkgrel=3
+pkgver=0.13.4.2
+pkgrel=2
 pkgdesc="Binding to the cairo library for Gtk2Hs."
 url="https://hackage.haskell.org/package/cairo"
 license=('LGPL2.1')
-arch=('i686' 'x86_64')
-depends=('ghc' 'cairo' 'haskell-mtl' 'haskell-utf8-string' 'haskell-text')
-makedepends=("haskell-gtk2hs-buildtools" "mesa")
+arch=('x86_64')
+depends=('ghc-libs' 'cairo' 'haskell-mtl' 'haskell-utf8-string' 'haskell-text')
+makedepends=("haskell-gtk2hs-buildtools" "mesa" 'ghc')
 conflicts=('gtk2hs-cairo')
 provides=('gtk2hs-cairo')
 replaces=('gtk2hs-cairo')
-source=(https://hackage.haskell.org/packages/archive/cairo/$pkgver/cairo-$pkgver.tar.gz)
-sha256sums=('a3ca197c6d63875686ed8129530771f945fbd954ab8283841ad238da233d675a')
+source=("https://hackage.haskell.org/packages/archive/cairo/${pkgver}/cairo-${pkgver}.tar.gz")
+sha512sums=('e2d4aee4d13b99d3ed5d52dd5ebef73576fbd96c1f69b0596c1d15c7a657918e5662007dec845e4fc4e435d814303c9bf02acf6cdc7df6b0f37e26f519da59a5')
 
 build() {
     cd "${srcdir}/cairo-${pkgver}"
-    
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
-        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid
+
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
+        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --datasubdir="$pkgname" \
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -32,13 +31,8 @@ build() {
 
 package() {
     cd "${srcdir}/cairo-${pkgver}"
-    
+
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/cairo"
     runhaskell Setup copy --destdir="${pkgdir}"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

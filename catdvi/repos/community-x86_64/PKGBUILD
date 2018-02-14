@@ -1,12 +1,13 @@
 # $Id$
-# Maintainer: Stefan Husmann <stefan-husmann@t-online.de>
+# Maintainer: Pierre Neidhardt <ambrevar@gmail.com>
+# Contributor:: Stefan Husmann <stefan-husmann@t-online.de>
 # Contributor: Xilon <xilonmu@gmail.com>
 
 pkgname=catdvi
 pkgver=0.14
-pkgrel=6
+pkgrel=7
 pkgdesc="A DVI to plain text translator"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://catdvi.sourceforge.net"
 license=('GPL')
 depends=('glibc' 'texlive-core')
@@ -30,6 +31,6 @@ build() {
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
-  install -d $pkgdir/usr/bin $pkgdir/usr/share/man/man1
-  make DESTDIR="$pkgdir" install bindir=$pkgdir/usr/bin mandir=$pkgdir/usr/share/man
+  install -d "$pkgdir"/usr/bin "$pkgdir"/usr/share/man/man1
+  make DESTDIR="$pkgdir" install bindir="$pkgdir"/usr/bin mandir="$pkgdir"/usr/share/man
 }

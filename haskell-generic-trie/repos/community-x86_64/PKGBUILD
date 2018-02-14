@@ -5,23 +5,27 @@
 _hkgname=generic-trie
 pkgname=haskell-generic-trie
 pkgver=0.3.0.2
-pkgrel=2
+pkgrel=5
 pkgdesc="A map, where the keys may be complex structured data"
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=("custom:BSD3")
-arch=('i686' 'x86_64')
-depends=("ghc")
+arch=('x86_64')
+depends=('ghc-libs')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('38319a5e95ed79e0e8924a69fc992c6fa38a3152a2539314ddd19d1a10abf8e9')
+sha512sums=('02ed47023b1854e59f3be7e1af34c115496ea051cd6e46c7bc4dd1116b895c5d3c1043fbe976a9026713bc865c624cef459628f3ef6aab1a43afb1f56063abce')
+
+prepare() {
+    sed -i 's/base             >= 4.5     && < 4.10,/base             >= 4.5,/' $_hkgname-$pkgver/$_hkgname.cabal
+}
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
+
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
-        --libsubdir=\$compiler/site-local/\$pkgid -fsplit-base
+        --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid -fsplit-base
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
@@ -30,15 +34,10 @@ build() {
 
 package() {
     cd "${srcdir}/${_hkgname}-${pkgver}"
-    
+
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

@@ -2,79 +2,69 @@
 # Maintainer: Nicola Squartini <tensor5@gmail.com>
 
 pkgname=zcash
-pkgver=1.0.9
-_commit=a410f124b24f1ebd763015492b029af09b1872a9
+pkgver=1.0.14
+_commit=1ddecf644f6bab29545bb6333889fb059eb7970e
 pkgrel=2
 pkgdesc='Permissionless financial system employing zero-knowledge security'
 arch=('x86_64')
 url='https://z.cash/'
 license=('MIT')
-depends=('boost-libs' 'libevent' 'miniupnpc' 'zeromq')
-makedepends=('boost' 'cargo' 'cmake' 'git' 'python' 'wget')
+depends=('boost-libs' 'libevent' 'zeromq')
+makedepends=('boost' 'cargo' 'cmake' 'git' 'gmock' 'python' 'wget')
 checkdepends=('python' 'python2' 'python2-pyzmq')
 source=("git+https://github.com/zcash/zcash.git#commit=${_commit}"
         "boost-no-mt-suffix.patch"
-        "use-system-libraries.patch"
-        "use-system-rust.patch")
-sha256sums=('SKIP'
-            'a2ac906ac99757adaa7d5eb7e68d2a64c3d628e71c03264c31edcbb500990569'
-            'ef8ab26635bb2608f03ddf991da3581060670161938171fa2e413758fa4bad3f'
-            '065cd418ca7be72018c7fdada3012872bd079a254a95560312514594381b8028')
+        "use-system-rust.patch"
+        'zcashd.service')
+sha512sums=('SKIP'
+            'fa9ac59839ba6c6aabefb24296ae29914acf7089487377e7948fd684e32b1b499e8e15daccd10baf968905ec69ad2da8b91ff2c8d4724412d8143428ed4de23d'
+            '3663373af04318aa72d877f399f0c9e956d289ac876583e70afa2933bf4171f7441a399e043b2d29b1df6d19d29390bb69d4053cad4b75bef903a8685fcd23bf'
+            '2fb8b0a636ca9c7ee15f0fd2c47046c8323ade3de9562f393da7541eee50dd14b12107dd29b0e1ee90ff88963e2f7e25b12435166a1812df5c88c579c12dde88')
 
 prepare() {
     cd ${pkgname}
 
     # Set gitattributes on src/clientversion.cpp
-    mkdir ../${pkgname}-${pkgver}
-    git archive ${_commit} | tar -xC ../${pkgname}-${pkgver}
-    cd ../${pkgname}-${pkgver}
+    git archive --format=tar ${_commit} -- src/clientversion.cpp | tar -xf -
 
     patch -Np1 -i ../boost-no-mt-suffix.patch
-    patch -Np1 -i ../use-system-libraries.patch
     patch -Np1 -i ../use-system-rust.patch
 }
 
 build() {
-    cd ${pkgname}-${pkgver}
+    cd ${pkgname}
 
     cd depends
-    libs=('bdb' 'googletest' 'googlemock' 'librustzcash' 'libsnark' 'proton')
-    for lib in "${libs[@]}"; do
-        make ${lib}
-    done
-    for lib in "${libs[@]}"; do
-        tar -xzf built/x86_64-unknown-linux-gnu/${lib}/${lib}-*.tar.gz \
-            -C x86_64-unknown-linux-gnu
-    done
+    make install \
+        native_packages='' \
+        packages='bdb librustzcash proton'
     cd ..
 
-    CPPFLAGS="${CPPFLAGS} -I$PWD/depends/x86_64-unknown-linux-gnu/include"
-    LDFLAGS="${LDFLAGS} -L${PWD}/depends/x86_64-unknown-linux-gnu/lib -L${PWD}/depends/x86_64-unknown-linux-gnu/lib64"
+    CPPFLAGS="${CPPFLAGS} -I$PWD/depends/${CARCH}-unknown-linux-gnu/include"
+    LDFLAGS="${LDFLAGS} -L${PWD}/depends/${CARCH}-unknown-linux-gnu/lib -L${PWD}/depends/x86_64-unknown-linux-gnu/lib64"
 
     ./autogen.sh
-    ./configure --prefix=/usr
+    depends_prefix="${PWD}/depends/x86_64-unknown-linux-gnu" ./configure --prefix=/usr
     make
 }
 
 check() {
-    cd ${pkgname}-${pkgver}
+    cd ${pkgname}
 
-    ./qa/zcash/full-test-suite.sh
-
-    # Run the RPC tests
     # ./zcutil/fetch-params.sh
-    # ./qa/pull-tester/rpc-tests.sh
+    # ./qa/zcash/full_test_suite.py
 }
 
 package() {
-    cd ${pkgname}-${pkgver}
+    cd ${pkgname}
 
     make DESTDIR="${pkgdir}" install
 
     for ext in '-cli' '-tx' 'd'; do
-        install -Dm644 contrib/bitcoin${ext}.bash-completion \
+        install -Dm644 contrib/zcash${ext}.bash-completion \
             "${pkgdir}"/usr/share/bash-completion/completions/zcash${ext}
     done
 
+    install -Dm644 -t "${pkgdir}"/usr/lib/systemd/user ../zcashd.service
     install -Dm644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/COPYING
 }

@@ -3,10 +3,10 @@
 # Maintainer: schuay <jakob.gruber@gmail.com>
 
 pkgname=puzzles
-pkgver=20160428
+pkgver=20171029
 pkgrel=1
 pkgdesc="Simon Tatham's Portable Puzzle Collection"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.chiark.greenend.org.uk/~sgtatham/puzzles/"
 license=('MIT')
 makedepends=('pkgconfig' 'subversion' 'xorg-server-xvfb' 'imagemagick' 'git')

@@ -3,30 +3,32 @@
 # Contributor: Tobias Veit - nIcE <m.on.key.tobi[at]gmail[dot]com>
 
 pkgname=metasploit
-pkgver=4.14.21
+pkgver=4.16.36
 pkgrel=1
 pkgdesc='Advanced open-source platform for developing, testing, and using exploit code'
 url='https://www.metasploit.com/'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('BSD')
-depends=('ruby' 'libpcap' 'postgresql-libs' 'ruby-bundler' 'sqlite' 'libxslt' 'git' 'clang')
+depends=('ruby2.4' 'libpcap' 'postgresql-libs' 'ruby2.4-bundler' 'sqlite' 'libxslt' 'git')
 optdepends=('ruby-pg: database support')
 options=('!strip' '!emptydirs')
-source=(${pkgname}-${pkgver}.tar.gz::https://github.com/rapid7/metasploit-framework/archive/${pkgver}.tar.gz)
-sha256sums=('1258aaace4c8416bfe2485f0b3974fdeb9e56b79e2799c3b9c506a62b6695d55')
-sha512sums=('1a79dbdfccfe1b6cdbf450e550978cf68c5deca907dc709061970b62a9c9f9d4eee0e75033e7eeed972cd467c679abc7db99d9ac2d70ae198a8780ff7c0940fe')
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/rapid7/metasploit-framework/archive/${pkgver}.tar.gz
+        metasploit-dont-restrict-aggregator.patch)
+sha256sums=('26ece1135e78fb17cac3a81bf4078300a525a7a60e4259b2c54857090b14a380'
+            '28008fbc74852a0e939bde209a0faa715eae08a56b2e10c53e1535d50a727609')
+sha512sums=('37a4f1364bb2281459a38e09125c1686886721094240bf5a5c126d27636a2d86567d57401ce1d621966551a6871126c1a4a14865089ec445505d61629eda22a0'
+            'fcc1d1f8f2f5f337de25d674571403d62c24501f91c04914e8a9d0960fe7f248f66b44ad83f014d8e30a5b394882bd35588f226b53cec607ddd122f133eaa361')
 
 prepare() {
   cd ${pkgname}-framework-${pkgver}
-  bundle config build.nokogiri --use-system-libraries
+  bundle-2.4 config build.nokogiri --use-system-libraries
   sed 's|git ls-files|find -type f|' -i metasploit-framework.gemspec
+  patch -R -p1 < "${srcdir}/metasploit-dont-restrict-aggregator.patch"
 }
 
 build() {
   cd ${pkgname}-framework-${pkgver}
-  export CC=clang
-  export CXX=clang++
-  bundle install -j"$(nproc)" --no-cache --deployment
+  bundle-2.4 install -j"$(nproc)" --no-cache --deployment
   find vendor/bundle/ruby -exec chmod o+r '{}' \;
 }
 
@@ -38,14 +40,14 @@ package() {
 
   for f in "${pkgdir}"/opt/${pkgname}/msf*; do
     local _msffile="${pkgdir}/usr/bin/`basename "${f}"`"
-    echo -e "#!/bin/sh\nBUNDLE_GEMFILE=/opt/${pkgname}/Gemfile bundle exec ruby /opt/${pkgname}/`basename "${f}"` \"\$@\"" > "${_msffile}"
+    echo -e "#!/bin/sh\nBUNDLE_GEMFILE=/opt/${pkgname}/Gemfile bundle-2.4 exec ruby-2.4 /opt/${pkgname}/`basename "${f}"` \"\$@\"" > "${_msffile}"
     chmod 755 "${_msffile}"
   done
 
   (cd "${pkgdir}/opt/${pkgname}"
     for f in tools/*/*.rb; do
       install -Dm 755 "${f}" ".${f}"
-      echo -e "#!/bin/sh\nBUNDLE_GEMFILE=/opt/${pkgname}/Gemfile bundle exec ruby /opt/${pkgname}/."${f}" \"\$@\"" > "${f}"
+      echo -e "#!/bin/sh\nBUNDLE_GEMFILE=/opt/${pkgname}/Gemfile bundle-2.4 exec ruby-2.4 /opt/${pkgname}/."${f}" \"\$@\"" > "${f}"
       chmod 755 "${f}"
     done
   )

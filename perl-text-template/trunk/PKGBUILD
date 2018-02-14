@@ -2,15 +2,15 @@
 # Contributor: Sébastien Luttringer <seblu@archlinux.org>
 
 pkgname=perl-text-template
-pkgver=1.47
-pkgrel=2
+pkgver=1.50
+pkgrel=1
 pkgdesc='Expand template text with embedded perl'
 arch=('any')
 url='http://search.cpan.org/dist/Text-Template'
 license=('PerlArtistic' 'GPL')
 options=('!emptydirs')
 source=("http://search.cpan.org/CPAN/authors/id/M/MS/MSCHOUT/Text-Template-$pkgver.tar.gz")
-md5sums=('8929caccface52375e162d200e328131')
+sha512sums=('593e3414c45ff80bc12a3e318abd2d742df3597cae7a2277af4c80f2f8b439404245675cc6895e3e662bd444ebba92effb01f6e5c0df4bd7861ff94a3afad115')
 
 build() {
   cd Text-Template-$pkgver

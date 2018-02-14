@@ -4,16 +4,16 @@
 # Contributor: Nick B <Shirakawasuna at gmail _dot_com>
 
 pkgname=partitionmanager
-pkgver=3.1.0
+pkgver=3.3.1
 pkgrel=1
 pkgdesc="A KDE utility that allows you to manage disks, partitions, and file systems"
-arch=(i686 x86_64)
+arch=(x86_64)
 url="http://kde.org/applications/system/kdepartitionmanager/"
 license=(GPL2)
 depends=(kpmcore hicolor-icon-theme kde-cli-tools)
 makedepends=(extra-cmake-modules kdoctools python)
 source=("http://download.kde.org/stable/$pkgname/$pkgver/src/$pkgname-$pkgver.tar.xz"{,.sig})
-sha256sums=('46c3f97711cd8709aece346a27bc6ba89c29cfb5bcf2399bf1982c2e11ee6272'
+sha256sums=('5107955f9c70fc859bef04a54bffb28cd50efe355694232b9860e9d9c97a0f4a'
             'SKIP')
 validpgpkeys=(1EE5A3205904BAA2B88C0A9D24FD31940095C0E1) # Andrius Štikonas <andrius@stikonas.eu>
 

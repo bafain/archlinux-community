@@ -6,39 +6,30 @@
 # Contributor: Allan McRae <mcrae_allan@hotmail.com>
 
 pkgname=geany
-pkgver=1.30.1
-pkgrel=1
+pkgver=1.32.0
+pkgrel=2
 pkgdesc='Fast and lightweight IDE'
-arch=('x86_64' 'i686')
-url='http://www.geany.org/'
+arch=('x86_64')
+url='https://www.geany.org/'
 license=('GPL')
-depends=('gtk2' 'hicolor-icon-theme' 'desktop-file-utils')
-makedepends=('perl-xml-parser' 'intltool')
-optdepends=('geany-plugins: various extra features'
-            'vte: terminal support'
-            'python2')
-source=("https://download.geany.org/$pkgname-$pkgver.tar.bz2")
-sha256sums=('0ac360f1f3d6c28790a81d570252a7d40421f6e1d8e5a8d653756bd041d88491')
-
-prepare() {
-  cd "$pkgname-$pkgver"
-
-  # Python2 fix
-  sed -i '0,/on/s//on2/' data/templates/files/main.py
-
-  # Syntax highlighting for PKGBUILD files
-  sed -i 's/Sh=/Sh=PKGBUILD;/' data/filetype_extensions.conf
-}
+depends=('gtk3')
+makedepends=('intltool')
+optdepends=('geany-plugins: additional functionality'
+            'vte3: embedded terminal support')
+source=("https://download.geany.org/$pkgname-${pkgver/.0}.tar.bz2")
+sha256sums=('8b7be10b95d0614eb07f845ba2280f7c026eacd5739d8fac4d5d26606f8c3c2d')
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd "$pkgname-${pkgver/.0}"
 
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr --enable-gtk3
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
 }
 
 package() {
-  make -C "$pkgname-$pkgver" DESTDIR="$pkgdir" install
+  make -C "$pkgname-${pkgver/.0}" DESTDIR="$pkgdir" install
 }
 
-# vim:set ts=2 sw=2 et:
+# getver: geany.org
+# vim: ts=2 sw=2 et:

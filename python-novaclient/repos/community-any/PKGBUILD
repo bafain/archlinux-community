@@ -4,7 +4,7 @@
 
 pkgbase=python-novaclient
 pkgname=(python-novaclient python2-novaclient)
-pkgver=9.0.1
+pkgver=10.1.0
 pkgrel=1
 pkgdesc="Client library for OpenStack Compute API"
 arch=('any')
@@ -17,7 +17,7 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-pbr' 'python2-pbr'
              'python2-oslo-i18n' 'python-oslo-serialization' 'python2-oslo-serialization')
 checkdepends=('python-oslotest' 'python2-oslotest' 'python-requests-mock' 'python2-requests-mock')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/python-novaclient/archive/$pkgver.tar.gz")
-sha512sums=('9112997b1a18ed2c137a1d535c673fc50de93a3a34f78cd1c38206347fe6898ca36664989223914b0ba7a788d355d06d8286bbcb2e101876cbecaa045db32d16')
+sha512sums=('244b1778406189fbee726ea3189ab14f749beb843d81da4eca59e5dedec42df75d6fa64eed4e2cf7adf4b285a956ec99688976526ae4518127281459085144f7')
 
 prepare() {
   sed -i '/simplejson/d' python-novaclient-$pkgver/requirements.txt

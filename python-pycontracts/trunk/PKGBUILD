@@ -3,8 +3,8 @@
 
 pkgbase=python-pycontracts
 pkgname=(python-pycontracts python2-pycontracts)
-pkgver=1.7.15
-pkgrel=2
+pkgver=1.8.2
+pkgrel=1
 pkgdesc='Declare constraints on function parameters and return values'
 arch=('any')
 url="https://andreacensi.github.io/contracts"
@@ -13,7 +13,7 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-pyparsing' 'python
              'python-decorator' 'python2-decorator' 'python-six' 'python2-six')
 checkdepends=('python-nose' 'python2-nose')
 source=("https://pypi.io/packages/source/P/PyContracts/PyContracts-$pkgver.tar.gz")
-sha256sums=('24bf3ab5cfd61d0e296af82fb8b73ba875ea09733a8ca562f53016cf980dc469')
+sha512sums=('3ab81218fdb487b0f2e80db92de8ace91832a2aaeb8703f0eab2928338d5d7bc71d55f585b942be8d0c1e04d3602f6d754a307aca6d9e758c6d1fe5a361fc18e')
 
 prepare() {
   cp -a PyContracts-$pkgver{,-py2}

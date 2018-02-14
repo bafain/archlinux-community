@@ -3,36 +3,38 @@
 
 pkgbase=python-oslo-serialization
 pkgname=(python-oslo-serialization python2-oslo-serialization)
-pkgver=2.18.0
+pkgver=2.24.0
 pkgrel=1
 pkgdesc="Oslo Serialization library"
 arch=('any')
 url="http://docs.openstack.org/developer/oslo.serialization"
 license=('Apache')
-makedepends=('git' 'python-setuptools' 'python2-setuptools' 'python-pbr' 'python2-pbr'
-             'python-babel' 'python2-babel' 'python-msgpack' 'python2-msgpack'
-             'python-oslo-utils' 'python2-oslo-utils' 'python-pytz' 'python2-pytz')
+makedepends=('python-setuptools' 'python2-setuptools' 'python-pbr' 'python2-pbr' 'python-babel'
+             'python2-babel' 'python-msgpack' 'python2-msgpack' 'python-oslo-utils'
+             'python2-oslo-utils' 'python-pytz' 'python2-pytz')
 checkdepends=('python-oslotest' 'python2-oslotest' 'python2-ipaddress')
-source=("git+https://git.openstack.org/openstack/oslo.serialization#tag=$pkgver")
-sha512sums=('SKIP')
+source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/oslo.serialization/archive/$pkgver.tar.gz")
+sha512sums=('ccd0f69c8787a6a49efa98f42f5765e32b726b88791b23b2fb45efb0cbea50b8080a162d55421233f4d646f3ca16cbcabd6ccd2e32ceacbbe918f2e89fab1d9c')
+
+export PBR_VERSION=$pkgver
 
 prepare() {
-  cp -a oslo.serialization{,-py2}
+  cp -a oslo.serialization-$pkgver{,-py2}
 }
 
 build() {
-  cd "$srcdir"/oslo.serialization
+  cd "$srcdir"/oslo.serialization-$pkgver
   python setup.py build
 
-  cd "$srcdir"/oslo.serialization-py2
+  cd "$srcdir"/oslo.serialization-$pkgver-py2
   python2 setup.py build
 }
 
 check() {
-  cd "$srcdir"/oslo.serialization
+  cd "$srcdir"/oslo.serialization-$pkgver
   python setup.py testr
 
-  cd "$srcdir"/oslo.serialization-py2
+  cd "$srcdir"/oslo.serialization-$pkgver-py2
   PYTHON=python2 python2 setup.py testr
 }
 
@@ -40,7 +42,7 @@ package_python-oslo-serialization() {
   depends=('python-six' 'python-pbr' 'python-babel' 'python-msgpack' 'python-oslo-utils'
            'python-pytz')
 
-  cd "$srcdir"/oslo.serialization
+  cd "$srcdir"/oslo.serialization-$pkgver
   python setup.py install --root="$pkgdir/" --optimize=1
 }
 
@@ -48,7 +50,7 @@ package_python2-oslo-serialization() {
   depends=('python2-six' 'python2-pbr' 'python2-babel' 'python2-msgpack' 'python2-oslo-utils'
            'python2-pytz')
 
-  cd "$srcdir"/oslo.serialization-py2
+  cd "$srcdir"/oslo.serialization-$pkgver-py2
   python2 setup.py install --root="$pkgdir/" --optimize=1
 }
 

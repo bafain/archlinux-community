@@ -4,16 +4,17 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-icon-theme
-pkgver=15.12.45
+pkgver=15.12.52
 pkgrel=1
 pkgdesc="Deepin Icons"
 arch=('any')
 url="https://github.com/linuxdeepin/deepin-icon-theme"
 license=('GPL3')
+depends=('papirus-icon-theme')
 replaces=('deepin-cursor-theme')
 conflicts=('deepin-cursor-theme')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-icon-theme/archive/$pkgver.tar.gz")
-sha512sums=('2f6cd46288cf03e37e8a2814da0f678b8448b3a069ce7eaef2e31ac8eea2c74d79b5a1e0684b20451c3ea4f34ef06e508331a350d010da7bfccda74758d6669f')
+sha512sums=('9dde193aa68498904edaf89f03904ad6c22e3eff6bc4e3589fd7f06e535d999210cea0601fd4e1f195e9ebbbe3f3dfd05037bd32b6f191677e7af2b35e19a708')
 
 package() {
   cd $pkgname-$pkgver

@@ -3,16 +3,16 @@
 # Contributor: Romain Gautier <romain.gautier@nimamoh.com>
 
 pkgname=kotlin
-pkgver=1.1.2.5
+pkgver=1.2.21
 pkgrel=1
 pkgdesc='The Kotlin programming language'
 arch=('any')
-url='http://kotlinlang.org/'
+url='https://kotlinlang.org/'
 license=('apache' 'custom')
+depends=('java-environment>=8')
 makedepends=('setconf')
-depends=('bash' 'java-environment>=8')
-source=("https://github.com/JetBrains/kotlin/releases/download/v${pkgver%.*}-${pkgver##*.}/kotlin-compiler-${pkgver%.*}-${pkgver##*.}.zip")
-sha256sums=('2ddd001ec2a3a7f70f30ff22b7ee4f8eff2c195b8942b468a2d122c78fb50e72')
+source=("https://github.com/JetBrains/kotlin/releases/download/v${pkgver/_/-}/kotlin-compiler-${pkgver/_/-}.zip")
+sha256sums=('c5f2cbd35daa6c5c394e92e6c06b8eb41d85ad8da64762733874166b6807af22')
 
 prepare() {
   cd "${pkgname}c/bin"
@@ -44,6 +44,7 @@ package() {
   install -d "$pkgdir/usr/share/licenses/$pkgname"
   install -Dm644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname"
   install -Dm644 NOTICE.txt "$pkgdir/usr/share/licenses/$pkgname"
+
   cd third_party
   for txt in *.txt; do
     install -Dm644 "$txt" "$pkgdir/usr/share/licenses/$pkgname"

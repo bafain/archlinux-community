@@ -3,27 +3,27 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=tuntox
-pkgver=0.0.6
-_commit=fad23001af27f1cd380f7d05270ddcc04244f507
-pkgrel=3
+pkgver=0.0.8
+#_commit=ae9993aba7a7c90045a1747fbf33518039b9bb08
+pkgrel=1
 pkgdesc='Tunnel TCP connections over the Tox protocol'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='https://github.com/gjedeer/tuntox'
 license=('GPL3')
-depends=('toxcore')
+depends=('toxcore' 'libevent')
 makedepends=('cscope')
 source=( # "git+https://github.com/gjedeer/tuntox.git#commit=$_commit"  #tag=$pkgver
         "https://github.com/gjedeer/${pkgname}/archive/${pkgver}.tar.gz"
         "https://github.com/gjedeer/${pkgname}/releases/download/${pkgver}/${pkgver}.tar.gz.asc"
        )
 
-sha512sums=('57893516d2186f9830784f23f6312746ea6c64e0c75c84fbb3f1453da6d7c25f29cb9a848c0160b0d93dc0098d46cd923cf13b5bf2c3142c4cc05b0b14a73872'
+sha512sums=('7fdaea7ece9bdb74078f3b3c13a7a8b939f700031b6a845b32e3ef374c952090862d7c895af17515b58b156ad1a3ec87b3d45b8120bfbad5824ddc8266c8da16'
             'SKIP')
 validpgpkeys=('11C1B15A5D5DD662E469928AEBDA6B974ED3D2B7')  # GDR!_ <gdr@gdr.name>
 
 prepare() {
   cd $pkgname-$pkgver
-  sed -i "s|DEPS=libsodium toxcore|DEPS=libsodium libtoxcore|" Makefile
+  #sed -i "s|DEPS=libsodium toxcore|DEPS=libsodium libtoxcore|" Makefile
 }
 
 build() {
@@ -31,9 +31,9 @@ build() {
 
   # Makefile requires these, make it happy
   # pending issue: https://github.com/gjedeer/tuntox/issues/35
-  mkdir -p .git
-  touch .git/HEAD .git/index
-  echo "#define GITVERSION \"${_commit}\"" > gitversion.h
+  # mkdir -p .git
+  # touch .git/HEAD .git/index
+  # echo "#define GITVERSION \"${_commit}\"" > gitversion.h
   make tuntox_nostatic  # use dynamic linking
   mv tuntox_nostatic tuntox
 }

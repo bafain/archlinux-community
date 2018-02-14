@@ -1,20 +1,20 @@
 # Contributor: Martin Wimpress <code@flexion.org>
 
 pkgname=mate-utils
-pkgver=1.18.2
+pkgver=1.20.0
 pkgrel=1
 pkgdesc="Common MATE utilities for viewing disk usage, logs and fonts, taking screenshots, managing dictionaries and searching files"
 url="http://mate-desktop.org"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 depends=('mate-desktop' 'libcanberra' 'libgtop' 'libsm')
-makedepends=('intltool' 'itstool' 'mate-panel')
+makedepends=('intltool' 'itstool' 'mate-panel' 'python')
 optdepends=('mate-panel: Look up words in dictionaries from the panel')
 groups=('mate-extra')
 conflicts=('mate-utils-gtk3')
 replaces=('mate-utils-gtk3')
-source=("http://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-sha1sums=('73111d0cc6aa7dc80f96cacfcbc73ecbea303a7a')
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('f4c2ca4fe533538976412c0fab282a1c8e61f4987bc920d7a452b1131f9a4681')
 
 build() {
     cd ${pkgname}-${pkgver}

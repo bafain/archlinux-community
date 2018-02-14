@@ -3,15 +3,15 @@
 # Contributor: Rémy Oudompheng <remy@archlinux.org>
 
 pkgname=mpfi
-pkgver=1.5.1
+pkgver=1.5.3
 pkgrel=2
 pkgdesc="C library for interval arithmetic"
-arch=('i686' 'x86_64')
+arch=(x86_64)
 url="http://perso.ens-lyon.fr/nathalie.revol/software.html"
-license=('GPL')
-depends=('mpfr')
-source=("https://gforge.inria.fr/frs/download.php/file/30130/mpfi-1.5.1.tar.gz")
-md5sums=('2787d2fab9ba7fc5b171758e84892fb5')
+license=(GPL)
+depends=(mpfr)
+source=("https://gforge.inria.fr/frs/download.php/file/37332/$pkgname-$pkgver.tar.gz")
+sha256sums=('beed2003fdbedf590e8dd6edb4f2321e609e329df99ed4139cd66d7ebbc41240')
 
 build() {
   cd $pkgname-$pkgver

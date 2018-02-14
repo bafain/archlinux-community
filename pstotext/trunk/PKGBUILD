@@ -1,14 +1,15 @@
 # $Id$
-# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
-# Maintainer: Mike Sampson <mike at sambodata dot com>
+# Maintainer: Pierre Neidhardt <ambrevar@gmail.com>
+# Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor: Mike Sampson <mike at sambodata dot com>
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 # Contributor: froggie <sullivanva@gmail.com>
 
 pkgname=pstotext
 pkgver=1.9
-pkgrel=3
+pkgrel=4
 pkgdesc="Converts Postscript to text"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.cs.wisc.edu/~ghost/doc/pstotext.htm"
 license=('GPL')
 depends=('ghostscript')

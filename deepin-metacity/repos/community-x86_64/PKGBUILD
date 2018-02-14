@@ -4,21 +4,22 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 
 pkgname=deepin-metacity
-pkgver=3.22.10
+pkgver=3.22.13
 pkgrel=1
 pkgdesc="2D window manager for Deepin"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 depends=('dconf' 'libcanberra' 'libgtop' 'libsm' 'deepin-desktop-schemas' 'gtk3' 'startup-notification' 'zenity' 'bamf')
 makedepends=('intltool' 'itstool' 'autoconf-archive' 'yelp-tools' 'python')
 url="https://github.com/linuxdeepin/deepin-metacity"
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-metacity/archive/$pkgver.tar.gz")
-sha512sums=('49a0c6c0c3531c12ca0877fed3cf2b53a0dbf1ad0d0ef8699e08a0fa3e8edeef9bf60e20889b17001e8d66f8e2f3642f557a2af4bdee74c65b823073a60d5e06')
+sha512sums=('8e851e94e98a08081104c32d07a675d2ed068f47cbff18fa9926f3130bdb984ed913314d2718b1d0673ad34068dcf80ede78149cbf6cd41e8814a653792bf654')
 
 build() {
   cd $pkgname-$pkgver
   ./autogen.sh --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib/$pkgname \
                --disable-static --disable-schemas-compile
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
 }
 

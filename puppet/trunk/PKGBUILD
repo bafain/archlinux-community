@@ -9,11 +9,11 @@
 # Contributor: Niels Abspoel <aboe76 (at) Gmail (dot) com>
 
 pkgname=puppet
-pkgver=4.10.1
-pkgrel=1
+pkgver=5.3.3
+pkgrel=3
 pkgdesc="Server automation framework and application"
 arch=('any')
-url="http://puppetlabs.com/puppet/puppet-open-source"
+url="https://puppet.com/products/open-source-projects"
 license=('Apache')
 depends=('facter' 'hiera')
 optdepends=('ruby-shadow: user password management')
@@ -21,16 +21,13 @@ backup=('etc/puppetlabs/puppet/auth.conf'
         'etc/puppetlabs/puppet/puppet.conf')
 install=$pkgname.install
 source=(https://downloads.puppetlabs.com/$pkgname/$pkgname-$pkgver.tar.gz)
-md5sums=('9b785b669edf9424516d276432eb0780')
+md5sums=('d6ea48672608cad865960cf4be4b86da')
 
 prepare() {
   cd $pkgname-$pkgver
 
   # FS#45044: fix file location
   sed -i 's_/opt/puppetlabs/puppet_/usr_' ext/systemd/puppet.service
-
-  # OpenSSL 1.1 workaround
-  sed -i '104 s/^/#/' lib/puppet/util/monkey_patches.rb
 }
 
 package() {
@@ -39,29 +36,20 @@ package() {
   ruby install.rb --destdir="$pkgdir" --sitelibdir="$( ruby -e \
     'puts RbConfig::CONFIG["vendorlibdir"]' )"
 
-  install -d "$pkgdir"/{var/lib/$pkgname,usr/lib/tmpfiles.d}
+  echo 'u puppet 52 "Puppet" /var/lib/puppet' | install -Dm644 \
+    /dev/stdin "$pkgdir"/usr/lib/sysusers.d/$pkgname.conf
 
-  echo "d /run/puppetlabs 0755 $pkgname $pkgname -" > \
-    "$pkgdir"/usr/lib/tmpfiles.d/$pkgname.conf
+  echo "d /run/puppetlabs 0755 $pkgname $pkgname -" | install -Dm644 \
+    /dev/stdin "$pkgdir"/usr/lib/tmpfiles.d/$pkgname.conf
 
   # systemd
   install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/systemd/$pkgname.service \
     "$pkgdir"/usr/lib/systemd/system/$pkgname.service
 
-  # vim and emacs
-  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/vim/ftdetect/$pkgname.vim \
-    "$pkgdir"/usr/share/vim/vimfiles/ftdetect/$pkgname.vim
-  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/vim/syntax/$pkgname.vim \
-    "$pkgdir"/usr/share/vim/vimfiles/syntax/$pkgname.vim
-  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/emacs/$pkgname-mode.el \
-    "$pkgdir"/usr/share/emacs/site-lisp/$pkgname-mode.el
-  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/emacs/$pkgname-mode-init.el \
-    "$pkgdir"/usr/share/emacs/site-lisp/site-start.d/$pkgname-mode-init.el
-
   install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 
   # Match permissions that puppet sets when running
-  chmod 775 "$pkgdir"/var/lib/puppet
+  install -dm775 "$pkgdir"/var/lib/puppet
   chmod 750 "$pkgdir"/var/log/puppetlabs/puppet
 
   rm -r "$pkgdir"/var/run

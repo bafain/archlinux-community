@@ -1,24 +1,25 @@
 # Maintainer: Sven-Hendrik Haase <sh@lutzhaase.com>
 pkgname=arrayfire
 pkgdesc="High performance software library for parallel computing with an easy-to-use API"
-url='http://arrayfire.com'
-pkgver=3.5.0
+url='https://arrayfire.com'
+pkgver=3.5.1
 arch=('x86_64')
-pkgrel=1
+pkgrel=4
 license=('BSD')
-makedepends=('cmake' 'graphviz' 'doxygen' 'opencl-headers' 'glfw' 'glew' 'boost' 'git' 'python' 'gcc5' 'ocl-icd')
-makedepends_x86_64=('cuda' 'nvidia-utils')
+makedepends=('cmake' 'graphviz' 'doxygen' 'opencl-headers' 'glfw' 'glew' 'boost' 'git' 'python' 'ocl-icd' 'gcc6' 'cuda' 'nvidia-utils')
 depends=('cblas' 'fftw' 'boost-libs' 'lapacke' 'forge' 'freeimage' 'glfw' 'glew')
 optdepends=('cuda: Required for using CUDA backend'
             'nvidia-utils: Required for using CUDA backend'
             'libclc: Required for using OpenCL backend')
+options=('!buildflags')
 source=("http://arrayfire.com/arrayfire_source/arrayfire-full-${pkgver}.tar.bz2")
-sha512sums=('cf33ee9312724849bec4ed9573dfe9a9504520b7a5e8b45b9e022beab6a7cf14f00b978cb954bdd498dd70626913c40a72277e29b6b792da29cf5daf5c04e1d7')
+sha512sums=('1b521f93abdef985f54443f42e2b0270787da1194a5cdbb06a91af285672bf66fe0e6dbba2e5616968051052ff0face5b518b27014ccd10925008ecb3e53bf76')
 
 prepare() {
   cd "${srcdir}/arrayfire-full-${pkgver}"
 
   # patches here
+  sed -i "/NVCC does not support GCC version 6.0/d" src/backend/cuda/CMakeLists.txt
 }
 
 build() {
@@ -27,12 +28,12 @@ build() {
   rm -rf build
   mkdir build && cd build
 
-  export CC=gcc-5
-  export CXX=g++-5
+  export CC=gcc-6
+  export CXX=g++-6
   cmake .. \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DUSE_SYSTEM_FORGE=ON \
-      -DCOMPUTES_DETECTED_LIST="20;30;32;35;50;52;53" \
+      -DCOMPUTES_DETECTED_LIST="30;32;35;37;50;52;53;60;61;62" \
       -DBUILD_CPU=ON \
       -DBUILD_OPENCL=ON \
       -DBUILD_NONFREE=ON \

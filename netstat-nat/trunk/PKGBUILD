@@ -7,10 +7,10 @@ pkgrel=3
 pkgdesc="Small program written in C displaying NAT connections, managed by netfilter."
 url="http://tweegy.nl/projects/netstat-nat/"
 license=("GPL")
-arch=(i686 x86_64)
+arch=(x86_64)
 depends=(iptables)
-source=(http://tweegy.nl/download/netstat-nat-$pkgver.tar.gz)
-md5sums=('c1bbb3ee9774ebfa27c440e2d9dd7286')
+source=(https://tweegy.nl/download/netstat-nat-$pkgver.tar.gz)
+sha256sums=('e945faa283a49f33af15de915a949c9273a230fc17154925364c547adab676ca')
 
 build() {
   cd "$srcdir"/$pkgname-$pkgver

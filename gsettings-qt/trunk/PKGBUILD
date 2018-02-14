@@ -4,11 +4,11 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=gsettings-qt
-pkgver=0.1.20151104
-_revision=75
-pkgrel=2
+pkgver=0.1.20170110
+_revision=83
+pkgrel=1
 pkgdesc="Qml bindings for GSettings"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://launchpad.net/gsettings-qt"
 license=('LGPL')
 depends=('qt5-declarative')
@@ -19,7 +19,7 @@ sha256sums=('SKIP')
 build() {
   cd "${pkgname}"
   qmake-qt5 PREFIX=/usr
-  make
+  make -j1
 }
 
 package() {

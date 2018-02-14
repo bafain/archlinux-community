@@ -1,0 +1,25 @@
+# Contributor: Mitsu <archlinux AT suumitsu DOT eu>
+# Contributor: Stefan Husmann <stefan-husmann@t-online.de>
+# Maintainer: Jelle van der Waa <jelle@archlinux.org>
+
+pkgname=svgcleaner
+pkgver=0.9.3
+pkgrel=1
+pkgdesc="An application that cleans svg images from unnecessary data in batch mode."
+arch=('x86_64')
+url="https://github.com/RazrFalcon/SVGCleaner"
+license=('GPL2')
+makedepends=('gcc-libs' 'cargo')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/RazrFalcon/SVGCleaner/archive/v${pkgver}.tar.gz")
+sha256sums=('ee1d10be6545c14af7c4760222f3591757ae7847d3f0c86ac29324c44498e899')
+
+build() {
+  cd "${srcdir}/svgcleaner-${pkgver}/src/"
+  cargo clean
+  cargo build --release
+}
+
+package() {
+  cd "${srcdir}/svgcleaner-${pkgver}/target/release"
+  install -Dm755 "svgcleaner" "${pkgdir}/usr/bin/svgcleaner"
+}

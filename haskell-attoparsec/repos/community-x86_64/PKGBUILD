@@ -4,42 +4,47 @@
 
 _hkgname=attoparsec
 pkgname=haskell-attoparsec
-pkgver=0.13.1.0
-pkgrel=13
+pkgver=0.13.2.2
+pkgrel=3
 pkgdesc="Fast combinator parsing for bytestrings and text"
 url="https://github.com/bos/attoparsec"
 license=("BSD3")
-arch=('i686' 'x86_64')
-depends=('ghc' "haskell-scientific" "haskell-text")
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-scientific' 'haskell-text')
+makedepends=('ghc' 'haskell-quickcheck' 'haskell-quickcheck-unicode' 'haskell-tasty'
+             'haskell-tasty-quickcheck' 'haskell-vector')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha256sums=('52dc74d4955e457ce4f76f5c9d6dba05c1d07e2cd2a542d6251c6dbc66ce3f64')
+sha512sums=('3726b9d3c45289b2148c8df99d41a31fbb32a9783e1ef3940110bf064da0d000277cba54a3d990210e48a4fcaa8ed016228be7d26861e74de40c971bd7c89ea6')
+
+prepare() {
+    sed -i 's/QuickCheck >= 2.7 && < 2.10,/QuickCheck >= 2.7,/' $_hkgname-$pkgver/$_hkgname.cabal
+}
 
 build() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
-    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic \
-        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" \
+    runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
+        --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --enable-tests \
         --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid \
             -f-developer
     runhaskell Setup build
-    runhaskell Setup haddock --hoogle --html
     runhaskell Setup register --gen-script
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
     sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
 }
 
+check() {
+    cd $_hkgname-$pkgver
+    runhaskell Setup test || warning "Tests failed, possibly due to unmet dependency version on QuickCheck"
+}
+
 package() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
     
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"
-    install -d -m755 "${pkgdir}/usr/share/doc/ghc/html/libraries"
-    ln -s "/usr/share/doc/${pkgname}/html" "${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}"
     runhaskell Setup copy --destdir="${pkgdir}"
     install -D -m644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
     rm -f "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
-
-    # Remove static libs
-    find "$pkgdir"/usr/lib -name "*.a" -delete
 }

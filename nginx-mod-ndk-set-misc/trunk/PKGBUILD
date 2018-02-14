@@ -1,33 +1,34 @@
 # $Id$
 # Maintainer: Massimiliano Torromeo <massimiliano.torromeo@gmail.com>
 
-_nginxver=1.12.0
+_nginxver=1.12.2
 _setmiscver=0.31
 _ndkver=0.3.0
 
 pkgbase=nginx-mod-ndk-set-misc
 pkgname=(nginx-mod-ndk nginx-mod-set-misc)
 pkgver=$_setmiscver+$_ndkver
-pkgrel=1
+pkgrel=3
 
-arch=('i686' 'x86_64')
+arch=('x86_64')
 depends=("nginx=$_nginxver")
 url="https://github.com/openresty/set-misc-nginx-module"
 license=('BSD')
 
 source=(
-	http://nginx.org/download/nginx-$_nginxver.tar.gz
+	https://nginx.org/download/nginx-$_nginxver.tar.gz{,.asc}
 	https://github.com/openresty/set-misc-nginx-module/archive/v$_setmiscver/set-misc-$_setmiscver.tar.gz
 	https://github.com/simpl/ngx_devel_kit/archive/v$_ndkver/ngx_devel_kit-$_ndkver.tar.gz
 )
-
-sha256sums=('b4222e26fdb620a8d3c3a3a8b955e08b713672e1bc5198d1e4f462308a795b30'
+validpgpkeys=(B0F4253373F8F6F510D42178520A9993A1C052F8) # Maxim Dounin <mdounin@mdounin.ru>
+sha256sums=('305f379da1d5fb5aefa79e45c829852ca6983c7cd2a79328f8e084a324cf0416'
+            'SKIP'
             '97946a68937b50ab8637e1a90a13198fe376d801dc3e7447052e43c28e9ee7de'
             '88e05a99a8a7419066f5ae75966fb1efc409bad4522d14986da074554ae61619')
 
 build() {
 	cd "$srcdir"/nginx-$_nginxver
-	./configure $(nginx -V 2>&1 | grep 'configure arguments' | sed -r 's@^[^:]+: @@') \
+	./configure --with-compat \
 	  --add-dynamic-module=../ngx_devel_kit-$_ndkver \
 	  --add-dynamic-module=../set-misc-nginx-module-$_setmiscver
 	make modules

@@ -3,7 +3,7 @@
 
 _npmname=emojione
 pkgname=nodejs-$_npmname
-pkgver=3.0.3
+pkgver=3.1.2
 pkgrel=1
 pkgdesc="A complete set of emojis designed for the web"
 arch=('any')
@@ -13,7 +13,7 @@ depends=('nodejs')
 makedepends=('npm')
 source=("https://registry.npmjs.org/$_npmname/-/$_npmname-$pkgver.tgz")
 noextract=($_npmname-$pkgver.tgz)
-sha512sums=('c9ff8e594a471c9d48b6b23f9739f8380301c4559fa5c922c3ad61781f4231ec8952ce7cd8b3fc5b2bf819467e337b6386f535757891877176110b9c0b81453d')
+sha512sums=('c10a55c6d3bd9b151260cb4b729e6ecfa0e5c582ae4e5581ec0cd56ac60d1ac96dbee4bfc1cc8cea640b45434c1b61f1d47bef9c0b4ee01f8685c16962021a32')
 
 package() {
   npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$_npmname-$pkgver.tgz

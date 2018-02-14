@@ -4,26 +4,31 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-terminal
-pkgver=2.4.4
+pkgver=2.9.2
 pkgrel=1
 pkgdesc='Default terminal emulation application for Deepin'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://github.com/linuxdeepin/deepin-terminal"
 license=('GPL3')
 depends=('vte3' 'libsecret' 'libgee' 'libwnck3' 'expect' 'deepin-shortcut-viewer' 'deepin-menu'
          'deepin-manual')
 makedepends=('vala' 'cmake')
 groups=('deepin-extra')
-#options=(!emptydirs)
-source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-terminal/archive/$pkgver.tar.gz")
-sha512sums=('336880e1c0a4e27ec09b89dfd67994e40a4cd44c9a9434e66dc6cc61b603c17615da7c035f83948b51af9a456084a0b69b03f089e56b2b7051b1b76350cc8613')
+optdepends=('zssh: for Remote Management support')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-terminal/archive/$pkgver.tar.gz"
+        remove-vendor.patch)
+sha512sums=('17fb431407791b840cb72cf14760e542ee503bfc12e8cf434a6b6e110d0e1d46d2fa969c3dcce0eaa336e90082f6ccddfe2513f5340ad6c946d04d10cebd35f9'
+            '86a81d1f4df2e23b42e3929ec28689ee62d8b6eb8690383e5b10a5418e8be4edc78549bafad7e3af57e3184e6d0d205995a36cb7790f099891e5f55af66518ac')
 
 prepare() {
   mkdir -p build
 
-  sed -i 's|return __FILE__;|return "/usr/share/deepin-terminal/project_path.c";|' deepin-terminal-$pkgver/project_path.c
+  cd deepin-terminal-$pkgver
 
-  rm deepin-terminal-$pkgver/vapi/gee-0.8.vapi
+  sed -i 's|return __FILE__;|return "/usr/share/deepin-terminal/project_path.c";|' project_path.c
+  sed -i 's|/usr/lib/deepin-terminal/zssh|/usr/bin/zssh|' ssh_login.sh
+
+  patch -p1 -i ../remove-vendor.patch
 }
 
 build() {

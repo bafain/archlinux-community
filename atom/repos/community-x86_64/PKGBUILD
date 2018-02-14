@@ -2,10 +2,10 @@
 # Maintainer: Nicola Squartini <tensor5@gmail.com>
 
 pkgname=atom
-pkgver=1.18.0
+pkgver=1.23.3
 pkgrel=2
 pkgdesc='A hackable text editor for the 21st Century'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='https://github.com/atom/atom'
 license=('MIT' 'custom')
 depends=('apm' 'electron' 'libxkbfile')
@@ -17,21 +17,19 @@ options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
         'dugite-use-system-git.patch'
         'fix-atom-sh.patch'
-        'fix-ime-events-handler.patch'
         'fix-license-path.patch'
         'fix-restart.patch'
         'symbols-view-use-system-ctags.patch'
         'use-system-apm.patch'
         'use-system-electron.patch')
-sha256sums=('bd2dd1423ac204b1d6b117dcbab405095a7f663b97d07519b0de4300158645b1'
-            '465c90539cf4160cf05af36c8a3a88c16ae4e045c4d88ee56930a675d1074a2c'
-            '2148436adf17ec1970adc344fccf3782645375cd93e62a696a55f5b11fe98032'
-            'ab638bb8ef2b27f24433738299b9714a53ebabdecf7b01e8d9df6a9ecee77ec2'
-            '0d1e2d6be438bc7cb7633b6b462d1011a587d6f764d0abf7805895f3d8900228'
-            'c55d0837aef4aaeb2a4a317e9916e76bac34be19a5371b538843046d9ad85826'
-            '32fb830b89bd6079120bf7380a69f94c02aa366608b0d0b6c7123e06b878400c'
-            '310cfa5088908312abded7a2a28b8c53a4d7d38ec05c9623be3fa89d311b0a09'
-            '5b39644daff87980899908c0c2c10b97319291c89f332dea15f9b259f42a8b17')
+sha256sums=('f739002e52b6057667880223c1ddfcb648b8cc4c922442903e89df7f7bd0a09f'
+            'bbc07c111fe808b49b62198e17e8da5d3192faf281d5d84ac7cd493ed92bb2ba'
+            '7f4f86387d226fcd452f0b97579dadc3eac217a77485228dbf4facf3391b6198'
+            '75e60c20ddbe79c812595fdf88771422317db4256a200d2caefd09ebdd27ecc7'
+            '34625e26f1089a068582bd43a9a3755b3f5186b90dcc097b519def8f701d9f3a'
+            '3c68e6b3751313e1d386e721f8f819fb051351fb2cf8e753b1d773a0f475fef8'
+            '4b91a1acd112838bd001f4e3c555de2a5fc7446c9eab6bc5dae0ca640306e81b'
+            'c767befecc78f94826c1c09c96b1d6537130fbd3f966ba6a7b683f20b8d3d1be')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -41,9 +39,6 @@ prepare() {
   patch -Np1 -i "${srcdir}"/use-system-apm.patch
   patch -Np1 -i "${srcdir}"/fix-license-path.patch
   patch -Np1 -i "${srcdir}"/fix-restart.patch
-
-  # Fix for Electron 1.4.0
-  patch -Np1 -i "${srcdir}"/fix-ime-events-handler.patch
 }
 
 build() {
@@ -61,7 +56,7 @@ build() {
   rm -r vendor
   cd ../..
 
-  # Use system git
+  # Use system git (TODO: set LOCAL_GIT_DIRECTORY=/usr)
   cd node_modules/dugite
   patch -Np1 -i "${srcdir}"/dugite-use-system-git.patch
   rm -r git

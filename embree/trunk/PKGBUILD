@@ -1,7 +1,9 @@
 # $Id$
 # Maintainer: Lukas Jirkovsky <l.jirkovsky@gmail.com>
+# Maintainer: Bruno Pagani <archange@archlinux.org>
+
 pkgname=embree
-pkgver=2.16.3
+pkgver=2.17.2
 pkgrel=1
 pkgdesc="A collection of high-performance ray tracing kernels"
 arch=('x86_64')
@@ -9,23 +11,27 @@ url="https://embree.github.io/"
 license=('Apache')
 depends=('intel-tbb')
 makedepends=('cmake' 'ispc' 'freeglut' 'libxmu' 'openexr')
-source=("$pkgname-${pkgver}.tar.gz::https://github.com/embree/embree/archive/v${pkgver}.tar.gz")
-md5sums=('a53b4261cd6fcaa3a9dc718859790e31')
+provides=('embree-isa')
+replaces=('embree-isa')
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/embree/embree/archive/v${pkgver}.tar.gz")
+sha256sums=('546e981b7542639a29d5d7655e16d5750986c57ad553795ec24b80f11cb8994d')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   cmake . \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DEMBREE_TUTORIALS=OFF \
-    -DEMBREE_MAX_ISA="SSE2"
+    -DEMBREE_MAX_ISA="AVX2"
+  # Embree detects actual ISA at runtime
+  # AVX512KNL/SKX: https://github.com/embree/embree/issues/169
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
 }
 

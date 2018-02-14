@@ -1,63 +1,69 @@
 # $Id$
-# Maintainer: Alexander Rødseth <rodseth@gmail.com>
+# Maintainer: Alexander F Rødseth <xyproto@archlinux.org>
 # Contributor: Chris Brannon <cmbrannon79@gmail.com>
 # Contributor: JJDaNiMoTh <jjdanimoth@gmail.com>
 # Contributor: Bjørn Lindeijer <bjorn lindeijer nl>
 
-pkgname=dumb
-pkgver=0.9.3
-pkgrel=8
+pkgbase=dumb
+pkgname=(dumb dumb-a4)
+pkgver=2.0.3
+pkgrel=1
 pkgdesc='IT, XM, S3M and MOD player library'
-arch=('x86_64' 'i686')
+arch=('x86_64')
 license=('custom:dumb' 'GPL')
-url='http://dumb.sourceforge.net/'
-makedepends=('setconf')
-depends=('glibc' 'allegro4')
-source=("http://downloads.sourceforge.net/sourceforge/dumb/$pkgname-$pkgver.tar.gz"
-        'as-needed.patch'
-        'CVE-2006-3668.patch')
-sha256sums=('8d44fbc9e57f3bac9f761c3b12ce102d47d717f0dd846657fb988e0bb5d1ea33'
-            'f7a41576d5dcecad2f9a01cbb0228457b434423046cb67c9a0a720ec87f43fb9'
-            '9f6785435757db725bc73b1c4874b91e80b9277c6fdd2b56e47dae1cfbc968e6')
+url='http://dumb.sf.net/'
+makedepends=('allegro' 'allegro4' 'cmake' 'ninja')
+source=($pkgname-$pkgver.tar.gz::"https://github.com/kode54/dumb/archive/$pkgver.tar.gz")
+sha256sums=('99bfac926aeb8d476562303312d9f47fd05b43803050cd889b44da34a9b2a4f9')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cp -r "$pkgname-$pkgver" "$pkgname-$pkgver-a4"
+  mkdir -p build-a4 build-a5
 
-  # Add -fPIC for anything but i686
-  [ "$CARCH" = 'i686' ] || export CFLAGS="${CFLAGS} -fPIC"
+  # Configure for Allegro 4
+  cd build-a4
+  cmake "$srcdir/$pkgname-$pkgver-a4" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_ALLEGRO4=ON \
+    -DBUILD_EXAMPLES=OFF \
+    -GNinja
 
-  # Patch from Gentoo for CVE-2006-3668
-  patch -p1 < "$srcdir/CVE-2006-3668.patch"
+  # Configure for Allegro 5
+  cd "$srcdir/build-a5"
+  cmake "$srcdir/$pkgname-$pkgver" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_ALLEGRO4=OFF \
+    -DBUILD_EXAMPLES=OFF \
+    -GNinja
 
-  # Patch from Gentoo for binutils >= 2.22
-  patch -p1 < "$srcdir/as-needed.patch"
-  sed -i '/LDFLAGS :=/d' Makefile
-  cp Makefile Makefile.rdy
-
-  # Make with Allegro support
-  # Upstream's make process is interactive, and we can't simply pass
-  # a here-document to the make command.  The best way is to write our
-  # own config.txt, circumventing the interactive configuration step,
-  # as is done in Gentoo's ebuild.
-	cat << EOF > make/config.txt
-include make/unix.inc
-ALL_TARGETS := core core-examples core-headers
-ALL_TARGETS += allegro allegro-examples allegro-headers
-PREFIX := /usr
-EOF
-
-  # Use OFLAGS to be able to set CFLAGS without replacing the -I directives
-  make -j1 OFLAGS="${CFLAGS}"
+  # Build both
+  cd "$srcdir"
+  ninja -C build-a4
+  ninja -C build-a5
 }
 
-package() {
-  cd "$srcdir/$pkgname-$pkgver"
-
-  install -d "$pkgdir"/usr/{lib,bin,include}
-  install -Dm644 licence.txt \
-    "$pkgdir/usr/share/licenses/$pkgname/licence.txt"
-  setconf make/config.txt PREFIX "$pkgdir/usr"
-  make DESTDIR="$pkgdir" install
+package_dumb() {
+  conflicts=('dumb-a4')
+  DESTDIR="$pkgdir" ninja -C build-a5 install
+  install -Dm644 "$pkgbase-$pkgver/LICENSE" \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
-# vim:set ts=2 sw=2 et:
+package_dumb-a4() {
+  conflicts=('dumb')
+  provides=('dumb')
+  depends=('allegro4')
+  pkgdesc='IT, XM, S3M and MOD player library (for Allegro 4)'
+
+  DESTDIR="$pkgdir" ninja -C build-a4 install
+  install -Dm644 "$pkgbase-$pkgver/LICENSE" \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+# vim: ts=2 sw=2 et:

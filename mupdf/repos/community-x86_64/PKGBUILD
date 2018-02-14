@@ -8,33 +8,43 @@
 
 pkgbase=mupdf
 pkgname=(libmupdf mupdf mupdf-gl mupdf-tools)
-pkgver=1.11
-pkgrel=1
+pkgver=1.12.0
+pkgrel=2
+_openjpeg_version=2.3
 pkgdesc='Lightweight PDF and XPS viewer'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://mupdf.com'
 license=('AGPL3')
-makedepends=('curl' 'desktop-file-utils' 'freetype2' 'glfw' 'harfbuzz'
-             'jbig2dec' 'libjpeg' 'mesa-libgl' 'openjpeg2')
+makedepends=('curl' 'desktop-file-utils' 'freetype2' 'freeglut' 'glu' 'harfbuzz'
+             'jbig2dec' 'libjpeg' 'mesa-libgl' 'openjpeg2' 'libxext')
 # we need static libs for zathura-pdf-mupdf
 options=('staticlibs')
-source=("https://mupdf.com/downloads/mupdf-${pkgver/_/}-source.tar.gz"
+source=("https://mupdf.com/downloads/mupdf-${pkgver/_/}-source.tar.xz"
         '0001-mupdf-openjpeg.patch'
+        "mupdf-1.12.0-security-roundup.patch"
+        "mupdf-CVE-2017-17858.patch"
         'mupdf.desktop'
         'mupdf.xpm')
-sha256sums=('209474a80c56a035ce3f4958a63373a96fad75c927c7b1acdc553fc85855f00a'
-            '899ca42045806f69919929c2af1921868c053441648524212aa386c7f14bae4f'
-            '70f632e22902ad4224b1d88696702b3ba4eb3c28eb7acf735f06d16e6884a078'
+sha256sums=('577b3820c6b23d319be91e0e06080263598aa0662d9a7c50af500eb6f003322d'
+            'e4be458dabc577e687c3abfa1ae03bd62e8727cfa24f25b8eb23384263486605'
+            '04d0b69d2af9839e3bbaf89af05fadc635312dd4a7f536e087450dc13d3aa180'
+            '61e5528761a1be9361ccbda07faa669070cca8e8ad7320fa82eaa9fd72eb4b01'
+            'ccff66979249bd4ab4ba8918660f194eb90eb0ae231b16e36a6cecdcf471883f'
             'a435f44425f5432c074dee745d8fbaeb879038ec1f1ec64f037c74662f09aca8')
 
 prepare() {
   cd $pkgbase-${pkgver/_/}-source
 
-  # remove bundled packages, we want our system libraries
-  rm -rf thirdparty/{curl,freetype,glfw,harfbuzz,jbig2dec,jpeg,openjpeg,zlib}
+  # security fixes
+  patch -Np1 < ../mupdf-1.12.0-security-roundup.patch
+  patch -Np1 < ../mupdf-CVE-2017-17858.patch
 
-  # fix function for openjpeg 2.1.x
+  # remove bundled packages, we want our system libraries
+  rm -rf thirdparty/{curl,freeglut,freetype,harfbuzz,jbig2dec,libjpeg,openjpeg,zlib}
+
+  # fix function for openjpeg
   patch -Np1 < "${srcdir}/0001-mupdf-openjpeg.patch"
+  sed -i "s/__OPENJPEG__VERSION__/${_openjpeg_version}/" source/fitz/load-jpx.c
 
   # fix includes for jbig2dec
   sed '/^JBIG2DEC_CFLAGS :=/s|$| -I./include/mupdf|' -i Makethird
@@ -47,11 +57,6 @@ build() {
   CFLAGS+=' -fPIC'
   CXXFLAGS+=' -fPIC'
   export CFLAGS CXXFLAGS
-
-  HAVE_GLFW='yes'
-  SYS_GLFW_CFLAGS="$(pkg-config --cflags glfw3)"
-  SYS_GLFW_LIBS="$(pkg-config --libs glfw3) -lGL"
-  export HAVE_GLFW SYS_GLFW_CFLAGS SYS_GLFW_LIBS
 
   cd $pkgbase-${pkgver/_/}-source
   make build=release
@@ -74,7 +79,7 @@ package_libmupdf() {
 package_mupdf() {
   pkgdesc='Lightweight PDF and XPS viewer'
   depends=('curl' 'desktop-file-utils' 'freetype2' 'harfbuzz' 'jbig2dec'
-           'libjpeg' 'openjpeg2' 'openssl')
+           'libjpeg' 'openjpeg2' 'openssl' 'libxext')
 
   cd $pkgbase-${pkgver/_/}-source
 
@@ -93,8 +98,8 @@ package_mupdf-gl() {
   pkgdesc='Lightweight PDF and XPS viewer with OpenGL backend'
   conflicts=('mupdf')
   provides=('mupdf')
-  depends=('desktop-file-utils' 'freetype2' 'glfw' 'harfbuzz' 'jbig2dec'
-           'libjpeg' 'openjpeg2' 'openssl')
+  depends=('desktop-file-utils' 'freetype2' 'freeglut' 'glu' 'harfbuzz' 'jbig2dec'
+           'libjpeg' 'openjpeg2')
 
   cd $pkgbase-${pkgver/_/}-source
 
@@ -113,7 +118,7 @@ package_mupdf-tools() {
   pkgdesc='Tools for Lightweight PDF and XPS viewer'
   depends=('mupdf')
   depends=('freetype2' 'jbig2dec' 'libjpeg'
-         'openssl' 'openjpeg2' 'harfbuzz')
+         'openjpeg2' 'harfbuzz')
 
   cd $pkgbase-${pkgver/_/}-source
 

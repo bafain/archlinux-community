@@ -6,7 +6,7 @@
 
 pkgbase=python-tox
 pkgname=(python-tox python2-tox)
-pkgver=2.7.0
+pkgver=2.9.1
 pkgrel=1
 pkgdesc='Python virtualenv management and testing tool'
 arch=('any')
@@ -16,9 +16,11 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-py' 'python2-py' '
              'python2-virtualenv' 'python-pluggy' 'python2-pluggy')
 checkdepends=('python-pytest-runner' 'python2-pytest-runner')
 source=("https://pypi.io/packages/source/t/tox/tox-$pkgver.tar.gz")
-sha256sums=('9c3bdc06fe411d24015e8bbbab9d03dc5243a970154496aac13f9283682435f9')
+sha512sums=('ff19b2bb7ac963379f1cccd4973ad9eb4dabfbda976cde7caba50ad010d8fa57c1cba91d63e3e0512e44cc7d350bc9270fbd9b30db1bd55f7d9c239e7623d066')
 
 prepare() {
+  find tox-$pkgver -name "*.pyc" -delete
+
   cp -a tox-$pkgver{,-py2}
 }
 

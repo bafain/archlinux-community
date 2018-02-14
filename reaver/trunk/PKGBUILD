@@ -1,30 +1,34 @@
 # $Id$
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
 # Contributor: Bartosz Feński <fenio@debian.org>
 
 pkgname=reaver
-pkgver=1.5.2
+pkgver=1.6.4
 pkgrel=1
-pkgdesc="Brute force attack against Wifi Protected Setup"
-arch=('i686' 'x86_64')
-url="http://code.google.com/p/reaver-wps/"
+pkgdesc='Brute force attack against Wifi Protected Setup'
+url='https://github.com/t6x/reaver-wps-fork-t6x'
+arch=('x86_64')
 license=('GPL2')
-depends=('libpcap' 'sqlite')
-makedepends=('git')
-backup=('etc/reaver/reaver.db')
-source=("git+https://github.com/t6x/reaver-wps-fork-t6x.git#tag=v$pkgver")
-md5sums=('SKIP')
+depends=('glibc' 'libpcap')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/t6x/reaver-wps-fork-t6x/archive/v$pkgver.tar.gz")
+sha512sums=('52cb45a4ca716cb4b961820094cb9c13cdebd68471ee04db3b02b8e8f6217dcb64ca6236294e1a2235b338d909770b5449a89a2321d39c9e2c05e0a51e45ada2')
+
+prepare() {
+  cd reaver-wps-fork-t6x-$pkgver
+  sed 's|CFLAGS=|CFLAGS+=|' -i src/Makefile
+}
 
 build() {
-  cd "$srcdir/reaver-wps-fork-t6x/src"
+  cd reaver-wps-fork-t6x-$pkgver/src
   ./configure --prefix=/usr --sysconfdir=/etc
-  make
+  make CONFDIR=/etc/reaver
 }
 
 package() {
-  install -Dm755 "$srcdir/reaver-wps-fork-t6x/src/reaver" "$pkgdir/usr/bin/reaver"
-  install -Dm755 "$srcdir/reaver-wps-fork-t6x/src/wash" "$pkgdir/usr/bin/wash"
-  install -Dm644 "$srcdir/reaver-wps-fork-t6x/src/reaver.db" "$pkgdir/etc/reaver/reaver.db"
-  install -Dm644 "$srcdir/reaver-wps-fork-t6x/docs/README" "$pkgdir/usr/share/doc/reaver/README"
-  install -Dm644 "$srcdir/reaver-wps-fork-t6x/docs/reaver.1.gz" "$pkgdir/usr/share/man/man1/reaver.1.gz"
+  cd reaver-wps-fork-t6x-$pkgver
+  install -Dm755 src/{reaver,wash} -t "$pkgdir"/usr/bin
+  install -dm755 "$pkgdir"/etc/reaver
+  install -Dm644 docs/README -t "$pkgdir"/usr/share/doc/reaver
+  install -Dm644 docs/reaver.1.gz -t "$pkgdir"/usr/share/man/man1
 }

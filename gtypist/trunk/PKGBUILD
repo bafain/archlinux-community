@@ -1,13 +1,14 @@
 # $Id$
-# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
-# Maintainer: Ben Mazer <blm@groknil.org>
+# Maintainer: Pierre Neidhardt <ambrevar@gmail.com>
+# Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor: Ben Mazer <blm@groknil.org>
 # Contributor: Mike Douglas <code_monkey@gooeylinux.org>
 
 pkgname=gtypist
 pkgver=2.9.5
-pkgrel=3
+pkgrel=4
 pkgdesc="universal typing tutor"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.gnu.org/software/gtypist/gtypist.html"
 license=("GPL")
 depends=('ncurses' 'perl')

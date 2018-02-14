@@ -5,27 +5,27 @@
 
 _hkgname=QuickCheck
 pkgname=haskell-quickcheck
-pkgver=2.10.0.1
-pkgrel=1
+pkgver=2.10.1
+pkgrel=3
 pkgdesc='Automatic testing of Haskell programs'
 url='https://hackage.haskell.org/package/QuickCheck'
 license=('custom:BSD3')
-arch=('x86_64' 'i686')
-depends=('ghc' 'haskell-random' 'haskell-tf-random')
+arch=('x86_64')
+depends=('ghc-libs' 'haskell-random' 'haskell-tf-random')
+makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/$_hkgname/$pkgver/$_hkgname-$pkgver.tar.gz")
-sha512sums=('513e55190f3ecba5d38c465c517ff7b8aafea0e1a307a81736be7ea841a326547db4348d73c196e6413f57961809a51b2ce8e44819287836b8a90007cd239fdc')
+sha512sums=('f7399ff66549e4909cca8ef70797f77af6ca6df53604bec4b08780569b9e6f7340a241f797b44fe1b9af4e5e78b5569072779db0f88b366b49acf1e37656d7c1')
 
 build() {
   cd "$srcdir/$_hkgname-$pkgver"
 
   runhaskell Setup configure \
-    -O --enable-shared --enable-executable-dynamic \
+    -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
     --prefix=/usr --docdir="/usr/share/doc/$pkgname" \
     --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid \
     -ftemplateHaskell
 
   runhaskell Setup build
-  runhaskell Setup haddock --hoogle --html
   runhaskell Setup register --gen-script
   runhaskell Setup unregister --gen-script
 
@@ -38,14 +38,9 @@ package() {
 
   install -D -m744 register.sh "$pkgdir/usr/share/haskell/register/$pkgname.sh"
   install -D -m744 unregister.sh "$pkgdir/usr/share/haskell/unregister/${pkgname}.sh"
-  install -d -m755 "$pkgdir/usr/share/doc/ghc/html/libraries"
-  ln -s "/usr/share/doc/$pkgname/html" "$pkgdir/usr/share/doc/ghc/html/libraries/$_hkgname"
   runhaskell Setup copy --destdir="$pkgdir"
   install -D -m644 "LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   rm -f "$pkgdir/usr/share/doc/$pkgname/LICENSE"
-
-  # Remove static libs
-  find "$pkgdir"/usr/lib -name "*.a" -delete
 }
 
 # vim: ts=2 sw=2 et:
