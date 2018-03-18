@@ -2,16 +2,16 @@
 # Contributor: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 
 pkgname=firefox-developer-edition
-pkgver=59.0b8
+pkgver=60.0b4
 pkgrel=1
 pkgdesc="Developer Edition of the popular Firefox web browser"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/channel/#developer"
-depends=('gtk3' 'gtk2' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
+depends=('gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
          'dbus-glib' 'ffmpeg' 'nss' 'hunspell' 'sqlite' 'ttf-font' 'libpulse')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake' 'gconf' 'inetutils'
-             'xorg-server-xvfb' 'autoconf2.13' 'rust' 'mercurial' 'clang' 'llvm' 'jack')
+             'xorg-server-xvfb' 'autoconf2.13' 'rust' 'mercurial' 'clang' 'llvm' 'jack' 'gtk2')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'pulseaudio: Audio support'

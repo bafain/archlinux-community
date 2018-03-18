@@ -7,8 +7,8 @@
 # Contributor: Stefan Tatschner <stefan@sevenbyte.org>
 
 pkgname=gitlab-shell
-pkgver=6.0.2
-pkgrel=2
+pkgver=6.0.4
+pkgrel=1
 epoch=2
 pkgdesc="Git management software"
 arch=('x86_64')
@@ -26,9 +26,9 @@ backup=("etc/webapps/${pkgname}/config.yml"
 source=("${pkgname}-${pkgver}.tar.gz::https://gitlab.com/gitlab-org/gitlab-shell/repository/archive.tar.gz?ref=v${pkgver}"
         "gitlab-shell.gitconfig"
         "gitlab-shell.sysusers")
-sha512sums=('a154ab0817eeee327cd404116f1ec0b7109f1a5c0eb1185899b2d6630862f1ae62a91188dd715e6f60fbc5d0fcc13daa04b0552e5a40d6155f4d67504ccf1a19'
+sha512sums=('65237759bd33615231bd0ed6d0a4a26979c831afb0b3fd7fe40ec727450945aee98cb95b3e0bb3dbfc8896402a0a1c9e45108ac4185b44f99bb93b19a05530ac'
             '9428eaba40eb3ef52024bb01321de860e149242a15465543030317233486aa37b40c5b946aba57451d07cec98b35fcc95d60fd7b376f77c218034b6cf94d191d'
-            '5c6306494694fdd07ee475a58a6e5b83613ac7ef294ebb13f52eaa5dbe72ffcee034726245206d7edbba4b5c5e808abdfe5be7631b722492d3334407fd69840f')
+            '616188911fa7b7c569bc2d5e2024177e67366c48b4ffef1f7ad4dc8e4e9e2cdb421b687f45a1e9bdec8bf2736a157ca9f1e0ba24edae2f073b8c7b5ac42745e8')
 
 _datadir="/usr/share/webapps/${pkgname}"
 _etcdir="/etc/webapps/${pkgname}"

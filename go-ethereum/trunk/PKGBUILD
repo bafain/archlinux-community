@@ -1,0 +1,30 @@
+# $Id$
+# Maintainer: Nicola Squartini <tensor5@gmail.com>
+
+pkgname=go-ethereum
+pkgver=1.8.2
+_commit=b8b9f7f4476a30a0aaf6077daade6ae77f969960
+pkgrel=1
+pkgdesc='Official golang implementation of the Ethereum protocol'
+arch=('x86_64')
+url='http://geth.ethereum.org/'
+license=('GPL3')
+depends=('glibc')
+makedepends=('git' 'go-pie')
+provides=('geth')
+conflicts=('geth')
+replaces=('geth')
+source=("git+https://github.com/ethereum/go-ethereum.git#commit=${_commit}")
+sha256sums=('SKIP')
+
+build() {
+    cd ${pkgname}
+
+    make all
+}
+
+package() {
+    cd ${pkgname}
+
+    install -Dm755 -t "${pkgdir}"/usr/bin build/bin/*
+}

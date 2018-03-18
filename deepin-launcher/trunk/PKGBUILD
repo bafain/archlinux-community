@@ -4,7 +4,7 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-launcher
-pkgver=4.3.0
+pkgver=4.3.2
 pkgrel=1
 pkgdesc='Deepin desktop-environment - Launcher module'
 arch=('x86_64')
@@ -17,7 +17,7 @@ conflicts=('dde-launcher')
 replaces=('dde-launcher')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/dde-launcher/archive/$pkgver.tar.gz")
-sha512sums=('1eee0b3fd259a2073d4f1b4716c59f30e52b0b17fa38764a3b73679b5bcf9263e7f590aa8b2725eb7147bd0d9b48425259eaab7d74911a3b0db8ff19fb8e8e16')
+sha512sums=('55ac6257dc689ee9856aedc7d78ac2a8c0a976f59217d1e1fb2adc265d77c36cf6b9836ea84bd415cb6d6f1d45710079171d58bc6717afc48e60a83d91daf6e2')
 
 build(){
   cd dde-launcher-$pkgver

@@ -3,7 +3,7 @@
 
 pkgbase=python-hypothesis
 pkgname=('python-hypothesis' 'python2-hypothesis')
-pkgver=3.44.26
+pkgver=3.49.1
 pkgrel=1
 pkgdesc="Advanced Quickcheck style testing library for Python"
 arch=('any')
@@ -17,7 +17,7 @@ checkdepends=('python-pytest-runner' 'python2-pytest-runner' 'flake8' 'python2-f
               'python-django' 'python2-django' 'python-pytest-xdist' 'python2-pytest-xdist'
               'python-mock' 'python2-mock' 'python-pandas' 'python2-pandas')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/HypothesisWorks/hypothesis-python/archive/$pkgver.tar.gz")
-sha512sums=('59ea34951802cf57f14512c6698ca1169ee3424d3edfe76843fce4a5b691580d57aaa850322318b7ed98025f779b264e9a5f43ab345a1ae633be0ec45aa631ad')
+sha512sums=('d9a6f2d19d9813b27f497729314d749ee96ea674f60167c486273d9492a3a2b2729a9c0495793ebeb92d99117dc47e543a90ad77b3019e572861faed65fe597d')
 
 prepare() {
   # Make tests faster
@@ -48,8 +48,7 @@ check() {
 
   cd "$srcdir"/hypothesis-python-$pkgver-py2
   mv tests/django ../
-  # https://github.com/HypothesisWorks/hypothesis-python/issues/1087
-  python2 setup.py pytest || warning "Tests failed"
+  python2 setup.py pytest
   mv ../django tests/
   PYTHONPATH="$PWD/build/lib:$PYTHONPATH" python2 -m tests.django.manage test tests.django
 }

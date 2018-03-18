@@ -2,8 +2,8 @@
 # Maintainer: Anatol Pomozov <anatol.pomozov@gmail.com>
 
 pkgname=stlink
-pkgver=1.4.0
-pkgrel=1
+pkgver=1.5.0
+pkgrel=2
 pkgdesc='Firmware programmer for STM32 STLINK v1/v2 protocol'
 arch=(x86_64)
 url='https://github.com/texane/stlink'
@@ -14,7 +14,7 @@ makedepends=(cmake gtk3)
 optdepends=('gtk3: GUI application')
 install=stlink.install
 source=($pkgname-$pkgver.zip::https://github.com/texane/stlink/archive/$pkgver.zip)
-sha256sums=('45ae51f3621e4a143b1b2303cae5758e7888b39680837440b8d889d903bf75ab')
+sha256sums=('a29cf64ef2247ea2418c929bed8aecbb360f40ad489f1f268e31ca8eb974cab8')
 
 build() {
   cd stlink-$pkgver

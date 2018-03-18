@@ -2,17 +2,17 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=deepin-qt5dxcb-plugin
-pkgver=1.1.6
+pkgver=1.1.8.3
 pkgrel=1
 pkgdesc='Qt platform plugins for DDE'
 arch=('x86_64')
 url="https://github.com/linuxdeepin/qt5dxcb-plugin"
 license=('GPL3')
-depends=('qt5-x11extras')
+depends=('cairo' 'qt5-x11extras')
 makedepends=('qt5-xcb-private-headers')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/qt5dxcb-plugin/archive/$pkgver.tar.gz")
-sha512sums=('c1863f4dd1242e8b78f63e6fbb0d9897bfbc48275a1924600b1ba6a7365a7b04199880789aaf05393d5d02714f665ee40361cb96f905733a3a27023904230434')
+sha512sums=('b2f561114f4efa0518aac536efd844215b6d2a842aee39c84728aede2d6367dc9019ec918ee750345adddbd9a59b24f25a187e52bf8100cfeb90b9abf2d11e0e')
 
 prepare() {
   cd qt5dxcb-plugin-$pkgver

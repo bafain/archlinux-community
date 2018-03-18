@@ -4,7 +4,7 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-mutter
-pkgver=3.20.26
+pkgver=3.20.28
 pkgrel=1
 pkgdesc="Base window manager for deepin, fork of gnome mutter"
 arch=('x86_64')
@@ -16,7 +16,7 @@ depends=('deepin-clutter' 'dconf' 'gobject-introspection-runtime' 'deepin-deskto
 makedepends=('gnome-common' 'gnome-doc-utils' 'gobject-introspection' 'gtk-doc' 'intltool')
 options=('!emptydirs')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-mutter/archive/$pkgver.tar.gz")
-sha512sums=('064789b5f06032abb8089815e9e4aff3715d51dfcc6a39d8db2735b64fea04557b372a6b300f053266e0f3129b1e57afc3a23d54144ea69559c00ea77acf7136')
+sha512sums=('0ee493d67a03e829ceae0dfe38527dc8c915aa2091316ca78bee3cefed1425830f0ef451392882b672ee0b020b5bb862a1ea31b78b152a14ce9c5de6595d3161')
 
 build() {
   cd deepin-mutter-$pkgver

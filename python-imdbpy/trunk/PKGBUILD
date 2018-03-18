@@ -1,38 +1,44 @@
 # Maintainer: David Runge <dave@sleepmap.de>
 
 pkgname=python-imdbpy
-pkgver=6.2
-pkgrel=2
+pkgver=6.4.1
+pkgrel=1
 pkgdesc="Python bindings for the Internet Movie Database (IMDb)"
 url="https://imdbpy.sourceforge.io/"
 arch=('any')
 license=('GPL2')
-depends=('python')
+depends=('python-lxml' 'python-sqlalchemy')
 makedepends=('python-pytest' 'python-setuptools')
-optdepends=('python-lxml' 'python-sqlalchemy')
-source=("https://github.com/alberanid/${pkgname/python-/}/archive/${pkgver}.tar.gz")
-sha512sums=('78b371eb73eb2eda2df465ab83a05152d156eb19dd05f317173aa15b8b56c14fa9f9d4943d053c93a29da794b608a0ea4af3353143fb76e033c6dc0d8e651cd8')
+checkdepends=('python-pytest' 'python-pytest-cov')
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/alberanid/${pkgname/python-/}/archive/${pkgver}.tar.gz")
+sha512sums=('558c1bb9346d7a109c29057c181f7ceabeaba76165e385ff6aef603f2873af6b89cb77391bec9d496c1419cc3af51b48ac966bb3233f7f374a0a8700ca7cda5e')
 
 prepare() {
-  cd "${pkgname/python-/}-${pkgver}"
-  # fix install folder for docs
-  sed -i "s/'doc'/'share\/doc'/g" setup.py
-  # fix install folder for config
-  sed -i "s/'etc'/'\/etc'/g" setup.py
+  mv -v "${pkgname/python-/}-${pkgver}" "${pkgname}-${pkgver}"
+  cd "${pkgname}-${pkgver}"
+  # fix install folder for docs and config
+  sed -e "s/'doc'/'share\/doc'/" \
+      -e "s/'etc'/'\/etc'/" -i setup.py
 }
 
 build() {
-  cd "${pkgname/python-/}-${pkgver}"
+  cd "${pkgname}-${pkgver}"
   python setup.py build
 }
 
+check() {
+  cd "${pkgname}-${pkgver}"
+  export PYTHONPATH=${srcdir}/${pkgname}-${pkgver}/build:${PYTHONPATH}
+  py.test
+}
+
 package() {
-  cd "${pkgname/python-/}-${pkgver}"
+  cd "${pkgname}-${pkgver}"
   python setup.py install --skip-build \
     --optimize=1 \
     --prefix=/usr \
     --root="${pkgdir}/"
-  install -Dm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+  install -vDm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
 }
 
 # vim:set ts=2 sw=2 et:

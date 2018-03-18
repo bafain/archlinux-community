@@ -1,0 +1,35 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+
+pkgname=bettercap
+pkgver=2.2
+pkgrel=1
+pkgdesc='Swiss army knife for network attacks and monitoring'
+url='https://github.com/bettercap/bettercap'
+arch=('x86_64')
+license=('GPL3')
+depends=('libpcap')
+makedepends=('go-pie' 'git')
+options=('!emptydirs')
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/bettercap/bettercap/archive/v${pkgver}.tar.gz)
+sha512sums=('3546a243b321a22a2dc03047602c1adc983126ace0128f2fb5a3625c42aaa7e24fa70a9d23e780cab58660db9f049670d1a22a769b098534cb3d27d950d1b047')
+
+prepare(){
+  export GOPATH="${srcdir}"
+  mkdir -p src/github.com/bettercap
+  ln -rTsf ${pkgname}-${pkgver} src/github.com/bettercap/bettercap
+}
+
+build() {
+  cd src/github.com/bettercap/bettercap
+  export GOPATH="${srcdir}"
+  go get -v
+  go build -o bettercap
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  install -Dm 755 ../bin/bettercap -t "${pkgdir}/usr/bin"
+  install -Dm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
+
+# vim: ts=2 sw=2 et:

@@ -3,8 +3,8 @@
 # Contributor: Arch Haskell Team <arch-haskell@haskell.org>
 
 pkgname=stack
-pkgver=1.6.3
-pkgrel=72
+pkgver=1.6.5
+pkgrel=44
 pkgdesc="The Haskell Tool Stack"
 url="https://github.com/commercialhaskell/stack"
 license=("custom:BSD3")
@@ -34,7 +34,7 @@ conflicts=('haskell-stack')
 replaces=('haskell-stack')
 install="stack.install"
 source=("$pkgname-$pkgver.tar.gz::https://github.com/commercialhaskell/stack/archive/v$pkgver.tar.gz")
-sha512sums=('28cb4d65fdcfdb999ef9ef853629b1590cde3fdd736c768c1e41350dec3a8dd3dae8519acef17eca6665c50f46fb3958cc2b9347a10b627842c47c0b9b0cd175')
+sha512sums=('416e2e128554c7acd2896a915af6d47d9bf7743c98175b897c4b3714431203283f9706d1ceeed2fe64c4b403cdaca3fb0d1d3d5c8e6edfde3b80c1aa515fb351')
 
 prepare() {
   cd $pkgname-$pkgver

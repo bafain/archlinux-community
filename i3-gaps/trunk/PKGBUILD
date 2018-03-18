@@ -3,14 +3,14 @@
 
 pkgname=i3-gaps
 _pkgsourcename=i3
-pkgver=4.14.1
+pkgver=4.15.0.1
 pkgrel=2
 pkgdesc='A fork of i3wm tiling window manager with more features, including gaps'
 arch=('i686' 'x86_64')
 url='https://github.com/Airblader/i3'
 license=('BSD')
 provides=('i3-wm')
-conflicts=('i3-wm' 'i3bar')
+conflicts=('i3-wm')
 groups=('i3')
 depends=('xcb-util-keysyms' 'xcb-util-wm' 'libev' 'yajl'
          'startup-notification' 'pango' 'perl' 'xcb-util-cursor' 'xcb-util-xrm'
@@ -25,7 +25,7 @@ optdepends=('rxvt-unicode: The terminal emulator used in the default config.'
 backup=(etc/i3/config)
 options=('docs' '!strip')
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/Airblader/i3/archive/${pkgver}.tar.gz")
-sha256sums=('47a226a5a750a6146ad47d56a7a45d7d71fea18e833b6b9565f45205c99bd685')
+sha256sums=('543998c0cc2a7f7ec7dfe849bc85cbadb442ce2286f34d7afc437a346d5c469b')
 
 prepare(){
   mkdir build

@@ -9,7 +9,7 @@
 pkgbase=python-keyrings-alt
 pkgname=('python-keyrings-alt' 'python2-keyrings-alt')
 epoch=1
-pkgver=2.3
+pkgver=3.0
 pkgrel=1
 pkgdesc="Alternate keyring implementations"
 arch=('any')
@@ -20,7 +20,7 @@ checkdepends=('python-pytest-runner' 'python2-pytest-runner' 'python2-backports.
               'python-crypto' 'python2-crypto' 'libgnome-keyring' 'python-gobject' 'python2-gobject'
               'python2-gdata')  # 'python-fs' 'python2-fs' Not compatible
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/jaraco/keyrings.alt/archive/$pkgver.tar.gz")
-sha512sums=('c2b9168e91297d260907cbd9d3ec635090747c0d4adf32313e3711b8ee0c33fa1b37a7e546acd920592efba3d517af45a4d925f1a9d48d2f28eff11cb5230606')
+sha512sums=('63de03f6fdb0a5575fc4ccd80439ba79bbe2b66ecf52ecdc2de76d685587126c44b22e52bf944c7614456309ce8b63ac5d2fe06b97ffa3719ac65d857c3743e0')
 
 prepare() {
   # Remove it from test_requirements

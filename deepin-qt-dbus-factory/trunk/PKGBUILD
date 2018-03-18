@@ -4,23 +4,16 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-qt-dbus-factory
-pkgver=0.4.2
-pkgrel=2
+pkgver=1.0.1
+pkgrel=1
 pkgdesc='A repository stores auto-generated Qt5 dbus code'
 arch=('x86_64')
 url="https://github.com/linuxdeepin/dde-qt-dbus-factory"
 license=('GPL3')
 depends=('qt5-base')
 makedepends=('python')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/dde-qt-dbus-factory/archive/$pkgver.tar.gz"
-        rename-xmousearea.patch)
-sha512sums=('bd1ebf8e41bfc20afdc6defef3929cd5fa4d972346928899dedaa9f5105dbd8f28d37191cf083ef95e279364e3ef0e384f633d75f3a0e3119aebd2bd244feffe'
-            '635eacdb4b7db70eb4b310047a7aa4e06391f054f63368234e066bbb4dee897709e12c954610ed59ea84b0acdd65cd521cede74389c48fa171b0e0bdfd9aabca')
-
-prepare() {
-  cd dde-qt-dbus-factory-$pkgver
-  patch -p1 -i ../rename-xmousearea.patch
-}
+source=("$pkgname-$pkgver.tar.gz::https://github.com/felixonmars/dde-qt-dbus-factory/archive/$pkgver.tar.gz")
+sha512sums=('018d9b048b3e40da51253d266aedba9894f4b191cb30205a94d3ff48ab8e60a17a68ce1cec5ee62cbe337f543d613dfcb8380f04476c03824aa436e8c1715fd6')
 
 build() {
   cd dde-qt-dbus-factory-$pkgver

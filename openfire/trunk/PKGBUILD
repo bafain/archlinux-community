@@ -3,27 +3,31 @@
 # Contributor: Pierre Schmitz <pierre@archlinux.de>
 
 pkgname=openfire
-pkgver=4.2.1
-pkgrel=2
+pkgver=4.2.2
+pkgrel=6
 pkgdesc="High performance XMPP (Jabber) server."
 arch=('any')
 url='http://www.igniterealtime.org/projects/openfire/'
 license=('APACHE')
 depends=('java-runtime-headless')
 makedepends=('apache-ant')
-backup=('etc/openfire/openfire.xml' 'etc/openfire/openfire.xml' 'etc/openfire/openfire.xml' \
-        'etc/conf.d/openfire' 'etc/openfire/security/keystore' 'etc/openfire/security/truststore' \
-        'etc/openfire/security/client.truststore')
-source=("http://www.igniterealtime.org/downloadServlet?filename=openfire/openfire_src_${pkgver//./_}.tar.gz" \
+backup=('etc/conf.d/openfire'
+        'etc/openfire/openfire.xml'
+        'etc/openfire/security.xml'
+        'etc/openfire/crowd.properties'
+        'etc/openfire/security/truststore'
+        'etc/openfire/security/client.truststore'
+        'etc/openfire/security/keystore')
+source=("http://www.igniterealtime.org/downloadServlet?filename=openfire/openfire_src_${pkgver//./_}.tar.gz"
         'openfire.conf'
         'openfire.service'
         'user.conf'
         'tmpfile.conf')
-sha256sums=('198b5941225d88646f39b7d97448f171a03f3dd0a999120ddb3a724426817b0d'
+sha256sums=('a9fa56332cec9437c751644bf23dbbf65a332605493d4780b97b0da4a5febe7d'
             'c8a612abee90bdc9a2869e562a4bbbf596159c60adcd23368833a0e2ca27c1d4'
-            '772332b66a90935ddb8075eb10eab9b95a84caa45908bb3fa5861d7fa148399c'
-            '743d07158d40f3690684a078d5f35c53c819e45d4ff0c2016b0f33662363614f'
-            '020333e30c121dc1ec1e4aac669fdb3bcff9b2fdca94f8a114bf33abdac91992')
+            '3e7bca77161777daefd3533d4d6f42ff7970533c887d6f4b7f1c9fdcf7771d05'
+            '8bfa51cf8cc88fc69547a8f6e9e3fb242926ca2a100659363e1a6b332f223ba9'
+            'c63396991984a067d05e21094a664255d6aed2bf294bddd3885a7da75472b886')
 
 build() {
 	cd "$srcdir"/openfire_src/build
@@ -33,7 +37,8 @@ build() {
 
 package() {
 	cd "$pkgdir"
-	install -dm755 usr/lib usr/share/openfire/resources etc/openfire var/log/openfire
+	install -dm755 usr/lib usr/share/openfire/resources
+	install -dm750 etc/openfire
 
 	cd "$srcdir"
 	install -Dm644 openfire.conf "$pkgdir"/etc/conf.d/openfire
@@ -45,7 +50,6 @@ package() {
 	rm -rf bin logs lib/tray.dll
 
 	cp -R conf/* "$pkgdir"/etc/openfire/
-	ln -s /etc/openfire "$pkgdir"/usr/share/openfire/conf
 
 	cp -R resources/security "$pkgdir"/etc/openfire/
 	ln -s /etc/openfire/security "$pkgdir"/usr/share/openfire/resources/security

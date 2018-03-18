@@ -5,17 +5,18 @@
 
 _gemname=ffi
 pkgname=ruby-$_gemname
-pkgver=1.9.18
-pkgrel=2
+pkgver=1.9.23
+pkgrel=1
 pkgdesc='Ruby FFI'
 arch=('x86_64')
 url='http://wiki.github.com/ffi/ffi'
 license=('BSD')
 depends=('ruby')
+makedepends=('ruby-rdoc')
 options=('!emptydirs')
 source=("https://rubygems.org/downloads/$_gemname-$pkgver.gem")
 noextract=($_gemname-$pkgver.gem)
-sha256sums=('a0df16d6a369a3306dd257adcb2ddef673e91b9740d0c5f77a98fde3ba288e0c')
+sha512sums=('6e4400872e5ea0b27a1406a334fd0aa1802c2fc0b99c41302369666da74991b8ee66ce1be08d2526e8c22e803d6f43a3181f4628d9bc87eccb572fb591c14b5f')
 
 package() {
   local _gemdir="$(ruby -e'puts Gem.default_dir')"
