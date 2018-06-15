@@ -3,8 +3,8 @@
 # Contributor: Arch Haskell Team <arch-haskell@haskell.org>
 
 pkgname=agda-stdlib
-pkgver=0.15
-pkgrel=2
+pkgver=0.16
+pkgrel=1
 pkgdesc="Agda standard libraries"
 url="https://github.com/agda/agda-stdlib"
 license=("MIT")
@@ -15,7 +15,7 @@ options=('staticlibs')
 install=$pkgname.install
 source=("$pkgname-$pkgver.tar.gz::https://github.com/agda/agda-stdlib/archive/v$pkgver.tar.gz"
         "standard-library.agda-lib")
-sha512sums=('4274b73ea2fa3bd778e345ee9459fa31c01b47ddf127b733efd572ca65a531ab49bdcd09cff2600b9229aad23cee55324653c62280421676036ff587f64abb4b'
+sha512sums=('6058214dc75e0317d8eff881553b6dbd559fe1b0d33c497cfb04b58db42a162d3ddeb93939dad851f8cabd007f7d34968246106823153c03f60551c92e7c6f5a'
             '92fad2f9b941af4506bb0d5d9d533d09823df89f7530ee5d787b741816ba07e68f25b96d6653ae6ed949ec23484c1fba47a63cc6401311462a55b5e06cfc032c')
 
 build() {
