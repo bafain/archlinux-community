@@ -2,16 +2,18 @@
 # Contributor: Grey Christoforo <first name [at] last name [dot] net>
 
 pkgname=curaengine
-pkgver=3.2.1
-pkgrel=1
+pkgver=3.4.1
+pkgrel=2
 pkgdesc="Fast and robust engine for processing 3D models into 3D printing instruction for Ultimaker and other GCode based 3D printers."
 url="https://github.com/Ultimaker/CuraEngine"
 arch=('x86_64')
 license=('AGPL')
 depends=('arcus')
-makedepends=('cmake')
+# TODO: https://github.com/Ultimaker/CuraEngine/blob/master/CMakeLists.txt#L26
+# Package polyclipping in the repos
+makedepends=('cmake' 'git')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/Ultimaker/${pkgname}/archive/${pkgver}.tar.gz")
-md5sums=('0a516fd9f449643c9549e951c713e7d1')
+md5sums=('825f80f42da70efe6c889d8acb8f6afe')
 
 
 build() {

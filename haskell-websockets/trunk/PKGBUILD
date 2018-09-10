@@ -4,19 +4,19 @@
 
 _hkgname=websockets
 pkgname=haskell-websockets
-pkgver=0.12.4.0
-pkgrel=3
+pkgver=0.12.5.1
+pkgrel=14
 pkgdesc="A sensible and clean way to write WebSocket-capable servers in Haskell."
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=("custom:BSD3")
 arch=('x86_64')
 depends=('ghc-libs' 'haskell-attoparsec' 'haskell-base64-bytestring' 'haskell-case-insensitive'
          'haskell-entropy' 'haskell-network' 'haskell-random' 'haskell-sha'
-         'haskell-streaming-commons' 'haskell-text')
+         'haskell-streaming-commons')
 makedepends=('ghc' 'haskell-hunit' 'haskell-test-framework' 'haskell-test-framework-hunit'
              'haskell-test-framework-quickcheck2')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('9d2a7ff8ed5fa2fb69469e55024f76b9c9bd79d36e42f774d8a4e88c629e0b2b5617f6987653cc6270b941dbf9b6ec5fcbc28c42e0770714f6a2b0f3e4477964')
+sha512sums=('00cc65102ba00e72cf5c9f2f05075cd6ef1cdc5223fd13b7688393721e6979f6aa420f904273ee71e97bfaa2b05055cee7e0fb52e117e9ff0fd06c75e55b6399')
 
 prepare() {
     cd $_hkgname-$pkgver
@@ -39,7 +39,8 @@ build() {
 
 check() {
     cd $_hkgname-$pkgver
-    runhaskell Setup test
+    # Tests hang: https://github.com/jaspervdj/websockets/issues/180
+    # runhaskell Setup test
 }
 
 package() {

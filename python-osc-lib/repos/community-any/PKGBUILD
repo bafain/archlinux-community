@@ -4,11 +4,11 @@
 
 pkgbase=python-osc-lib
 pkgname=(python-osc-lib python2-osc-lib)
-pkgver=1.9.0
+pkgver=1.11.1
 pkgrel=1
 pkgdesc="OpenStackClient Library"
 arch=('any')
-url="http://docs.openstack.org/developer/osc-lib"
+url="https://docs.openstack.org/osc-lib/latest/"
 license=('Apache')
 makedepends=('git' 'python-setuptools' 'python2-setuptools' 'python-pbr' 'python2-pbr'
              'python-babel' 'python2-babel' 'python-cliff' 'python2-cliff'
@@ -17,14 +17,16 @@ makedepends=('git' 'python-setuptools' 'python2-setuptools' 'python-pbr' 'python
              'python2-oslo-utils' 'python-simplejson' 'python2-simplejson' 'python-stevedore'
              'python2-stevedore' 'python-openstacksdk' 'python2-openstacksdk')
 checkdepends=('python-oslotest' 'python2-oslotest' 'python-requests-mock'
-              'python2-requests-mock')
+              'python2-requests-mock' 'python-testrepository' 'python2-testrepository')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/osc-lib/archive/$pkgver.tar.gz")
-sha512sums=('3d8ffceaef162cefce4d5376c25d2db7ba168a33f683ea8df4e8a173a229e1383ad24027e56b76f20be1b6a3b8c6c896fd12c1b73382d5ac0f2e4cf6e49b2f4d')
+sha512sums=('2cf88f0ed2e8a98659408a5140ebdca4e454d8cc7f736778b84bfd80646cb400ed5ca043ec1fd75c16f198622a36b5706d4462ecb0bf184b538194f945928c16')
+
+export PBR_VERSION=$pkgver
 
 prepare() {
+  # https://storyboard.openstack.org/#!/story/2003142
+  sed -i 's/issubclass/isinstance/' osc-lib-$pkgver/osc_lib/utils/__init__.py
   cp -a osc-lib-$pkgver{,-py2}
-
-  export PBR_VERSION=$pkgver
 }
 
 build() {
@@ -37,10 +39,10 @@ build() {
 
 check() {
   cd "$srcdir"/osc-lib-$pkgver
-  python setup.py testr || warning "Tests failed"
+  stestr run || warning "Tests failed"
 
   cd "$srcdir"/osc-lib-$pkgver-py2
-  PYTHON=python2 python2 setup.py testr || warning "Tests failed"
+  PYTHON=python2 stestr2 run || warning "Tests failed"
 }
 
 package_python-osc-lib() {

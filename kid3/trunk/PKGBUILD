@@ -4,7 +4,7 @@
 
 pkgbase=kid3
 pkgname=('kid3' 'kid3-qt')
-pkgver=3.5.1
+pkgver=3.6.2
 pkgrel=1
 arch=('x86_64')
 url="http://kid3.sourceforge.net/"
@@ -15,11 +15,12 @@ makedepends=('qt5-tools' 'qt5-multimedia' 'qt5-declarative' 'chromaprint'
 changelog=$pkgbase.changelog
 source=(https://downloads.sourceforge.net/$pkgbase/$pkgbase-$pkgver.tar.gz{,.asc})
 validpgpkeys=('7D09794C2812F62194B081C14CAD34426E354DD2') # Urs Fleisch
-sha256sums=('88c20826deb13f81bcdfa7033a4b9ff9ca8957112b2fa2ccc0a9a1076df73926'
+sha256sums=('df03d98a2bfd08b7baea6c1006b89bac8ce4c07e8d91d6194a2f05895d1ad8a7'
             'SKIP')
 
 prepare() {
   cd "${srcdir}"
+
   [[ ! -d build ]] && mkdir build
   mkdir build-qt
 }
@@ -30,7 +31,6 @@ build() {
   cmake \
     ../${pkgbase}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_BUILD_TYPE=Release \
     -DWITH_QT5=ON \
     -DWITH_APPS="CLI;KDE" \
     -DWITH_MP4V2=ON \
@@ -42,7 +42,6 @@ build() {
   cmake \
     ../${pkgbase}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_BUILD_TYPE=Release \
     -DWITH_QT5=ON \
     -DWITH_APPS="CLI;Qt" \
     -DWITH_MP4V2=ON \
@@ -54,6 +53,7 @@ package_kid3() {
 pkgdesc="An MP3, Ogg/Vorbis and FLAC tag editor, KDE version"
 depends=('qt5-multimedia' 'phonon-qt5' 'chromaprint' 'id3lib' 'taglib'
          'libmp4v2' 'kio' 'desktop-file-utils' 'hicolor-icon-theme')
+optdepends=('qt5-declarative: QmlCommand extension')
 conflicts=('kid3-qt')
 
   cd "$srcdir"/build

@@ -1,7 +1,7 @@
 # Maintainer: Antonio Rojas <arojas@archlinux.org>
 
 pkgname=three.js
-pkgver=r91
+pkgver=r96
 pkgrel=1
 pkgdesc='A JavaScript 3D Library which makes WebGL simpler'
 url='https://threejs.org/'
@@ -9,7 +9,7 @@ arch=(any)
 license=(MIT)
 depends=()
 source=("$pkgname-$pkgver.tar.gz::https://github.com/mrdoob/three.js/archive/$pkgver.tar.gz")
-sha256sums=('2da7159cbc1607512820f27a2572e6c6920cf1b7ab26627ff3bdcf1f0c30e18a')
+sha256sums=('98433c62ce553c5932659dcb7bba8219e253b3f463a519c9e38021717e850d08')
 
 package() {
   cd $pkgname-$pkgver

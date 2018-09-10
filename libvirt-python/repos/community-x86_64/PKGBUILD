@@ -5,7 +5,7 @@
 
 pkgbase=libvirt-python
 pkgname=('libvirt-python2' 'libvirt-python')
-pkgver=4.0.0
+pkgver=4.6.0
 pkgrel=1
 pkgdesc="libvirt python binding"
 arch=('x86_64')
@@ -15,7 +15,7 @@ makedepends=('python' 'python2' 'libvirt')
 options=('emptydirs')
 validpgpkeys=('C74415BA7C9C7F78F02E1DC34606B8A5DE95BC1F')
 source=("http://libvirt.org/sources/python/libvirt-python-${pkgver}.tar.gz")
-sha512sums=('3eca33bb04265323ad47a6c8cb04a6848ab2b06bf656a188c7c0a39419e6dcc5c21f16682f6c64647da432c1d7e3ddc4699d848766987baccf806d68b5937d9a')
+sha512sums=('15c71820ea3c3f71cfa127b82374f05cc99d4ed5189ad9ec0e471b3491fc4050f7f938590a46f0eb9d9efcbf45971881ed4f40376619a9f6b3796459626d645c')
 
 package_libvirt-python2() {
   depends=('python2' 'libvirt')

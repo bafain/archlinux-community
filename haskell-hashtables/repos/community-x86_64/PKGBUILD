@@ -4,8 +4,8 @@
 
 _hkgname=hashtables
 pkgname=haskell-hashtables
-pkgver=1.2.2.1
-pkgrel=6
+pkgver=1.2.3.1
+pkgrel=4
 pkgdesc="Mutable hash tables in the ST monad"
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=('custom:BSD3')
@@ -13,7 +13,7 @@ arch=('x86_64')
 depends=('ghc-libs' 'sh' 'haskell-hashable' 'haskell-primitive' 'haskell-vector')
 makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('c613d4a2a3cad5d5aea794d2056a0910eaf4de1109d336bd28d959cd0b1c69cfc0fc96d601a91e3ec2e5c4cc3ea9e93a7e6ec96b0f15075140d402bcd5a6c4b5')
+sha512sums=('9adb7f587d7e03417a335ad4ff8c333e66a9acdabe70a568f0a3ed6cb02d7b7b124e59ec7d67661b3d174bf9afdf3916b4a0b8d631604b7fdb2a0270c68e7fa9')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"

@@ -4,20 +4,19 @@
 
 _hkgname=ShellCheck
 pkgname=shellcheck
-pkgver=0.4.7
-pkgrel=7
+pkgver=0.5.0
+pkgrel=89
 pkgdesc="Shell script analysis tool"
 url="http://www.shellcheck.net"
 license=("GPL")
 arch=('x86_64')
-depends=('ghc-libs' 'haskell-json' 'haskell-mtl' 'haskell-parsec' 'haskell-quickcheck'
-         'haskell-regex-tdfa')
-makedepends=('ghc')
-source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('bb9c79911701b3857d29fd63588115888f4d2b1d224066bb944ca00d29d973195ad1f4b1df8e2746fd0666f7438f46abc384f7f915c152f46fcd332163736792')
+depends=('ghc-libs' 'haskell-aeson' 'haskell-quickcheck' 'haskell-regex-tdfa')
+makedepends=('ghc' 'pandoc')
+source=("$_hkgname-$pkgver.tar.gz::https://github.com/koalaman/shellcheck/archive/v$pkgver.tar.gz")
+sha512sums=('87861cddb353262630e4370e12e508224b3c14e128082909b4b35f0526dfe648a744d68cc27f77f2f8bb098af37a2af7bdc805d88018bba5e48b6c1ff1749f10')
 
 build() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $pkgname-$pkgver
 
     runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --enable-tests \
@@ -27,15 +26,17 @@ build() {
     runhaskell Setup unregister --gen-script
     sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
     sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
+
+    pandoc -s -t man shellcheck.1.md -o shellcheck.1
 }
 
 check() {
-    cd $_hkgname-$pkgver
+    cd $pkgname-$pkgver
     runhaskell Setup test
 }
 
 package() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $pkgname-$pkgver
 
     install -D -m644 ${pkgname}.1   "${pkgdir}/usr/share/man/man1/${pkgname}.1"
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"

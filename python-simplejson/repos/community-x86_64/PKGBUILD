@@ -6,8 +6,8 @@
 
 pkgbase=python-simplejson
 pkgname=('python-simplejson' 'python2-simplejson')
-pkgver=3.13.2
-pkgrel=1
+pkgver=3.16.0
+pkgrel=2
 pkgdesc='Simple, fast, extensible JSON encoder/decoder for Python'
 license=('MIT')
 arch=('x86_64')
@@ -15,7 +15,7 @@ url='https://github.com/simplejson/simplejson'
 makedepends=('python-setuptools' 'python2-setuptools')
 checkdepends=('python-pytest-runner' 'python2-pytest-runner')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/simplejson/simplejson/archive/v$pkgver.tar.gz")
-sha512sums=('b1d6c68e1a6c967dfb695d0cd3d8dca19d458b650ddc0c8273328378eab7f52b801ee29431a6b3bde16608e886259267f41cbefabb7fbe7adb1e243479f91132')
+sha512sums=('2cdb02f821bea7f71af81b0ebf034afa9fab03d47b2ab0c388c7e1119fe4bb55ea3d458a2ed18c5b82de376521282e65902d72fcfcf680e420e4206b7cb0e293')
 
 prepare() {
   cp -a simplejson-$pkgver{,-py2}

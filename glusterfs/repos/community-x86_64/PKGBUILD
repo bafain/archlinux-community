@@ -6,7 +6,7 @@
 
 pkgname=glusterfs
 epoch=1
-pkgver=3.13.1
+pkgver=4.1.2
 pkgrel=2
 pkgdesc='Is a cluster file-system capable of scaling to several peta-bytes.'
 arch=(x86_64)
@@ -20,19 +20,20 @@ backup=('etc/glusterfs/glusterd.vol'
 	'etc/glusterfs/glusterd.vol'
 	'etc/glusterfs/glusterfs-georep-logrotate'
 	'etc/glusterfs/glusterfs-logrotate')
-depends=(fuse python2 libxml2 libaio liburcu attr which)
-makedepends=(flex bison)
-optdepends=('rpcbind: NFS'
-	    'glib2: qemu-block')
+depends=(fuse python2 libxml2 libaio liburcu attr which rpcbind)
+makedepends=(rpcsvc-proto)
+optdepends=('glib2: qemu-block')
 #source=($pkgname-$pkgver.tar.gz::https://github.com/gluster/glusterfs/archive/v$pkgver.tar.gz)
-source=(https://download.gluster.org/pub/gluster/glusterfs/${pkgver%.?}/$pkgver/glusterfs-$pkgver.tar.gz)
-sha256sums=('a107854076977ca827c36016c46fa067287c6dc5a1238cf4bf4a7e7983fdaa76')
+source=(https://bits.gluster.org/pub/gluster/glusterfs/src/glusterfs-$pkgver.tar.gz
+        glusterfs.sysusers)
+sha256sums=('6f0b01c082fec65134eea43b2e4df8d4b55269f43b7d330e81eaad920d7c63e5'
+            'a470d07aedb2674adfb295b4775e490b48816b87974946da4dcf62aa0d72108a')
 
 prepare() {
   cd "$srcdir"/$pkgname-$pkgver
   find -type f -name '*.py' -exec sed -i \
-    -e 's:env\ python:env\ python2:' \
-    -e 's:/usr/bin/python:/usr/bin/python2:' {} \;
+    -e 's:env\ python$:env\ python2:' \
+    -e 's:/usr/bin/python$:/usr/bin/python2:' {} +
 }
 
 build() {
@@ -47,6 +48,7 @@ build() {
     --mandir=/usr/share/man \
     --libexecdir=/usr/lib/$pkgname \
     --with-systemddir=/usr/lib/systemd/system \
+    --with-tmpfilesdir=/usr/lib/tmpfiles.d \
     --enable-gnfs \
     PYTHON=python2 LEXLIB=
   make
@@ -57,8 +59,9 @@ package() {
 
   make -j1 DESTDIR="$pkgdir" install
 
-  mkdir -p "$pkgdir"/usr/lib/tmpfiles.d
-  echo "d /var/run/glusterfs 0755 root root -" >"$pkgdir"/usr/lib/tmpfiles.d/glusterfs.conf
+  # https://bugzilla.redhat.com/show_bug.cgi?id=1598900
+  install -Dm644 "$srcdir"/glusterfs.sysusers \
+    "$pkgdir"/usr/lib/sysusers.d/glusterfs.conf
 
   install -D -m 644 \
     "$srcdir"/$pkgname-$pkgver/{README.md,INSTALL,COPYING*} \

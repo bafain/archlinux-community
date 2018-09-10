@@ -3,10 +3,10 @@
 # Contributor: Joel Teichroeb <joel@teichroeb.net>
 
 pkgname=weston
-pkgver=3.0.0
-pkgrel=2
+pkgver=5.0.0
+pkgrel=1
 pkgdesc='Reference implementation of a Wayland compositor'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='https://wayland.freedesktop.org/'
 license=('MIT')
 depends=('glibc' 'wayland' 'libxkbcommon' 'libinput' 'libunwind' 'pixman'
@@ -14,17 +14,17 @@ depends=('glibc' 'wayland' 'libxkbcommon' 'libinput' 'libunwind' 'pixman'
          'mesa' 'libegl' 'libgles' 'glib2' 'pango' 'lcms2' 'mtdev' 'libx11'
          'libxcb' 'dbus' 'libva' 'libxcursor' 'colord')
 makedepends=('wayland-protocols')
-validpgpkeys=('C7223EBE4EF66513B892598911A30156E0E67611') # Bryce Harrington
+validpgpkeys=('C7223EBE4EF66513B892598911A30156E0E67611' # Bryce Harrington
+              'C0066D7DB8E9AC6844D728715E54498E697F11D7') # Derek Foreman
 source=("https://wayland.freedesktop.org/releases/$pkgname-$pkgver.tar.xz"{,.sig})
-sha1sums=('0a75c2ee10f2453a073411157bb6ed029080669f'
-          'SKIP')
+md5sums=('752a04ce3c65af4884cfac4e57231bdb'
+         'SKIP')
 
 build() {
   cd $pkgname-$pkgver
   ./configure \
     --prefix=/usr \
     --libexecdir=/usr/lib/weston \
-    --enable-libinput-backend \
     --enable-systemd-login \
     --enable-systemd-notify \
     --enable-xwayland \

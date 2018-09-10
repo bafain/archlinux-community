@@ -4,7 +4,7 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-desktop-base
-pkgver=2017.11.1
+pkgver=2018.7.23
 pkgrel=1
 epoch=1
 pkgdesc='Base component for Deepin'
@@ -14,7 +14,7 @@ license=('GPL3')
 depends=('deepin-wallpapers')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-desktop-base/archive/$pkgver.tar.gz")
-sha512sums=('2d1081e415f240371499c398154bd458f8e23bf0dfe09be3b4a3a681f1e64340fd568a0fcfd8a6dc973f7013d29aa9d76ca99c58cb099b02dd99ffa3f85b446c')
+sha512sums=('7d4b9372c336b83c558fe3662fed130b917f15cb1caaf73d83cf20530fe6439290889601297114e9ee0914185fb4ffe1d7b3550b7da0bae2020b91f018b67bc3')
 
 build() {
   cd $pkgname-$pkgver

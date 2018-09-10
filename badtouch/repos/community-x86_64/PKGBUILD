@@ -1,0 +1,37 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Contributor: kpcyrd <git@rxv.cc>
+
+pkgname=badtouch
+pkgver=0.6.1
+pkgrel=1
+pkgdesc='Scriptable network authentication cracker'
+url='https://github.com/kpcyrd/badtouch'
+depends=('openssl' 'libcap')
+makedepends=('cargo')
+arch=('x86_64')
+license=('GPL3')
+install=badtouch.install
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/kpcyrd/${pkgname}/archive/v${pkgver}.tar.gz)
+sha256sums=('62181ac05a68a552e1984dd42206f6a5ca195e51addc48cbfdf55a60afc7c3ae')
+sha512sums=('607f32de46540a836b21dfd7f33457c33f2f84136d198e365d06eb41f2a95c73414bf951ab92d861edbeca327f24d0c7580b9a349291caf527fd150930018d69')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  cargo build --release --locked
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+  cargo test --release --locked
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  install -Dm 755 target/release/${pkgname} -t "${pkgdir}/usr/bin"
+  install -Dm 644 docs/badtouch.1 -t "${pkgdir}/usr/share/man/man1"
+  install -Dm 644 scripts/* -t "${pkgdir}/usr/share/doc/${pkgname}/examples"
+  install -Dm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}
+
+# vim: ts=2 sw=2 et:

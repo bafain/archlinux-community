@@ -3,18 +3,20 @@
 # Contributor: Mirco Tischler <mt-ml at gmx dot de>
 
 pkgname=fwupd
-pkgver=1.0.6
+pkgver=1.1.1
 pkgrel=1
 pkgdesc='A simple daemon to allow session software to update firmware'
 arch=('x86_64')
 url='https://github.com/hughsie/fwupd'
-license=('GPL2')
-depends=('appstream-glib' 'fwupdate' 'colord' 'python')
-makedepends=('meson' 'valgrind' 'gtk-doc' 'help2man' 'python-pillow' 'gobject-introspection'
-             'python-cairo' 'ttf-dejavu' 'adobe-source-han-sans-cn-fonts' 'python-gobject' 'vala')
+license=('LGPL')
+depends=('appstream-glib' 'efivar' 'python' 'libsmbios')
+makedepends=('meson' 'valgrind' 'gtk-doc' 'help2man' 'bash-completion' 'python-pillow' 'gobject-introspection'
+             'python-cairo' 'ttf-dejavu' 'adobe-source-han-sans-cn-fonts' 'python-gobject' 'vala' 'gnu-efi-libs')
 checkdepends=('umockdev')
-source=(${pkgname}-${pkgver}.tar.gz::"${url}/archive/${pkgver}.tar.gz")
-sha256sums=('437017baf58a1aab3e63fd28264c05ab3ca1eaebc6295f959ae42338490d2223')
+backup=('etc/fwupd/daemon.conf' 'etc/fwupd/uefi.conf')
+source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz"{,.asc})
+sha256sums=('1a8126176dffe3909bd0a52822ce7557f58b64b980ac1dc7de885e73ad9bea6b' 'SKIP')
+validpgpkeys=('163EB50119225DB3DF8F49EA17ACBA8DFA970E17') # Richard Hughes <richard@hughsie.com>
 
 build() {
     cd ${pkgname}-${pkgver}

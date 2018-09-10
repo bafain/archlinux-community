@@ -3,7 +3,7 @@
 # Maintainer: Jelle van der Waa <jelle@archlinux.org>
 
 pkgname=svgcleaner
-pkgver=0.9.3
+pkgver=0.9.5
 pkgrel=1
 pkgdesc="An application that cleans svg images from unnecessary data in batch mode."
 arch=('x86_64')
@@ -11,7 +11,7 @@ url="https://github.com/RazrFalcon/SVGCleaner"
 license=('GPL2')
 makedepends=('gcc-libs' 'cargo')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/RazrFalcon/SVGCleaner/archive/v${pkgver}.tar.gz")
-sha256sums=('ee1d10be6545c14af7c4760222f3591757ae7847d3f0c86ac29324c44498e899')
+sha256sums=('dcf8dbc8939699e2e82141cb86688b6cd09da8cae5e18232ef14085c2366290c')
 
 build() {
   cd "${srcdir}/svgcleaner-${pkgver}/src/"

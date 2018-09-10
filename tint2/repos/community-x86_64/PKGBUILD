@@ -1,11 +1,11 @@
 # $Id$
-# Maintainer: Alexander F Rødseth <xyproto@archlinux.org>
+# Maintainer: Alexander F. Rødseth <xyproto@archlinux.org>
 # Contributor: Blue Peppers <bluepeppers@archlinux.us>
 # Contributor: Stefan Husmann <stefan-husmann@t-online.de>
 # Contributor: Yannick LM <LMyannicklm1337@gmail.com>
 
 pkgname=tint2
-pkgver=16.2
+pkgver=16.6.1
 pkgrel=1
 pkgdesc='Basic, good-looking task manager for WMs'
 arch=('x86_64')
@@ -34,5 +34,5 @@ package() {
   DESTDIR="$pkgdir" ninja -C build install
 }
 
-# getver: gitlab.com/o9000/tint2/raw/master/README.md
+# getver: gitlab.com/o9000/tint2/raw/master/ChangeLog
 # vim: ts=2 sw=2 et:

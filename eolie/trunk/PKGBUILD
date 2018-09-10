@@ -3,8 +3,8 @@
 # Contributor: Cédric Bellegarde cedric bellegarde at adishatz dot org
 
 pkgname=eolie
-pkgver=0.9.18
-pkgrel=3
+pkgver=0.9.36
+pkgrel=1
 pkgdesc="Simple web browser for GNOME"
 arch=('x86_64')
 url="https://wiki.gnome.org/Apps/Eolie"
@@ -16,8 +16,8 @@ optdepends=('python-beautifulsoup4: Import html bookmarks'
             'python-fxa: Firefox Sync support'
             'python-pyopenssl: Show SSL certificates'
             'python-requests-hawk: Firefox Sync support')
-_commit=7c6bbd3e29bd0c5caf85d1f00af1fdcf305173b1  # tags/0.9.18^0
-source=("git+https://gitlab.gnome.org/gnumdk/eolie.git#commit=$_commit"
+_commit=3a5c981b121be145f4cd80785444091e10307d7e  # tags/0.9.36
+source=("git+https://gitlab.gnome.org/World/eolie.git#commit=$_commit"
         "git+https://gitlab.gnome.org/gnumdk/eolie-po.git")
 sha256sums=('SKIP'
             'SKIP')
@@ -28,19 +28,16 @@ pkgver() {
 }
 
 prepare() {
-	mkdir build
 	cd $pkgname
 	git config submodule.subprojects/po.url "$srcdir/eolie-po"
 	git submodule update --init
 }
 
 build() {
-	cd build
-	meson --prefix=/usr --libexecdir=/usr/lib/$pkgname --buildtype=release ../$pkgname
-	ninja
+	arch-meson $pkgname build
+	ninja -C build
 }
 
 package() {
-	cd build
-	DESTDIR="$pkgdir" ninja install
+	DESTDIR="$pkgdir" ninja -C build install
 }

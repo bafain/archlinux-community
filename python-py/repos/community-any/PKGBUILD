@@ -8,21 +8,25 @@
 
 pkgbase=python-py
 pkgname=('python-py' 'python2-py')
-pkgver=1.5.2
+pkgver=1.6.0
 pkgrel=1
 pkgdesc="library with cross-python path, ini-parsing, io, code, log facilities"
 arch=('any')
 license=('MIT')
 url="http://py.readthedocs.io/"
-makedepends=('python-setuptools' 'python2-setuptools')
+makedepends=('python-setuptools' 'python2-setuptools' 'python-setuptools-scm'
+             'python2-setuptools-scm' 'python-iniconfig' 'python2-iniconfig'
+             'python-apipkg' 'python2-apipkg')
 checkdepends=('python-pytest-runner' 'python2-pytest-runner')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/pytest-dev/py/archive/$pkgver.tar.gz")
-sha512sums=('71c2b9d26f61c5ab8fa3809c92b3aa3827befb66eed2dbaf2a035d4602f828f4334c494e35a455cbec4519fe347df0eee170d03942843d2421b9829fcfd8d3fc')
+sha512sums=('9ff5a2444cbcbc5863446262c45604c8ce47cae2365ae96e00b15025e567d3cf832e058a29be9c0b6007676e8725c70757c448288e7180a68e99905133fdf2da')
 
 prepare() {
+  rm -r py-$pkgver/py/_vendored_packages
   cp -a py-$pkgver{,-py2}
 
   export LC_CTYPE=en_US.UTF-8
+  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
 }
 
 build() {
@@ -44,7 +48,7 @@ check() {
 }
 
 package_python-py() {
-  depends=('python')
+  depends=('python-iniconfig' 'python-apipkg')
 
   cd py-$pkgver
   python setup.py install --root="$pkgdir" --optimize=1
@@ -52,7 +56,7 @@ package_python-py() {
 }
 
 package_python2-py() {
-  depends=('python2')
+  depends=('python2-iniconfig' 'python2-apipkg')
 
   cd py-$pkgver-py2
   python2 setup.py install --root="$pkgdir" --optimize=1

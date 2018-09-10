@@ -3,16 +3,16 @@
 
 _hkgname=smallcheck
 pkgname=haskell-smallcheck
-pkgver=1.1.3.1
-pkgrel=2
+pkgver=1.1.5
+pkgrel=1
 pkgdesc="A property-based testing library"
 url="https://github.com/feuerbach/smallcheck"
 license=('custom:BSD3')
 arch=('x86_64')
-depends=('ghc-libs' 'haskell-logict' 'haskell-mtl')
+depends=('ghc-libs' 'haskell-logict')
 makedepends=('ghc')
 source=(https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz)
-sha512sums=('a7783dd6b7aaed58ba0e3017aecae8cc41d98b1f373c3f2c8a21300006766db9fa981c71bc300047f651d32459ba7f7ef59e1bed518c54b7c627ecc7f59a8cfa')
+sha512sums=('6d97f91308146031a16a405391ec2b283ad719c0acc2a0672c22cc880d91c3d72f845f65897e36945c45746d2d705a9f9f16b1ff5fef1f39c9abb60a4e57430c')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"

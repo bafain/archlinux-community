@@ -4,7 +4,7 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-gtk-theme
-pkgver=17.10.6
+pkgver=17.10.8
 pkgrel=1
 pkgdesc="Deepin GTK Theme"
 arch=('any')
@@ -13,7 +13,7 @@ license=('LGPL3')
 optdepends=('gtk-engine-murrine: for gtk2 themes')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-gtk-theme/archive/$pkgver.tar.gz")
-sha512sums=('34d65988a8aacdddba480ecdb8ce942a7d1382f38486723e33bee25c098f6b16927de4e719b707ca3956c4301a11bdd8ddef370876080b47d3aa8099906c3c50')
+sha512sums=('35fb8acb78073995653f00b95cba417b8cf4031a68ca34eb8f00c3209700fdbb04cc1f7e575bdfbd5ecc947626f9ed2c659a4363592810d3a57d191e38e60774')
 
 package() {
   cd deepin-gtk-theme-$pkgver

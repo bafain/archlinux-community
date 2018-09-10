@@ -5,7 +5,7 @@
 
 pkgbase=python-faker
 pkgname=(python-faker python2-faker)
-pkgver=0.8.12
+pkgver=0.9.0
 pkgrel=1
 pkgdesc='Faker generates fake data for you.'
 arch=('any')
@@ -17,7 +17,7 @@ checkdepends=('python-ukpostcodeparser' 'python2-ukpostcodeparser'
               'python-mock' 'python2-mock' 'python-email-validator' 'python2-email-validator'
               'python2-ipaddress')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/joke2k/faker/archive/v$pkgver.tar.gz")
-sha512sums=('11045932ea1fb633fe414bb4536cfe11e930e94b0abeb47746c321b3defd900ecba8cf15385fc13d66826295917478560a476e4a534eee6c8568ab5ae8b8a2ec')
+sha512sums=('259b64a0d99da9b4e5048e372a801ca75c3eab0fdd0004b341e10c251417dcc059cf92eedf1d3a3780e1c938a507f40932986b636f6ec428beeb70c47eb4f967')
 
 prepare() {
   cp -a faker-$pkgver{,-py2}

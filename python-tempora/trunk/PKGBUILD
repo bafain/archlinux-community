@@ -4,8 +4,8 @@
 pkgbase='python-tempora'
 _pkgbase="${pkgbase//python-/}"
 pkgname=('python-tempora' 'python2-tempora')
-pkgver=1.11
-pkgrel=1
+pkgver=1.13
+pkgrel=2
 pkgdesc="Objects and routines pertaining to date and time (tempora)."
 arch=('any')
 url="https://github.com/jaraco/tempora"
@@ -14,9 +14,9 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-setuptools-scm'
   'python2-setuptools-scm' 'python-six' 'python2-six' 'python-pytz'
   'python2-pytz')
 checkdepends=('python-tox' 'python2-tox' 'python2-backports.unittest_mock')
-source=("${pkgbase}-${pkgver}.tar.gz::https://files.pythonhosted.org/packages/12/6b/dc2e9370bf3be766302dbd6cd9729e258e875d31a7a21c9f760aaa5b5b5e/${_pkgbase}-${pkgver}.tar.gz"
+source=("${pkgbase}-${pkgver}.tar.gz::https://files.pythonhosted.org/packages/27/67/f2a19a71e9bc2d460d75a6745f8de868ccdf99e6a56e5ad8e89e22d80b0d/tempora-1.13.tar.gz"
         'LICENSE')
-sha512sums=('cda47613cabefabb0c52e2f89f31b405a3b3f17c531a0b890a9ccfd3a3fcd5bc5bec19881ce726972ff61811654e8b5ec8048c9ebad6e87d72d7d98bfa4daeab'
+sha512sums=('98927024f07196a51b8d61017786cfc258db289ab9c98942cca2501074c1675bf1213770ad00db1d38829017bb9928cccde7fb344c170b2f485fc68505737485'
             '1106afed483b7258e4ae89c5d9459c3834412b31aac90169725ed62d2ab44f61f6f79e894d4c9e4d8bd99e14530ab778df2187784f0b25eaab86d312fad68944')
 
 prepare() {

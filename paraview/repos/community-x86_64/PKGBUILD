@@ -13,55 +13,61 @@ _pkg=paraview
 _mpi=openmpi
 pkgname=${_pkg}
 #-${_mpi}
-pkgver=5.4.1
-pkgrel=2
+pkgver=5.5.2
+pkgrel=3
 pkgdesc="Parallel Visualization application using VTK (${_mpi} version)"
 arch=('x86_64')
 url="https://www.paraview.org"
-license=('custom')
+license=('BSD' 'custom')
 depends=('qt5-tools' 'qt5-x11extras' 'ospray' 'ffmpeg' 'openmpi'
          'cgns' 'python-pygments' 'protobuf' 'pugixml'
          'python-matplotlib' 'python-numpy' 'python-mpi4py'
-         'python-six' 'python-constantly' 'python-twisted'
-         'python-autobahn' 'python-zope-interface' 'python-incremental'
          'boost-libs' 'glew' 'expat' 'freetype2'
-         'libjpeg' 'jsoncpp' 'libxml2' 'libtheora' 'libpng'
-         'libtiff' 'zlib' 'hdf5-openmpi' 'lz4' 'netcdf')
+         'libjpeg' 'jsoncpp' 'libxml2' 'libpng'
+         'libtiff' 'zlib' 'hdf5' 'lz4' 'netcdf')
 #        netcdf-cxx gl2ps libharu
 #        python-txaio python-hyperlink
 #        proj apparently not used in this VTK configuration
-makedepends=('cmake' 'boost' 'mesa' 'gcc-fortran' 'ninja' 'qt5-tools' 'qt5-xmlpatterns')
-source=("${url}/files/v${pkgver:0:3}/ParaView-v${pkgver}.tar.gz"
-        'visit_fix_gcc7.patch'
-        'jsoncpp-1.8.4.patch')
-sha256sums=('390d0f5dc66bf432e202a39b1f34193af4bf8aad2355338fa5e2778ea07a80e4'
-            'd1daa5da6ec25c5a6bfcabb3cf0bf02ab97ec87a332886a2f42695072fe8568d'
-            'ed9a99d5d0fb54f7506e819f6d54bd1b6cd7dd0e91647d9d06591ae300f9ef05')
+makedepends=('cmake' 'boost' 'mesa' 'gcc-fortran' 'ninja' 'qt5-tools' 'qt5-xmlpatterns' 'eigen')
+source=("${url}/files/v${pkgver:0:3}/ParaView-v${pkgver}.tar.xz"
+        'fix-qt5.11-headers.patch'
+        'https://gitlab.kitware.com/vtk/vtk/merge_requests/4490.patch'
+        'https://gitlab.kitware.com/paraview/paraview/merge_requests/2613.patch'
+        paraview-fix-doc-build.patch::"https://gitlab.kitware.com/paraview/paraview/commit/f9c7e4b0.diff")
+sha256sums=('4b9d186bac59e412ae09cae49c3ec3ec59803c25f63e89f92efe07b05dc1b896'
+            '638e3148d855e1de2ca7711f9dd1eb6ec5410e3c412d949abf2a34ef2086f0c7'
+            'ebad129ed0229f96bc17ff0a43715407b0fdf8cc2658a7b5ebd7e76809ae1392'
+            '49d643a0220f0f901e571f9f82f5dd48d85fe42a79830b971ab586abf334194f'
+            '2e52c2564e5e147b8c1321367147495ba3c43436eecda1b3d26acde8d04a230d')
 
 prepare() {
     mkdir -p build
-    cd ParaView-v${pkgver}
-    patch Utilities/VisItBridge/databases/readers/Vs/VsStaggeredField.C "${srcdir}"/visit_fix_gcc7.patch
-    patch -p1 -i "${srcdir}"/jsoncpp-1.8.4.patch
+    cd ParaView-v${pkgver}/
+    patch -p1 -i ../fix-qt5.11-headers.patch
+    # https://gitlab.kitware.com/paraview/paraview/issues/18323
+    patch -p1 -i ../2613.patch
+    # fix build https://gitlab.kitware.com/paraview/paraview/issues/18330
+    patch -p1 -i ../paraview-fix-doc-build.patch
+    cd VTK
+    # https://gitlab.kitware.com/vtk/vtk/issues/17350
+    patch -p1 -i ../../4490.patch
 }
 
 build() {
     cd build
 
     # Flags to enable system libs in VTK building, as in VTK package
-    # NETCDF NETCDFCPP status?
-    # LIBPROJ4 UNUSED?
+    # NETCDFCPP status?
     # GL2PS fails.
     # libharu blocked by https://github.com/libharu/libharu/pull/157
-    # TXAIO HYPERLINK in a future VTK version
     # LIBPROJ4 apparently not used in this VTK configuration
     local VTK_USE_SYSTEM_LIB=""
-    for lib in EXPAT FREETYPE JPEG PNG TIFF ZLIB LIBXML2 OGGTHEORA TWISTED ZOPE SIX AUTOBAHN MPI4PY JSONCPP GLEW HDF5 CONSTANTLY INCREMENTAL LZ4 NETCDF
+    for lib in EXPAT FREETYPE JPEG PNG TIFF ZLIB LIBXML2 MPI4PY JSONCPP GLEW HDF5 LZ4 NETCDF EIGEN
     do
         VTK_USE_SYSTEM_LIB+="-DVTK_USE_SYSTEM_${lib}:BOOL=ON "
     done
     # Specific system libs for ParaView version
-    for lib in CGNS PUGIXML PROTOBUF PYGMENTS 
+    for lib in CGNS PUGIXML PROTOBUF PYGMENTS
     do
         VTK_USE_SYSTEM_LIB+="-DVTK_USE_SYSTEM_${lib}:BOOL=ON "
     done
@@ -106,4 +112,5 @@ package() {
 
     # Remove IceT man pages to avoid conflicts
     rm -- "${pkgdir}"/usr/share/man/man3/icet*.3
+    rmdir "${pkgdir}"/usr/share/man/{man3/,}
 }

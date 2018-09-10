@@ -2,7 +2,7 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=marked
-pkgver=0.3.17
+pkgver=0.5.0
 pkgrel=1
 pkgdesc="A markdown parser built for speed"
 arch=('any')
@@ -12,11 +12,10 @@ depends=('nodejs')
 makedepends=('npm')
 source=(https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz)
 noextract=($pkgname-$pkgver.tgz)
-sha512sums=('f8029b36c8d997a8c57cb3f01e15a6193a84d34f704ca9f74539a7f4af2850a1eb5ff69b3c98ed711b57a5807f145af03c945403ce8b5ff75edd3d249e43c299')
+sha512sums=('5218e690258abb5492fc121e3cbd9ae7d04c27b578d8462d4df92ca1d3d15f33c4184a61dc89e9e5dca5b1eaadf8a6d4f49825b31f3170c2a696e99f24c05700')
 
 package() {
   npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
-  rm -r "$pkgdir"/usr/etc
   install -d "$pkgdir"/usr/share/licenses/$pkgname
   ln -s ../../../lib/node_modules/marked/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }

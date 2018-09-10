@@ -4,8 +4,8 @@
 # Generator  : CPANPLUS::Dist::Arch 1.28
 
 pkgname=perl-net-dns-sec
-pkgver=1.04
-pkgrel=2
+pkgver=1.10
+pkgrel=1
 pkgdesc="DNSSEC extensions to Net::DNS"
 arch=('x86_64')
 license=('PerlArtistic' 'GPL')
@@ -13,8 +13,8 @@ depends=('perl-crypt-openssl-bignum' 'perl-crypt-openssl-dsa' 'perl-crypt-openss
 checkdepends=('perl-test-pod')
 url='http://search.mcpan.org/dist/Net-DNS-SEC'
 options=('!emptydirs')
-source=("http://search.mcpan.org/CPAN/authors/id/N/NL/NLNETLABS/Net-DNS-SEC-$pkgver.tar.gz")
-sha512sums=('d90f3100ecb3e90c698f6c86b4f6aa54d1665067cf95d9d14da5adabd7e3fa53faad5ee580cb05f033b82b3126fe2bd64a6b3fb59ed69b17ee5b8f55cb5b0484')
+source=("http://search.mcpan.org/CPAN/authors/id/W/WI/WILLEM/Net-DNS-SEC-$pkgver.tar.gz")
+sha512sums=('08b36a6e294c979caf72b2abe691475936827c894d61096becca152de4973b2c43798d1c01a0cbd2e8062a9e2134d45d48b3d5ddf9e6d1ee49a4bfa51d3f7a90')
 _distdir="Net-DNS-SEC-$pkgver"
 
 build() {
@@ -31,14 +31,6 @@ check() {
 package() {
   cd "$srcdir/$_distdir"
   make DESTDIR="$pkgdir/" install
-
-# template start; name=perl-binary-module-dependency; version=1;
-if [[ $(find "$pkgdir/usr/lib/perl5/" -name "*.so") ]]; then
-        _perlver_min=$(perl -e '$v = $^V->{version}; print $v->[0].".".($v->[1]);')
-        _perlver_max=$(perl -e '$v = $^V->{version}; print $v->[0].".".($v->[1]+1);')
-        depends+=("perl>=$_perlver_min" "perl<$_perlver_max")
-fi
-# template end;
 }
 
 # vim:set ts=2 sw=2 et:

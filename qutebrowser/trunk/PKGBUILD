@@ -1,8 +1,9 @@
-# Maintainer: Pierre Neidhardt <ambrevar@gmail.com>
+# Maintainer: Morten Linderud <foxboron@archlinux.org>
+# Contributor: Pierre Neidhardt <ambrevar@gmail.com>
 # Contributor: Florian Bruhin (The Compiler) <archlinux.org@the-compiler.org>
 
 pkgname=qutebrowser
-pkgver=1.2.1
+pkgver=1.4.2
 pkgrel=1
 pkgdesc="A keyboard-driven, vim-like browser based on PyQt5"
 arch=("any")
@@ -10,7 +11,7 @@ url="http://www.qutebrowser.org/"
 license=("GPL")
 depends=("python-attrs" "python-jinja" "python-pygments" "python-pypeg2"
 	"python-pyqt5>=5.7" "python-yaml" "qt5-base>=5.7.1" "qt5-webengine")
-makedepends=("asciidoc")
+makedepends=("asciidoc" "python-setuptools")
 optdepends=("gst-libav: media playback"
 	"gst-plugins-base: media playback"
 	"gst-plugins-good: media playback"
@@ -19,11 +20,10 @@ optdepends=("gst-libav: media playback"
 	"pdfjs: displaying PDF in-browser"
 	"qt5-webkit: alternative backend")
 options=(!emptydirs)
-source=(
-	"https://github.com/qutebrowser/qutebrowser/releases/download/v$pkgver/qutebrowser-$pkgver.tar.gz"
-	"https://github.com/qutebrowser/qutebrowser/releases/download/v$pkgver/qutebrowser-$pkgver.tar.gz.asc")
+source=("https://github.com/qutebrowser/qutebrowser/releases/download/v$pkgver/qutebrowser-$pkgver.tar.gz"
+	    "https://github.com/qutebrowser/qutebrowser/releases/download/v$pkgver/qutebrowser-$pkgver.tar.gz.asc")
 validpgpkeys=("E04E560002401B8EF0E76F0A916EB0C8FD55A072")
-sha256sums=('1ce6cf2634f06d3e715c53b50e4d042ba04aa39207ec318039a2a333e2d46beb'
+sha256sums=('fd5d47b0e45e40b1348caf37e8ac304256d453d147f7a930193d3c4aeb21d2de'
             'SKIP')
 
 build() {
@@ -34,5 +34,5 @@ build() {
 
 package() {
 	cd "$srcdir/$pkgname-$pkgver"
-	make -f misc/Makefile DESTDIR="$pkgdir" install
+	make -f misc/Makefile DESTDIR="$pkgdir" PREFIX=/usr install
 }

@@ -1,0 +1,37 @@
+# $Id$
+# Maintainer: David Runge <dave@sleepmap.de>
+# Contributor: muzhed <chustokes@126.com>
+
+pkgname=din
+pkgver=36
+pkgrel=1
+pkgdesc="A sound synthesizer and musical instrument."
+arch=('x86_64')
+url="https://dinisnoise.org/"
+license=('GPL2')
+groups=('pro-audio')
+depends=('hicolor-icon-theme' 'jack' 'libgl' 'sdl' 'tcl')
+makedepends=('boost' 'glu')
+source=("https://archive.org/download/dinisnoise_source_code/${pkgname}-${pkgver}.tar.gz")
+sha512sums=('e70424f0e437394746ee4bd0ae7d515c1a9421dfb09cc91cadef0849a297d28e262bf7947e970e2ae65824d211ec9d896d963b17715259063b3fc8ad3635f8d3')
+
+prepare() {
+  cd "${pkgname}-${pkgver}"
+  autoreconf -vfi
+}
+
+build() {
+  cd "${pkgname}-${pkgver}"
+  CXXFLAGS="${CXXFLAGS} -O3 -D__UNIX_ALSA__ -D__UNIX_JACK__" \
+  CFLAGS="${CFLAGS} -O3" \
+  ./configure --prefix='/usr'
+  make
+}
+
+package() {
+  cd "${pkgname}-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  # docs
+  install -t "${pkgdir}/usr/share/doc/${pkgname}/" \
+    -vDm 644 {AUTHORS,BUGS,CHANGELOG,NEWS,README,TODO}
+}

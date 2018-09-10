@@ -2,31 +2,31 @@
 # Maintainer: Jaroslav Lichtblau <svetlemodry@archlinux.org>
 
 pkgname=man-pages-de
-pkgver=2.3
+pkgver=2.6
 pkgrel=1
 pkgdesc="German Linux man pages"
 arch=('any')
-url="https://alioth.debian.org/projects/manpages-de/"
+url="https://salsa.debian.org/manpages-de-team/manpages-de"
 license=('GPL3')
 depends=('man-db')
 makedepends=('po4a')
 changelog=$pkgname.changelog
 options=('!emptydirs')
-source=(http://manpages-de.alioth.debian.org/downloads/manpages-de-$pkgver.tar.xz)
-sha256sums=('99b93ce505d65b3c54e3a00d93aaa8f3152ca9bdfb5c17ed140c340b64ad034f')
+source=(https://salsa.debian.org/manpages-de-team/manpages-de/-/archive/v$pkgver/manpages-de-v${pkgver}.tar.bz2)
+sha256sums=('c51cf8b4bd46d13c77f4ebe5a3ad4f951bcf94fe747944e6a26750608aa08100')
 
 build() {
-  cd "${srcdir}"/manpages-de-$pkgver
+  cd "${srcdir}"/manpages-de-v$pkgver
 
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}"/manpages-de-$pkgver
+  cd "${srcdir}"/manpages-de-v$pkgver
 
   make DESTDIR="${pkgdir}" install
 
-#duplicates
-rm "${pkgdir}"/usr/share/man/de/man1/groups.1.gz #shadow
+#duplicate page included in the shadow package
+rm "${pkgdir}"/usr/share/man/de/man1/groups.1.gz
 }

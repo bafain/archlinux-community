@@ -4,29 +4,26 @@
 
 _hkgname=hledger-lib
 pkgname=haskell-hledger-lib
-pkgver=1.5
-pkgrel=27
+pkgver=1.10
+pkgrel=9
 pkgdesc="Core data types, parsers and functionality for the hledger accounting tools"
 url="http://hledger.org"
 license=("GPL")
 arch=('x86_64')
-depends=('ghc-libs' 'haskell-ansi-terminal' 'haskell-base-compat' 'haskell-blaze-markup'
+depends=('ghc-libs' 'haskell-ansi-terminal' 'haskell-base-compat-batteries' 'haskell-blaze-markup'
          'haskell-cmdargs' 'haskell-csv' 'haskell-data-default' 'haskell-decimal' 'haskell-extra'
-         'haskell-hashtables' 'haskell-megaparsec' 'haskell-mtl' 'haskell-old-time'
-         'haskell-pretty-show' 'haskell-regex-tdfa' 'haskell-safe' 'haskell-split' 'haskell-text'
-         'haskell-uglymemo' 'haskell-utf8-string' 'haskell-hunit' 'haskell-parsec'
-         'haskell-semigroups')
-makedepends=('ghc' 'haskell-doctest' 'haskell-glob' 'haskell-test-framework'
-             'haskell-test-framework-hunit')
+         'haskell-hashtables' 'haskell-megaparsec' 'haskell-old-time' 'haskell-pretty-show'
+         'haskell-regex-tdfa' 'haskell-safe' 'haskell-split' 'haskell-tabular' 'haskell-uglymemo'
+         'haskell-utf8-string' 'haskell-hunit')
+makedepends=('ghc' 'haskell-doctest' 'haskell-easytest' 'haskell-glob' 'haskell-parser-combinators'
+             'haskell-test-framework' 'haskell-test-framework-hunit')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('b9f134ad4ffdfdbd79c3a477397062db7a3610a56e842244c371db1b59c50c83d7b710e54b3c0b73067f57a36f7838bcae080490fbc1389882af9f59bd450588')
+sha512sums=('4ef569d05e29c49ecff4c61b71bf3e1992fd3811c3663570eabb0370065b066f4b3323f714d376ac0f49841fd0a3c739ed4a8a21c00da0f94982c57cf0507ba7')
 
 prepare() {
     # It does nothing
     sed -e '/mtl-compat/d' \
         -i ${_hkgname}-${pkgver}/${_hkgname}.cabal
-
-    sed -i 's/++ fs2$/++ fs2 ++ ["-dynamic"]/' ${_hkgname}-${pkgver}/tests/doctests.hs
 }
 
 build() {

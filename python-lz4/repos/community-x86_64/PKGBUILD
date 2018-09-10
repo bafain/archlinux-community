@@ -1,0 +1,55 @@
+# Maintainer: Giancarlo Razzolini <grazzolini@archlinux.org>
+# Contributor: Nissar Chababy <funilrys at outlook dot com>
+# Contributor: Thrasibule <guillaume dot horel at gmail dot com>
+# Contributor: David Manouchehri <manouchehri@riseup.net>
+# Contributor: Vladimir Tsanev <tsachev@gmail.com>
+# Contributor: Andrew Reed <reed.996@osu.edu>
+# Contributor: "Score_Under" <seejay.11@gmail.com>
+
+pkgbase=python-lz4
+_pkgname=lz4
+pkgname=('python-lz4' 'python2-lz4')
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="LZ4 bindings for Python"
+arch=('x86_64')
+license=('BSD')
+url="https://github.com/python-lz4/python-lz4"
+makedepends=('python-setuptools' 'python2-setuptools')
+checkdepends=('python-pytest' 'python2-pytest')
+source=("https://pypi.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-${pkgver}.tar.gz")
+sha512sums=('d1edeccfcc7c0ee45b59424729b74f67931c0662ac8c4302793a6e298adc23506f0b674248366d55484b7a86cdb0b9af50879b9fd3675cae10e543e1d4804468')
+
+prepare() {
+  cp -a $_pkgname-${pkgver}{,-python2}
+}
+
+build() {
+  cd "$srcdir"/$_pkgname-$pkgver
+  python setup.py build
+
+  cd "$srcdir"/$_pkgname-$pkgver-python2
+  python2 setup.py build
+}
+
+check() {
+  cd "$srcdir"/$_pkgname-$pkgver
+  python setup.py pytest
+
+  cd "$srcdir"/$_pkgname-$pkgver-python2
+  python2 setup.py pytest
+}
+
+package_python-lz4() {
+  depends=('python')
+
+  cd $_pkgname-$pkgver
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+}
+
+package_python2-lz4() {
+  depends=('python2')
+
+  cd $_pkgname-$pkgver-python2
+  python2 setup.py install --root="$pkgdir" --optimize=1 --skip-build
+}

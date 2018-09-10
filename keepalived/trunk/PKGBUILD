@@ -3,19 +3,20 @@
 # Contributor: Andrea Zucchelli <zukka77@gmail.com>
 
 pkgname=keepalived
-pkgver=1.4.2
+pkgver=2.0.7
 pkgrel=1
 pkgdesc='Failover and monitoring daemon for LVS clusters'
 arch=('x86_64')
 url='http://www.keepalived.org/'
 license=('GPL2')
 backup=('etc/keepalived/keepalived.conf' 'etc/sysconfig/keepalived')
-depends=('openssl' 'popt' 'libnl1' 'ipset' 'iptables')
+makedepends=('ipset')
+depends=('glibc' 'libnl' 'openssl' 'file' 'iptables')
 optdepends=('ipset: ipset support')
 makedepends=('libnfnetlink' 'ipset' 'systemd')
 options=('!emptydirs')
 source=("http://www.keepalived.org/software/$pkgname-$pkgver.tar.gz")
-md5sums=('610af6e04071f02d3469191de7499f4e')
+md5sums=('5204f541c75f4f68339809f0761693c5')
 
 build() {
   # trick broken ./configure systemctl test

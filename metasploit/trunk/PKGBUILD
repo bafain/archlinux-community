@@ -3,33 +3,27 @@
 # Contributor: Tobias Veit - nIcE <m.on.key.tobi[at]gmail[dot]com>
 
 pkgname=metasploit
-pkgver=4.16.45
+pkgver=4.17.5
 pkgrel=1
 pkgdesc='Advanced open-source platform for developing, testing, and using exploit code'
 url='https://www.metasploit.com/'
 arch=('x86_64')
 license=('BSD')
-depends=('ruby' 'libpcap' 'postgresql-libs' 'ruby-bundler' 'sqlite' 'libxslt' 'git')
-optdepends=('ruby-pg: database support')
+depends=('ruby' 'libpcap' 'postgresql-libs' 'ruby-bundler' 'sqlite' 'libxslt' 'libxml2' 'git')
 options=('!strip' '!emptydirs')
-source=(${pkgname}-${pkgver}.tar.gz::https://github.com/rapid7/metasploit-framework/archive/${pkgver}.tar.gz
-        metasploit-dont-restrict-aggregator.patch)
-sha256sums=('16c9d2ff56e716847187fe3b1437b5a1a5a7e45530101b179199a815b6911796'
-            '28008fbc74852a0e939bde209a0faa715eae08a56b2e10c53e1535d50a727609')
-sha512sums=('89c51d40484a42bea023f7289e1793def04b5184fa75ead25968bb4725a87398620f64d437e11d8f8a160b7c5e3649ca79a6743eb54e0416ffdf3a39f81b55ea'
-            'fcc1d1f8f2f5f337de25d674571403d62c24501f91c04914e8a9d0960fe7f248f66b44ad83f014d8e30a5b394882bd35588f226b53cec607ddd122f133eaa361')
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/rapid7/metasploit-framework/archive/${pkgver}.tar.gz)
+sha256sums=('5a8edec081082dc33808cfe7c45a8bcb114e048bdc20886b04fa3b66904e3f82')
+sha512sums=('7aae9a439358a686172b677eeaf9696252450599b6303ae6ddfc5043c8485beae4f5a726e6be488a039ef99a791ed22742fa9bbd6400678006c2ba2b92dc487c')
 
 prepare() {
   cd ${pkgname}-framework-${pkgver}
   bundle config build.nokogiri --use-system-libraries
   sed 's|git ls-files|find -type f|' -i metasploit-framework.gemspec
-  patch -Rp1 < "${srcdir}/metasploit-dont-restrict-aggregator.patch"
-  sed "s|'grpc', '1.8.3'|'grpc', '1.10.0'|g" -i Gemfile
-  sed -r 's|(grpc \(.*)1.8.3\)|\11.10.0)|g' -i Gemfile.lock
 }
 
 build() {
   cd ${pkgname}-framework-${pkgver}
+  CFLAGS+=" -I/usr/include/libxml2"
   bundle install -j"$(nproc)" --no-cache --deployment
   find vendor/bundle/ruby -exec chmod o+r '{}' \;
 }

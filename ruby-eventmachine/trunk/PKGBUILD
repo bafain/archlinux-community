@@ -3,17 +3,17 @@
 
 _gemname=eventmachine
 pkgname=ruby-${_gemname}
-pkgver=1.2.5
-pkgrel=2
+pkgver=1.2.7
+pkgrel=1
 pkgdesc='EventMachine: fast, simple event-processing library'
 url='http://rubyeventmachine.com'
 arch=('x86_64')
 license=('Ruby' 'GPL2')
-depends=('ruby' 'openssl')
+depends=('ruby' 'ruby-rdoc' 'openssl')
 options=('!emptydirs')
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/eventmachine/eventmachine/archive/v${pkgver}.tar.gz)
-sha256sums=('2e2e3ef78390a2ed54fc72095f584a12f71392c3cabedf270e3a598571b910a9')
-sha512sums=('e924a5bc84d7b8b7fd4e2433229932c91320a1b811ae10f5a23f6ebde0a0a3113064b91174d09e079b24318d8d3e71a5f9dc0287dc3d76458e907cf1890c4dcf')
+sha256sums=('32692ae79bed595445d889ab83d862200a18964c395e48cfab01ba6e9ff6437c')
+sha512sums=('768ec084903dce4c737cf564fce7886a3e7e5b7d4a89c2baea3e998130c53dc00488eaa2d8e9b0133d9e4d8fffbde80c3025403881486a7968c2d84425cc1f50')
 
 prepare() {
   cd ${_gemname}-${pkgver}

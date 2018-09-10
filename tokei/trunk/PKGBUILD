@@ -1,6 +1,6 @@
 # Maintainer: Sven-Hendrik Haase <sh@lutzhaase.com>
 pkgname=tokei
-pkgver=7.0.1
+pkgver=8.0.1
 pkgrel=1
 pkgdesc='A blazingly fast CLOC (Count Lines Of Code) program'
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('MIT' 'Apache')
 depends=('gcc-libs')
 makedepends=('rust' 'cargo')
 source=("https://github.com/Aaronepower/tokei/archive/v${pkgver}.tar.gz")
-sha512sums=('af4265923942732322f4e8f975ad8a40fbc0b45e30abfb02faa818846a5643021188bdbcdad959db7c65da96720b75faed56550338216ba997d53f45dc99807c')
+sha512sums=('8315cbc6673eaee3503622f662e53f15c9f8df37828e506acc8b07b534c65b8c8c029fe00483d569be1a190b0f0c8a6e2f70dd84eb71f48e843f7e3e40dab622')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"

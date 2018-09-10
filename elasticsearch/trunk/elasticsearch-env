@@ -35,7 +35,7 @@ if [ ! -z "$JAVA_OPTS" ]; then
 fi
 
 # check the Java version
-"$JAVA" -cp "$ES_CLASSPATH" org.elasticsearch.tools.launchers.JavaVersionChecker
+"$JAVA" -cp "$ES_CLASSPATH" org.elasticsearch.tools.java_version_checker.JavaVersionChecker
 
 export HOSTNAME=$HOSTNAME
 
@@ -45,3 +45,6 @@ if [ -z "$ES_PATH_CONF" ]; then
   echo "ES_PATH_CONF must be set to the configuration path"
   exit 1
 fi
+
+ES_DISTRIBUTION_FLAVOR=default
+ES_DISTRIBUTION_TYPE=tar

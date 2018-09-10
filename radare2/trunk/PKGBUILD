@@ -2,7 +2,7 @@
 # Contributor: Guillermo Ramos <0xwille at gmail dot com>
 
 pkgname=radare2
-pkgver=2.4.0
+pkgver=2.9.0
 pkgrel=1
 pkgdesc='Open-source tools to disasm, debug, analyze and manipulate binary files'
 url='https://radare.org'
@@ -11,8 +11,8 @@ license=('GPL3' 'LGPL3')
 depends=('sh' 'capstone' 'openssl' 'libzip')
 options=('!emptydirs')
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/radare/radare2/archive/${pkgver}.tar.gz)
-sha256sums=('e2edef4d70c7bbbb47d04002ce9d384eb2fc9c0cd4cbfde77cda8c10cae9ff24')
-sha512sums=('fca5f78c7e1dab4af0aa4bf367953bc7a49bbd9da3ab7b32e8be79cc3c4f6a1be0db4c466d5f6e68c87c569d0096dd2841ea52f4ad75234046f1a96d8b4d4fc3')
+sha256sums=('423ced52355daeaa12a6abbd6735f93c1eb19af728ecb359a6074f49abacc8a2')
+sha512sums=('8365edd54d0a8030955b566f750ae4c3b5db26550fa3035f7d543d6f2a9b31760a38df30dfd839f7c9ab938e7f032997d9a3198a16f44c54c71c58c39a2cfc8c')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -26,6 +26,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR="${pkgdir}" install
+  install -Dm 644 doc/zsh/* -t "${pkgdir}/usr/share/zsh/site-functions"
 }
 
 # vim: ts=2 sw=2 et:

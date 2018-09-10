@@ -3,16 +3,18 @@
 # Contributor: Andres Jimenez
 
 pkgname=virtualgl
-pkgver=2.5.2
-pkgrel=2
+pkgver=2.6
+pkgrel=1
 pkgdesc="Redirects 3D commands from an OpenGL application onto a server-side 3D graphics card"
 arch=('x86_64')
-url="http://virtualgl.org"
+url="https://virtualgl.org"
 license=('LGPL')
 depends=('libxv' 'glu' 'libjpeg-turbo' 'xcb-util-keysyms')
-makedepends=('cmake' 'mesa')
-source=("https://github.com/VirtualGL/virtualgl/archive/${pkgver}.tar.gz")
-sha512sums=('124a5f8856899dc82cf87cd702239a2ca9ed3d6595884cbd96f8ca2aff52f9e38105761b5f84d0be654f9994a1b71cbee2f912106866d8bb4789d645071f5c10')
+makedepends=('cmake' 'mesa' 'libxtst')
+source=("https://downloads.sourceforge.net/project/virtualgl/${pkgver}/VirtualGL-${pkgver}.tar.gz"{,.sig})
+sha512sums=('44b5777f1eab1e3afdeb9461993e2d471085be8aa070f8118161941c7623d6053782732d8b30ddaa655f7d5139600dbe721628cb0dd210e113b3360caeeb45bd'
+            'SKIP')
+validpgpkeys=('ECF01671D05E2A105FF84DC46BBEFA1972FEB9CE') # The VirtualGL Project (Signing key for official binaries) <information@VirtualGL.org>
 
 prepare() {
   # FS#48403
@@ -20,7 +22,7 @@ prepare() {
 }
 
 build() {
-  cd "virtualgl-$pkgver"
+  cd "VirtualGL-$pkgver"
 
   mkdir -p build && cd build
 
@@ -36,7 +38,7 @@ build() {
 }
 
 package() {
-  cd "virtualgl-$pkgver/build"
+  cd "VirtualGL-$pkgver/build"
   make install DESTDIR="$pkgdir"
 
   mv "$pkgdir"/usr/bin/glxinfo "$pkgdir"/usr/bin/vglxinfo

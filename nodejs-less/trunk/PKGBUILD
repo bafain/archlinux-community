@@ -2,7 +2,7 @@
 # Maintainer: Massimiliano Torromeo <massimiliano.torromeo@gmail.com>
 
 pkgname=nodejs-less
-pkgver=3.0.0
+pkgver=3.8.1
 pkgrel=1
 pkgdesc="A standalone compiler for the LESS CSS language."
 arch=('any')
@@ -14,11 +14,9 @@ conflicts=('lessc')
 provides=("lessc=$pkgver")
 replaces=('lessc')
 source=("https://registry.npmjs.org/less/-/less-$pkgver.tgz")
+sha256sums=('7ad37c66d390e79d8a561b3dfeda0ab295612a93db20cff06e6258c050fad353')
 
 package() {
     npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/less-$pkgver.tgz
-    rm -r "$pkgdir"/usr/etc
     chmod -R go-w "$pkgdir"/usr
 }
-
-sha256sums=('83d70247b8480317dae4238d787911a947c968d24a90462572b2d48288fd2d61')

@@ -3,7 +3,7 @@
 
 pkgbase=python-canonicaljson
 pkgname=(python-canonicaljson python2-canonicaljson)
-pkgver=1.0.0
+pkgver=1.1.4
 pkgrel=2
 
 pkgdesc='Canonical JSON'
@@ -21,7 +21,7 @@ makedepends=('python-setuptools'
 
 source=("python-canonicaljson-$pkgver.tar.gz::https://github.com/matrix-org/python-canonicaljson/archive/v${pkgver}.tar.gz")
 
-md5sums=('9bfe11414b3818908bc0be7dbf3cf76c')
+md5sums=('3f29b4eab8219076532ab34315843634')
 
 prepare() {
 	cp -a python-canonicaljson-$pkgver{,-python2}
@@ -33,6 +33,14 @@ build() {
 
 	cd "$srcdir"/python-canonicaljson-$pkgver-python2
 	python2 setup.py build
+}
+
+check() {
+	cd "$srcdir"/python-canonicaljson-$pkgver
+	python setup.py test
+
+	cd "$srcdir"/python-canonicaljson-$pkgver-python2
+	python2 setup.py test
 }
 
 package_python-canonicaljson() {

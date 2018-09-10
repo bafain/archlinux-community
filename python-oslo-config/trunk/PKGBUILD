@@ -4,7 +4,7 @@
 
 pkgbase=python-oslo-config
 pkgname=(python-oslo-config python2-oslo-config)
-pkgver=5.2.0
+pkgver=6.4.0
 pkgrel=1
 pkgdesc="parsing command line arguments and .ini style configuration files"
 arch=('any')
@@ -12,11 +12,14 @@ url="https://pypi.python.org/pypi/oslo.config/$pkgver"
 license=('Apache')
 makedepends=('python-setuptools' 'python2-setuptools' 'python-netaddr' 'python2-netaddr'
              'python-stevedore' 'python2-stevedore' 'python-debtcollector' 'python2-debtcollector'
-             'python-oslo-i18n' 'python2-oslo-i18n' 'python-rfc3986' 'python2-rfc3986')
-checkdepends=('python-oslotest' 'python2-oslotest' 'python-sphinx' 'python2-sphinx')
+             'python-oslo-i18n' 'python2-oslo-i18n' 'python-rfc3986' 'python2-rfc3986'
+             'python-yaml' 'python2-yaml' 'python2-enum34')
+checkdepends=('python-oslotest' 'python2-oslotest' 'python-sphinx' 'python2-sphinx'
+              'python-testrepository' 'python2-testrepository' 'python-requests-mock'
+              'python2-requests-mock' 'python-oslo-log' 'python2-oslo-log')
 options=('!emptydirs')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/oslo.config/archive/$pkgver.tar.gz")
-sha512sums=('eddfc3d558af1d459ac29597930f4eb45e7667a5e5dc10af7ce51084c79ad6148af5095d12ed7e5345dcd072c6932dcd60500cad355122bbd4d6c2f3aece4add')
+sha512sums=('ed3160a6fa743a13dc8549ae3bf2d4c51e6aeb1a5221a3772332ba206f65a9f78a7404464f8703d2b0630cb91643459c86c12b1fc239b4479374fb98c2cdeb45')
 
 prepare() {
   sed -i '/argparse/d' oslo.config-$pkgver/requirements.txt
@@ -45,7 +48,7 @@ check() {
 
 package_python-oslo-config() {
   depends=('python-six' 'python-netaddr' 'python-stevedore' 'python-debtcollector'
-           'python-oslo-i18n' 'python-rfc3986')
+           'python-oslo-i18n' 'python-rfc3986' 'python-yaml')
 
   cd "$srcdir"/oslo.config-$pkgver
   python setup.py install --root="$pkgdir/" --optimize=1
@@ -53,7 +56,7 @@ package_python-oslo-config() {
 
 package_python2-oslo-config() {
   depends=('python2-six' 'python2-netaddr' 'python2-stevedore' 'python2-debtcollector'
-           'python2-oslo-i18n' 'python2-rfc3986')
+           'python2-oslo-i18n' 'python2-rfc3986' 'python2-yaml' 'python2-enum34')
 
   cd "$srcdir"/oslo.config-$pkgver-py2
   python2 setup.py install --root="$pkgdir/" --optimize=1

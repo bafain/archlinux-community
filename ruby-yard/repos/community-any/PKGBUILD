@@ -1,19 +1,19 @@
 # Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
-# Maintainer: Jerome Leclanche <jerome@leclan.ch>
+# Contributor: Jerome Leclanche <jerome@leclan.ch>
 
 _gemname=yard
 pkgname=ruby-yard
-pkgver=0.9.12
-pkgrel=2
+pkgver=0.9.14
+pkgrel=1
 pkgdesc='YARD is a Ruby Documentation tool. The Y stands for "Yay!"'
 url='https://yardoc.org/'
 arch=('any')
 license=('MIT')
-depends=('ruby')
+depends=('ruby' 'ruby-rdoc')
 options=('!emptydirs')
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/lsegal/yard/archive/v${pkgver}.tar.gz)
-sha256sums=('ed1811e54645305559bd9e6c8ada7d5903ef39b00c156133e503f13938588c56')
-sha512sums=('f987da7e46bb3dafb9ba8c761b51345ee67102e21d05181c3090f31ff37179505134c93e83efdd39bb35cf6fe6dfa530d0017ce4680a08f858e78cbb073b239f')
+sha256sums=('ce7933c4545fc2fd6ca176913befaa7a8a69ff545f21c6b883b066af83f600bb')
+sha512sums=('7974d431b2c1ef4830f225fd2012592405e7fb63546aeb52b74f4ad8b498926be979f3010bd315877bb4f738f6aa6c31f54b71832b461ebd3fa54fe1a1fccf5f')
 
 prepare() {
   cd ${_gemname}-${pkgver}

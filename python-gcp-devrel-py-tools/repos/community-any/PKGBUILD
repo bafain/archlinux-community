@@ -3,8 +3,8 @@
 
 pkgbase=python-gcp-devrel-py-tools
 pkgname=('python-gcp-devrel-py-tools' 'python2-gcp-devrel-py-tools')
-pkgver=0.0.12
-_commit=b2514f97d07fde9b2b6087af77d30b4c4929ee4c
+pkgver=0.0.15
+_commit=87422ba91814529848a2b8bf8be4294283a3e041
 pkgrel=2
 pkgdesc='Tools for Cloud Platform Python libraries and samples'
 arch=('any')
@@ -14,7 +14,7 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-requests' 'python2
              'python-retrying' 'python2-retrying' 'python-packaging' 'python2-packaging'
              'python-pylint' 'python2-pylint')
 source=("$pkgbase-$_commit.tar.gz::https://github.com/GoogleCloudPlatform/python-repo-tools/archive/$_commit.tar.gz")
-sha512sums=('99b2febef4b17ac8abd745d90fa0bcb129a1fc81e5ee6db9d34305efa7790ec777a39ef2c17afaa09137c0a3ffd4ba658c0f24c51109c68b71f563b0649115bd')
+sha512sums=('6ed884b0325aa212c8545e33ddd763ea4fe4980f40ceab166a0d3f65913698ec9a31d7471f6907fb8e391e4063db20d59bb4c688adcb3d5e17fb04025cce6dd2')
 
 prepare() {
   cp -a python-repo-tools-$_commit{,-py2}

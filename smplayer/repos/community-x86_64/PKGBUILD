@@ -5,7 +5,7 @@
 # Contributor: shamrok <szamrok@gmail.com>
 
 pkgname=smplayer
-pkgver=18.2.2
+pkgver=18.6.0
 pkgrel=1
 pkgdesc='Media player with built-in codecs that can play virtually all video and audio formats'
 url='https://www.smplayer.info/'
@@ -18,9 +18,10 @@ optdepends=('smplayer-themes: icon themes collection'
             'smtube: browse and play youtube videos'
             'youtube-dl: youtube videos and streaming'
             'mplayer: alternative multimedia engine')
+options=(!makeflags)
 source=(https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
-sha256sums=('3ac276da3438140151baea3938bb17a6a5e44d1bd805375f81d1fc410c4e1560')
-sha512sums=('47ce8dd2b59f182e7826c5e7b8193111889441dc7d5145ed8c4df21137625cbe67da7a991d4121d41453127d1413535efbc0d6197d514a03885d652606610275')
+sha256sums=('1d5bf4b30f501e38825dccc4b12f5f1379bcdef7d982549da9cc9713a830685d')
+sha512sums=('8383c8c3d4a171adc189d6bc4c11c0b7a8ea78bf8ff8518589647dfd846b314cf3290a1d607c617e7e971ee29c6966666bf9d306d1b1c1bb4824f42efd97c7a8')
 
 prepare() {
   cd ${pkgname}-${pkgver}

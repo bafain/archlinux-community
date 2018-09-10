@@ -4,7 +4,7 @@
 # Contributor: Tianjiao Yin <ytj000@gmail.com>
 
 pkgname=mathjax
-pkgver=2.7.3
+pkgver=2.7.5
 pkgrel=1
 pkgdesc='An open source JavaScript display engine for mathematics that works in all modern browsers'
 url='https://www.mathjax.org/'
@@ -12,7 +12,7 @@ arch=(any)
 license=(Apache)
 depends=(xorg-mkfontdir fontconfig)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/mathjax/MathJax/archive/$pkgver.tar.gz")
-sha256sums=('b4d91a1b5d40a87a95c6a173da8e07f649501a5b1edfc0c68f4226516acfda61')
+sha256sums=('a25e5736553eef7b05ba00df133ad36d8f7b3b967f1e32d2f7505ac77427946f')
 
 prepare() {
   cd MathJax-$pkgver

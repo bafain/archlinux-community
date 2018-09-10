@@ -3,18 +3,20 @@
 
 pkgbase=python-jose
 pkgname=('python-jose' 'python2-jose')
-pkgver=1.4.0
+pkgver=3.0.1
 pkgrel=1
 pkgdesc="A JOSE implementation in Python"
 arch=('any')
 license=('MIT')
 url="https://github.com/mpdavis/python-jose"
-makedepends=('python-setuptools' 'python2-setuptools' 'python-crypto' 'python2-crypto' 'python-six'
-             'python2-six' 'python-ecdsa' 'python2-ecdsa' 'python-future' 'python2-future')
+makedepends=('python-setuptools' 'python2-setuptools' 'python-rsa' 'python2-rsa'
+             'python-six' 'python2-six' 'python-ecdsa' 'python2-ecdsa' 'python-future'
+             'python2-future')
 checkdepends=('python-pytest-runner' 'python2-pytest-runner' 'python-cryptography'
-              'python2-cryptography')
+              'python2-cryptography' 'python-pycryptodome' 'python2-pycryptodome'
+              'python-pytest-cov' 'python2-pytest-cov')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/mpdavis/python-jose/archive/$pkgver.tar.gz")
-sha512sums=('8ce37d3eb339f782995ae3595aae4a335ab50b2f5e837c7654a306172d3e3a5a0215895473adae5853e4af7e2ba33e520ea8ab6a22708b1a75e8edf043603180')
+sha512sums=('a39c3aa9acc6bcc0030e4435e499581043a820c54aa1a4b67ae478cf95f96f28755b03fa4453e484932a64865a61613a1ff4afe30249216e8f392638485693d7')
 
 prepare() {
   cp -a python-jose-$pkgver{,-py2}
@@ -37,7 +39,9 @@ check() {
 }
 
 package_python-jose() {
-  depends=('python-crypto' 'python-six' 'python-ecdsa' 'python-future')
+  depends=('python-rsa' 'python-six' 'python-ecdsa' 'python-future')
+  optdepends=('python-cryptography: one option for better performance'
+              'python-pycryptodome: one option for better performance')
 
   cd python-jose-$pkgver
   python setup.py install --root="$pkgdir" --optimize=1
@@ -45,7 +49,9 @@ package_python-jose() {
 }
 
 package_python2-jose() {
-  depends=('python2-crypto' 'python2-six' 'python2-ecdsa' 'python2-future')
+  depends=('python2-rsa' 'python2-six' 'python2-ecdsa' 'python2-future')
+  optdepends=('python2-cryptography: one option for better performance'
+              'python2-pycryptodome: one option for better performance')
 
   cd python-jose-$pkgver-py2
   python2 setup.py install --root="$pkgdir" --optimize=1

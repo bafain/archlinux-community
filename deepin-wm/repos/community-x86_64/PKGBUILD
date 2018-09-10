@@ -4,7 +4,7 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-wm
-pkgver=1.9.23
+pkgver=1.9.31
 pkgrel=1
 pkgdesc='Deepin Window Manager'
 arch=('x86_64')
@@ -14,7 +14,7 @@ depends=('bamf' 'clutter-gtk' 'deepin-desktop-schemas' 'deepin-menu' 'granite' '
          'gnome-desktop' 'libgee')
 makedepends=('gnome-common' 'intltool' 'vala')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-wm/archive/$pkgver.tar.gz")
-sha512sums=('a929e63c850d9d48b8cc5e9a66e964b96a42efc8f536cab42df9508a08e15a146aab63590113a2a1bca727472bcf289a31372f5a1c3931a4e047313936eb8ac1')
+sha512sums=('e8a341849549d4c7ca351352112044c96ccbf812b258ad9d8b808b7c77a85dc4777263e364c78d6154d033a1aeb660b219fee662b4d8a987802333fdff100615')
 
 prepare() {
   export CFLAGS="$CFLAGS -DWNCK_I_KNOW_THIS_IS_UNSTABLE"

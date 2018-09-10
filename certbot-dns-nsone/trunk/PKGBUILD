@@ -2,19 +2,19 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=certbot-dns-nsone
-pkgver=0.22.0
+pkgver=0.27.1
 pkgrel=1
 pkgdesc="NS1 DNS Authenticator plugin for Certbot"
 arch=('any')
 license=('Apache')
 url="https://pypi.python.org/pypi/$pkgname"
-depends=("certbot=$pkgver" 'dns-lexicon' "python-acme=$pkgver" 'python-mock' 'python-setuptools'
+depends=('certbot' 'dns-lexicon' 'python-acme' 'python-mock' 'python-setuptools'
          'python-zope-interface')
 source=("https://pypi.io/packages/source/c/$pkgname/$pkgname-$pkgver.tar.gz"{,.asc})
 validpgpkeys=('148C30F6F7E429337A72D992B00B9CC82D7ADF2C'
               '1B41B758F9A78C7F444C20FA3E5B4152E3ADB1FD'
               'A2CFB51FA275A7286234E7B24D17C995CD9775F2')
-sha512sums=('1a3119081aa03e1c5f6b7c6dadcf8f9ad68761f37df05e900f989ca6be5c0fd4aaef2fc07c06c56ae37be0400ee71fc94db2f98be540ba5947a911d7071d6618'
+sha512sums=('0fc61960a4ce5dbe588f7cb3b6e639cdb43a3555a13a7b54a2d006836320d98e6ca98505d24373e9bc6a2ac3c93994547680ba321051c1f029e6e87805e3863f'
             'SKIP')
 
 build() {

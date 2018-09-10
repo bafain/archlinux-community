@@ -2,14 +2,14 @@
 # Contributor: Lubomir 'Kuci' Kucera <kuci24-at-gmail-dot-com>
 
 pkgname=gitlab-runner
-pkgver=10.5.0
-pkgrel=2
+pkgver=11.2.0
+pkgrel=1
 pkgdesc="The official GitLab CI runner written in Go"
 arch=('x86_64')
 url='https://gitlab.com/gitlab-org/gitlab-runner'
 license=('GPL3')
 depends=('ca-certificates' 'curl' 'git' 'glibc' 'tar')
-makedepends=('git' 'go-pie' 'git' 'go-bindata' 'mercurial')
+makedepends=('git' 'go-pie' 'git' 'mercurial')
 install='gitlab-runner.install'
 replaces=('gitlab-ci-multi-runner')
 backup=('etc/gitlab-runner/config.toml')
@@ -18,31 +18,36 @@ noextract=("prebuilt-${pkgver}-x86_64.tar.xz"
 
 # Note: This should be built using git because the runner gets its version information from there and I
 # haven't found the place to patch that yet.
-source=("git+https://gitlab.com/gitlab-org/gitlab-runner.git#tag=v${pkgver}"
-        "prebuilt-${pkgver}-x86_64.tar.xz::https://gitlab-runner-downloads.s3.amazonaws.com/v${pkgver}/docker/prebuilt-x86_64.tar.xz"
-        "prebuilt-${pkgver}-arm.tar.xz::https://gitlab-runner-downloads.s3.amazonaws.com/v${pkgver}/docker/prebuilt-arm.tar.xz"
+source=("$pkgname-$pkgver.tar.gz::https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-runner/repository/archive?sha=v${pkgver}"
+        "prebuilt-${pkgver}-x86_64.tar.xz::https://gitlab-runner-downloads.s3.amazonaws.com/v${pkgver}/helper-images/prebuilt-x86_64.tar.xz"
+        "prebuilt-${pkgver}-arm.tar.xz::https://gitlab-runner-downloads.s3.amazonaws.com/v${pkgver}/helper-images/prebuilt-arm.tar.xz"
         "gitlab-runner.service"
         "gitlab-runner.sysusers"
         "gitlab-runner.tmpfiles"
         "config.toml")
-sha512sums=('SKIP'
-            'e3516d53711153166fb37aac9f84292d439340e92c995992254af2f7c9f07f3a3b22740c1fbc33f045110b48e47253bd56927a6f751fb982592de60202e16dc3'
-            '7d10fed0033ed95113b45ea1e4430db9879cccaa8f13bcbd8303373a7b276a448af4c2e43fd5b42ecdbff8c98ae4aa1d63c2e323a0c054d29cf2411a86da6ae4'
+sha512sums=('9d235f2d9bfacdc993bf107c8fb7c251b8a9dfac5ffcdc92af8c077388f4502557c6da4f2d35207d3d08800a7ce0eb10f39be6045b29d1758dcec75b953686e3'
+            'd234eaf6689e0d41ae2aa28fa2ee4b29ed81f07b3d7dc61f4f0fb3097ee5736c8e384acf65bf057e880d5b600ba5dbe07c96bbd604da5c630d04d0b17b2bba36'
+            '40bc3a45a6918efa26d433f05f0e0dce1ba23652fde4b070fcfd606da21ac93e705bb6965e7b8fa8c9d7d23487709b41022e28327c4c3cae53211088f8a885ee'
             '8a5a8b7654d3864722e784b2814c6278c17876f1c0c4fc0676fbcf6817ad2ba4be55501e67ce88c62b5b63ca886b01afc6feac98ba49842acd244abdd1a8296f'
             '8aa7f08702e99053c696fcc2aaba83beb9e9cd6f31973d82862db9350ac46df3a095377625d31fe909677525290d2de922d7a97930ed235774cb8f0da8944d40'
             '6751d9fa0b27172d1b419c4138f5ac15cbc7c9147653a7258cf1470216142c637210bb60608c7ed0974e0e4057e5ddeae32225df1bb36e7dd1f20fec71e33cc3'
             'f39c23fc06636f31c3fadb9a630c54527e8255098f18d275772cb30875d0a7463717101704070d432f2b69ab71f076a9538172a439bc307722dad2c7e260f752')
 
+_srcdir="gitlab-runner-v${pkgver}-"
+
 prepare() {
+    local revision=$(ls -d ${_srcdir}* | rev | cut -c 33-40 | rev)
+
     mkdir -p "${srcdir}/src/gitlab.com/gitlab-org/"
-    ln -sf "${srcdir}/gitlab-runner" "${srcdir}/src/gitlab.com/gitlab-org/gitlab-runner"
+    ln -sf "${srcdir}/${_srcdir}"* "${srcdir}/src/gitlab.com/gitlab-org/gitlab-runner"
     cd "${srcdir}/src/gitlab.com/gitlab-org/gitlab-runner"
 
-    make version
+    local version=$(cat VERSION)
 
-    export GOPATH="${srcdir}"
-    # TODO Apparently we don't need this anymore?!
-    # make deps
+    sed -i "s/export VERSION.*/export VERSION = $version/" Makefile
+    sed -i "s/REVISION := .*/REVISION := $revision/" Makefile
+
+    make version
 
     ln -sf "${srcdir}/prebuilt-${pkgver}-x86_64.tar.xz" prebuilt-x86_64.tar.xz
     ln -sf "${srcdir}/prebuilt-${pkgver}-arm.tar.xz" prebuilt-arm.tar.xz
@@ -50,18 +55,7 @@ prepare() {
 
 build() {
     cd "${srcdir}/src/gitlab.com/gitlab-org/gitlab-runner"
-
-    export GOPATH="${srcdir}"
-    go-bindata \
-        -pkg docker \
-        -nocompress \
-        -nomemcopy \
-        -prefix out/docker/ \
-        -o executors/docker/bindata.go \
-        prebuilt-x86_64.tar.xz \
-        prebuilt-arm.tar.xz
-
-    make build_simple
+    make BUILD_PLATFORMS='-osarch linux/amd64' build
 }
 
 package() {
@@ -71,5 +65,5 @@ package() {
     install -Dm644 "${srcdir}/gitlab-runner.service" "${pkgdir}/usr/lib/systemd/system/gitlab-runner.service"
     install -Dm644 "${srcdir}/gitlab-runner.sysusers" "${pkgdir}/usr/lib/sysusers.d/gitlab-runner.conf"
     install -Dm644 "${srcdir}/gitlab-runner.tmpfiles" "${pkgdir}/usr/lib/tmpfiles.d/gitlab-runner.conf"
-    install -Dm755 out/binaries/gitlab-runner "${pkgdir}/usr/bin/gitlab-runner"
+    install -Dm755 out/binaries/gitlab-runner-linux-amd64 "${pkgdir}/usr/bin/gitlab-runner"
 }

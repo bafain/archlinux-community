@@ -4,22 +4,23 @@
 
 _hkgname=turtle
 pkgname=haskell-turtle
-pkgver=1.5.6
-pkgrel=1
+pkgver=1.5.10
+pkgrel=23
 pkgdesc="Shell programming, Haskell-style"
 url="https://github.com/Gabriel439/Haskell-Turtle-Library"
 license=('custom:BSD3')
 arch=('x86_64')
 depends=('ghc-libs' 'haskell-ansi-wl-pprint' 'haskell-async' 'haskell-clock' 'haskell-exceptions'
          'haskell-foldl' 'haskell-hostname' 'haskell-managed' 'haskell-optparse-applicative'
-         'haskell-optional-args' 'haskell-semigroups' 'haskell-stm' 'haskell-system-fileio'
-         'haskell-system-filepath' 'haskell-temporary' 'haskell-text' 'haskell-unix-compat')
+         'haskell-optional-args' 'haskell-system-fileio' 'haskell-system-filepath'
+         'haskell-temporary' 'haskell-unix-compat')
 makedepends=('ghc' 'haskell-doctest')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('5901c100e27ebb33ddb86297ea451a66784296e37ead75d713d5d8553a5a6dfcbbfb072828183d02dca0a5049ac2a4e1abca02315ed4b500e1ce3ed532f8a03c')
+sha512sums=('50746c89867a20b34fc8955a9a61a40d696f304c51cb1f5217fb2332aa85205f4c3893034133c609082858a95bddfa62f0dddc109784dee1d53543fcc76e3f1d')
 
 prepare() {
     sed -i 's/]/, "-dynamic"]/' $_hkgname-$pkgver/test/Main.hs
+    sed -i '/semigroups/d' $_hkgname-$pkgver/$_hkgname.cabal
 }
 
 build() {

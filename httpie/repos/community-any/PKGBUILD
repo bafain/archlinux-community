@@ -4,26 +4,48 @@
 
 pkgname=httpie
 pkgver=0.9.9
-pkgrel=1
+pkgrel=6
 pkgdesc="cURL for humans"
-url="https://github.com/jkbr/httpie"
-depends=('python-requests' 'python-pygments')
-makedepends=('python-setuptools')
+url="https://github.com/jakubroztocil/httpie"
+depends=('python-requests' 'python-pygments' 'python-setuptools')
+checkdepends=('python-pytest' 'python-pytest-httpbin' 'python-mock')
 conflicts=(python-httpie)
 replaces=(python-httpie python2-httpie)
 license=('BSD')
 arch=('any')
-#source=("https://github.com/jkbrzt/httpie/archive/$pkgver.tar.gz")
-source=("https://pypi.python.org/packages/28/93/4ebf2de4bc74bd517a27a600b2b23a5254a20f28e6e36fc876fd98f7a51b/httpie-0.9.9.tar.gz")
-md5sums=('13ed0b79b65e793eb288e563db38b2a2')
+source=($pkgname-$pkgver.tar.gz::"https://github.com/jakubroztocil/httpie/archive/$pkgver.tar.gz"
+        "https://github.com/jakubroztocil/httpie/commit/749b1e2aca11e1ae3e52c8f3894cf0515c917439.patch"
+        "https://github.com/jakubroztocil/httpie/commit/9776a6dea0308e05c23db05b542920ebd6bea6c4.patch")
+sha1sums=('81fa9b74df29b4acc31a8f93ec658e5224f31a5e'
+          'a1caeb5f2ba538bd8bec1ea27d8368ce7b216a76'
+          '2d0245bdecb2ccb122e927b263affed1cad68374')
+
+prepare() {
+  cd $pkgname-$pkgver
+
+  # fix for breaking change by https://github.com/pytest-dev/pytest/pull/2849
+  patch -p1 -i ../749b1e2aca11e1ae3e52c8f3894cf0515c917439.patch
+  # https://github.com/jakubroztocil/httpie/pull/584
+  patch -p1 -i ../9776a6dea0308e05c23db05b542920ebd6bea6c4.patch
+}
 
 build() {
-  cd httpie-$pkgver
+  cd $pkgname-$pkgver
   python3 setup.py build
 }
 
 package() {
-  cd httpie-$pkgver
+  cd $pkgname-$pkgver
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/httpie/LICENSE"
   python3 setup.py install --root="$pkgdir" --optimize=1
+
+  # Fix upstream, inclide them in MANIFEST.in and use data_files in setup.py to install them automatically
+  # TODO: add zsh support
+  install -d $pkgdir/usr/share/bash-completion/completions
+  install -Dm644 extras/httpie-completion.bash $pkgdir/usr/share/bash-completion/completions/http
+}
+
+check() {
+  cd $pkgname-$pkgver
+  python3 setup.py test
 }

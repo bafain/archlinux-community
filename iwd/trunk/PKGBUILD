@@ -1,15 +1,15 @@
 # Maintainer: Christian Rebischke <chris.rebischke@archlinux.org>
 
 pkgname=iwd
-pkgver=0.1
-pkgrel=3
+pkgver=0.7
+pkgrel=1
 pkgdesc='Internet Wireless Daemon'
 arch=('x86_64')
 url='https://git.kernel.org/cgit/network/wireless/iwd.git/'
 license=('LGPL')
 depends=('glibc')
 source=("https://www.kernel.org/pub/linux/network/wireless/iwd-${pkgver}.tar"{.xz,.sign})
-sha512sums=('a0c0f1761edcc779509d77c9f32bf4e590976ae8806a0b34784eb2a937a758786cf839caa62e0cab853686f5940102bb2fa346f95eae502d25d912ae872c52d4'
+sha512sums=('e6029e33f43fda24f3ddb87b1bb878ad8926066380a0e71415e645bc4f8aa1a6aaa43d2482987b1d473c267fef6d5a2a676af80282ba4c77ab64605c348cabb1'
             'SKIP')
 validpgpkeys=('E932D120BC2AEC444E558F0106CA9F5D1DCF2659')
 

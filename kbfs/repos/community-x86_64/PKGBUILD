@@ -4,17 +4,15 @@
 # Contributor: Michael Hansen <zrax0111 gmail com>
 
 pkgname=kbfs
-pkgver=1.0.44
+pkgver=2.5.0
 pkgrel=1
 pkgdesc="The Keybase filesystem"
 arch=('x86_64')
 url="https://keybase.io/docs/kbfs"
 license=('BSD')
-depends=('fuse' 'keybase')
 makedepends=('go-pie')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/keybase/kbfs/archive/v$pkgver.tar.gz")
-sha512sums=('03e92303f140dbff059f8c954142d6180f388c1e50c2f8af02a30a740d440d5f79be47ad851d021a2b90525bf7b775e471780438b94d1d6403eddbdc0bd41e8e')
-
+sha512sums=('a12f3491c3d7dd42b78d24957f3b469837a8e6d682e91dfe6020e74e24374ce95f9de31578579680ee35513637512e84849d598d34b3e8e78f96cf99ac9cd701')
 
 prepare() {
   cd kbfs-$pkgver
@@ -25,17 +23,17 @@ prepare() {
 }
 
 build() {
-  cd kbfs-$pkgver/kbfsfuse
-  # go build -a -tags production -gccgoflags "$CFLAGS $LDFLAGS" github.com/keybase/kbfs/kbfsfuse
+  cd kbfs-$pkgver
   export GOPATH="$srcdir/.gopath"
-  go build -a -tags production -o ../bin/kbfsfuse github.com/keybase/kbfs/kbfsfuse
-  go build -a -tags production -o ../bin/git-remote-keybase github.com/keybase/kbfs/kbfsgit/git-remote-keybase
+  go build -a -tags production -o bin/kbfsfuse github.com/keybase/kbfs/kbfsfuse
+  go build -a -tags production -o bin/git-remote-keybase github.com/keybase/kbfs/kbfsgit/git-remote-keybase
 }
 
 package() {
+  depends=('fuse' 'keybase')
   cd kbfs-$pkgver/
 
   install -Dm755 -t "${pkgdir}"/usr/bin/ bin/*
   install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
-  install -Dm755 packaging/linux/systemd/kbfs.service "$pkgdir"/usr/lib/systemd/user/kbfs.service
+  install -Dm644 packaging/linux/systemd/kbfs.service "$pkgdir"/usr/lib/systemd/user/kbfs.service
 }

@@ -3,20 +3,20 @@
 # Contributor: Gordian Edenhofer <gordian.edenhofer[at]yahoo[dot]de>
 
 pkgname=certbot-apache
-pkgver=0.22.0
+pkgver=0.27.1
 pkgrel=1
 pkgdesc="Apache plugin for Let’s Encrypt client"
 arch=('any')
 license=('Apache')
 url="https://pypi.python.org/pypi/$pkgname"
 replaces=("letsencrypt-apache")
-depends=("certbot=$pkgver" "python-acme=$pkgver" 'python-augeas' 'python-mock' 'python-setuptools'
+depends=('certbot' 'python-acme' 'python-augeas' 'python-mock' 'python-setuptools'
          'python-zope-component' 'python-zope-interface')
 source=("https://pypi.io/packages/source/c/$pkgname/$pkgname-$pkgver.tar.gz"{,.asc})
 validpgpkeys=('148C30F6F7E429337A72D992B00B9CC82D7ADF2C'
               '1B41B758F9A78C7F444C20FA3E5B4152E3ADB1FD'
               'A2CFB51FA275A7286234E7B24D17C995CD9775F2')
-sha512sums=('383c79ef660df627bce15de76b4588935cc4a53b71acd81564445a71a14b25d0512e53bcbd2c85e448dff2c4516d1c7d1b04891c3c7fc9e9eba161914c69995c'
+sha512sums=('438c893c101509c5961d61e68c7c52d5b99a3d33fdcf998415699b9ac39bdd43fc0a1f9a3ce2430e4c71c6aed9a0bb3e7031d38a59f47260392e3af03acb9d9e'
             'SKIP')
 
 build() {

@@ -4,17 +4,17 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-screenshot
-pkgver=4.0.11
-pkgrel=1
+pkgver=4.1.0
+pkgrel=2
 pkgdesc="Easy-to-use screenshot tool for linuxdeepin desktop environment"
 arch=('x86_64')
 url="https://github.com/linuxdeepin/deepin-screenshot"
 license=('GPL3')
-depends=('deepin-qt5integration' 'dtkwm')
+depends=('deepin-qt5integration' 'dtkwm' 'deepin-turbo')
 makedepends=('qt5-tools')
 groups=('deepin-extra')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-screenshot/archive/$pkgver.tar.gz")
-sha512sums=('f7e2862460eb1dc83966b7c5d26aca87364de5488ac2d0239c842806d09fd935e3c55635bfa9bf2503993bd649ee30df417c8a7402bfc64f459a28483b94b644')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/felixonmars/deepin-screenshot/archive/$pkgver.tar.gz")
+sha512sums=('a270197cc4a94243e9768cb934f1fb3088e510e55dcdac31e5227580986715d1545ebd7eb20efc41578b9370c5a9f7cf8530426df2e95cdb9b166bbf035ba33a')
 
 build() {
   cd deepin-screenshot-$pkgver

@@ -9,7 +9,7 @@ _pkgname="powerline"
 pkgbase="powerline"
 pkgname=("powerline" "powerline2" "python-powerline" "python2-powerline" "powerline-common" "powerline-vim" "powerline-fonts")
 pkgdesc='Statusline plugin for vim, and provides statuslines and prompts for several other applications, including zsh, bash, tmux, IPython, Awesome, i3 and Qtile'
-pkgver=2.6
+pkgver=2.7
 pkgrel=1
 url="https://github.com/${_pkgname}/${_pkgname}"
 license=('MIT')
@@ -19,8 +19,12 @@ makedepends=(
     'python-setuptools'
     'python-sphinx'
     )
+checkdepends=(
+    'python-pexpect'
+    'python2-pexpect'
+)
 source=("${_pkgname}-${pkgver}.tar.gz::https://github.com/${_pkgname}/${_pkgname}/archive/${pkgver}.tar.gz")
-sha512sums=('a4c72a6239b9c2f4db2b511647529eae008cfdd783b9a2ebe6bf7fe625e82801ff4da1887d6efa4b785966d46fac15ec4540aa2bd180722fd76fcd2873a074c0')
+sha512sums=('a61715a2af9b3b5e26bd7ff4717cba41e6b5ad8c8328132154c88dc161d3fab902432dfe94da9c2d87c32e9fa69c9a758fb90168fbd18b3dc47c0d0073fd6623')
 
 
 
@@ -52,13 +56,13 @@ build(){
 }
 
 
-## FIXME Currently test will fail with dividers and other errors
-#check(){
-#    cd ${srcdir}/${_pkgname}-${pkgver}
-#    LC_ALL=C python setup.py test
-#    cd ${srcdir}/${_pkgname}-${pkgver}-py2
-#    LC_ALL=C python2 setup.py test
-#}
+# FIXME Currently test will fail with dividers and other errors
+check(){
+    cd ${srcdir}/${_pkgname}-${pkgver}
+    LC_ALL=C python setup.py test
+    cd ${srcdir}/${_pkgname}-${pkgver}-py2
+    LC_ALL=C python2 setup.py test
+}
 
 package_powerline(){
     depends=('python-powerline')
@@ -72,10 +76,13 @@ package_powerline(){
     install -Dm755 powerline-lint "${pkgdir}/usr/bin/powerline-lint"
     install -Dm755 powerline-render "${pkgdir}/usr/bin/powerline-render"
     
+    install -dm755 "${pkgdir}/usr/share/powerline/"
+    ln -s "$(python3 -c 'import site; print(site.getsitepackages()[0])')/powerline/bindings" "${pkgdir}/usr/share/powerline/bindings"
     # license is installed by powerline-common
 }
 
 package_powerline2(){
+    pkgdesc='Python2 version of statusline plugin for vim, and provides statuslines and prompts for several other applications, including zsh, bash, tmux, IPython, Awesome, i3 and Qtile'
     depends=('python2-powerline')
     conflicts=('powerline' 'python2-powerline<=2.3-1')
     provides=('powerline')
@@ -83,6 +90,8 @@ package_powerline2(){
 
     cd ${srcdir}/${_pkgname}-${pkgver}-py2/scripts
     install -Dm755 powerline{,-config,-daemon,-lint,-render} -t "${pkgdir}/usr/bin/"
+    install -dm755 "${pkgdir}/usr/share/powerline/"
+    ln -s "$(python2 -c 'import site; print(site.getsitepackages()[0])')/powerline/bindings" "${pkgdir}/usr/share/powerline/bindings"
 
     install -dm755 "${pkgdir}/usr/share/licenses/"
     ln -s "/usr/share/licenses/${_pkgname}" "${pkgdir}/usr/share/licenses/${pkgname}"

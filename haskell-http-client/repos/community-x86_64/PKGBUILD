@@ -4,19 +4,19 @@
 
 _hkgname=http-client
 pkgname=haskell-http-client
-pkgver=0.5.10
-pkgrel=12
+pkgver=0.5.13.1
+pkgrel=13
 pkgdesc="An HTTP client engine"
 url="https://github.com/snoyberg/http-client"
 license=("MIT")
 arch=('x86_64')
-depends=('ghc-libs' 'haskell-base64-bytestring' 'haskell-blaze-builder' 'haskell-case-insensitive'
-         'haskell-cookie' 'haskell-exceptions' 'haskell-http-types' 'haskell-mime-types'
+depends=('ghc-libs' 'haskell-blaze-builder' 'haskell-case-insensitive' 'haskell-cookie'
+         'haskell-exceptions' 'haskell-http-types' 'haskell-memory' 'haskell-mime-types'
          'haskell-network' 'haskell-network-uri' 'haskell-random' 'haskell-streaming-commons'
-         'haskell-text')
+        )
 makedepends=('ghc' 'haskell-async' 'haskell-hspec' 'haskell-monad-control' 'haskell-zlib')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('052771c2a11a4a0a8acfdd39919071065e9884b8d87f0613e8792c93008a650435dcd6dbf11f3d50066580ed88eecc155eb6944175f432c499e85686f31e72cd')
+sha512sums=('135bbbbc32dbc1613308c55347f4d8a0ba577d6ca8b522eb3aac7b96df92577a3c101464e89fc77c348b18cf040104176036adee7710bd9b4ce31aa0e5012e0a')
 
 build() {
     cd $_hkgname-$pkgver

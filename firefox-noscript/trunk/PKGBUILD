@@ -1,22 +1,23 @@
 # $Id$
 # Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
-# Contributor: Eschwartz <eschwartz93@gmail.com>
+# Maintainer: Eschwartz <eschwartz@archlinux.org>
 
 pkgname=firefox-noscript
-pkgver=10.1.6.5
+pkgver=10.1.9
 pkgrel=1
 pkgdesc="Extension for firefox which disables script"
 arch=('any')
 url="https://noscript.net/"
 license=('GPL2')
 groups=('firefox-addons')
-depends=('firefox')
 makedepends=('unzip')
 source=(https://secure.informaction.com/download/releases/noscript-${pkgver}.xpi)
 noextract=("noscript-${pkgver}.xpi")
-sha256sums=('6ee384957e54a3c25f7eb0f5a710b91a9d487834f6e8a3077d060f37760d2425')
+sha256sums=('44f57cc6f5d03132a15b2e72b60165514c6246f994922eccba006ccc33df55d6')
 
 package() {
+  depends=('firefox')
+
   cd "${srcdir}"
   _extension_id="{73a6fe31-595d-460b-a920-fcc0f8843232}"
   _extension_dest="${pkgdir}/usr/lib/firefox/browser/extensions/${_extension_id}"

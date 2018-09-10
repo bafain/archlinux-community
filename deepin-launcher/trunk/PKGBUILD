@@ -4,28 +4,33 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-launcher
-pkgver=4.3.2
+pkgver=4.4.5.4
 pkgrel=1
 pkgdesc='Deepin desktop-environment - Launcher module'
 arch=('x86_64')
 url="https://github.com/linuxdeepin/dde-launcher"
 license=('GPL3')
 depends=('gsettings-qt' 'qt5-svg' 'qt5-x11extras' 'startdde' 'deepin-qt5integration' 'deepin-menu'
-         'deepin-daemon' 'deepin-qt-dbus-factory')
-makedepends=('git' 'qt5-tools')
+         'deepin-daemon' 'deepin-qt-dbus-factory' 'qt5-tools')
+makedepends=('cmake')
 conflicts=('dde-launcher')
 replaces=('dde-launcher')
 groups=('deepin')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/dde-launcher/archive/$pkgver.tar.gz")
-sha512sums=('55ac6257dc689ee9856aedc7d78ac2a8c0a976f59217d1e1fb2adc265d77c36cf6b9836ea84bd415cb6d6f1d45710079171d58bc6717afc48e60a83d91daf6e2')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/felixonmars/dde-launcher/archive/$pkgver.tar.gz")
+sha512sums=('acfd331da59e5ee5f6d2a968de62bf5c42094eb85e946d96038849c89d86568831a9932f254d898cacbe58b451e324b6a6eeaaa76528b52d8acd2b81f3c35276')
 
-build(){
+prepare() {
   cd dde-launcher-$pkgver
-  qmake-qt5 PREFIX=/usr WITHOUT_UNINSTALL_APP=1
+  sed -i 's|/usr/share/backgrounds/default_background.jpg|/usr/share/backgrounds/deepin/desktop.jpg|' src/boxframe/*.cpp
+}
+
+build() {
+  cd dde-launcher-$pkgver
+  cmake . -DCMAKE_INSTALL_PREFIX=/usr -DWITHOUT_UNINSTALL_APP=1
   make
 }
 
 package() {
   cd dde-launcher-$pkgver
-  make INSTALL_ROOT="$pkgdir" install
+  make DESTDIR="$pkgdir" install
 }

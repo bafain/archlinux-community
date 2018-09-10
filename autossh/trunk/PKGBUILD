@@ -1,17 +1,19 @@
+# $Id$
+# Maintainer: Felix Yan <felixonmars@archlinux.org>
 # Contributor: Ian Taylor <ian at lorf dot orgs>
 
 pkgname=autossh
-pkgver=1.4e
+pkgver=1.4f
 pkgrel=1
 pkgdesc="Automatically restart SSH sessions and tunnels"
 arch=('x86_64')
 url="http://www.harding.motd.ca/autossh/"
 license=('custom')
-depends=('openssh')
+depends=('libnsl' 'openssh')
 source=("http://www.harding.motd.ca/autossh/$pkgname-$pkgver.tgz"
 	"LICENSE")
-md5sums=('f86684b96e99d22b2e9d35dc63b0aa29'
-         '663dffbc9a1adbf1d1b19a3e4ab318ad')
+sha512sums=('a66912a04d1b659802913ec63d7b951fa6265dedf4480f0ad2dfdfb852e1e3029355b9a132bf3fa5b4b67e5ac8dace83b96e837182d8b3f0c2c72ad9188b7b8f'
+            'cdbdf804eb6e6480cc2be8a9b170f77f6c58e4ae2a741871cd29308ff10a1d391759bed2576b5f072aa878f9c4ae5ef7e6f9c8f38560b3ebbe4591a7220582f7')
 
 build() {
   cd "$srcdir"/$pkgname-$pkgver

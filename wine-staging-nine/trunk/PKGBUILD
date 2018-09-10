@@ -7,24 +7,25 @@
 # Contributor: Giovanni Scafora <giovanni@archlinux.org>
 
 pkgname=wine-staging-nine
-pkgver=3.4
+pkgver=3.15
 pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
+_stagingpatchver=${_pkgbasever}
 _ninepatchver=${pkgver}
-#_ninepatchver=3.3
+#_ninepatchver=3.13
 
 source=(https://dl.winehq.org/wine/source/3.x/wine-$_pkgbasever.tar.xz{,.sign}
-        "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
+        "wine-staging-v$_stagingpatchver.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_stagingpatchver.tar.gz"
         "https://github.com/sarnex/wine-d3d9-patches/archive/wine-d3d9-$_ninepatchver.tar.gz"
         30-win32-aliases.conf
         wine-binfmt.conf
         harmony-fix.diff
         steam.patch)
-sha512sums=('5787bf3fa13d363302ee26f86b96ed728b2b06184572021efdbb00b2c8ebd088056c6d9e22c6c78f0edc0a0b12e26facccc51f08970c8c5eaab4309e86b4286c'
+sha512sums=('3fb3f6a896eae53ef75a751e72f7431f9b6986b56738dc314bca9eff9d078e65d865ebb28cbb7a63aa571eb11cdaed20c21c36cec565f81610e348fd165e0f2a'
             'SKIP'
-            'f0cc2b3d91589a4d9536c1011001edf7db428387592407a64949381c0ac2f0bb79b0fbf04d3c85db50adbecba716188a8249e1ff166b5ec3004d9eb5f9e92f3f'
-            'e38e5d1f5f1e980b896a0b0d2d51c59cac15c6e450d0ba5621ca7bca4df7b470857c0c2bf737273647ef44f9252a794c26b82b20b233a95277d97df93b40efd7'
+            'f0ed9d4a099b03c04a126927919b7eddbdaff7a08a0b97cdf387c64318826d6454183cf03997425b349540d13b1ccf6262aa2c5af0af682939584e3de71b7541'
+            '448433198cb40628edf2ee6f7697671c9efb1c8e68ce826b0edc884625e5f1659956f0c76ea995443c29ca4cefe5030559860d7413f553fc4a3523df3a35b3a7'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'bdde7ae015d8a98ba55e84b86dc05aca1d4f8de85be7e4bd6187054bfe4ac83b5a20538945b63fb073caab78022141e9545685e4e3698c97ff173cf30859e285'
             'b86edf07bfc560f403fdfd5a71f97930ee2a4c3f76c92cc1a0dbb2e107be9db3bed3a727a0430d8a049583c63dd11f5d4567fb7aa69b193997c6da241acc4f2e'
@@ -121,7 +122,7 @@ prepare() {
   mv wine-$_pkgbasever $pkgname
 
   # apply wine-staging patchset
-  pushd wine-staging-$_pkgbasever/patches
+  pushd wine-staging-$_stagingpatchver/patches
   ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
   popd
   

@@ -5,17 +5,19 @@
 # Contributor: Bodor Dávid Gábor <david.gabor.bodor@gmail.com>
 # Contributor: Andrzej Giniewicz <gginiu@gmail.com>
 
+_name=scipy
 pkgname=('python-scipy' 'python2-scipy')
-pkgver=1.0.0
-pkgrel=1
+pkgver=1.1.0
+pkgrel=2
 pkgdesc="SciPy is open-source software for mathematics, science, and engineering."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.scipy.org/"
 license=('BSD')
 makedepends=('gcc-fortran' 'python-numpy' 'python2-numpy' 'python-setuptools' 'python2-setuptools')
 checkdepends=('python-pytest' 'python2-pytest')
-source=("https://github.com/scipy/scipy/releases/download/v${pkgver}/scipy-${pkgver}.tar.xz")
-md5sums=('b07961a465964ef3afaf30a91a96d91a')
+#source=("https://github.com/scipy/scipy/releases/download/v${pkgver}/scipy-${pkgver}.tar.xz")
+source=("https://pypi.python.org/packages/source/${_name:0:1}/${_name}/${_name}-${pkgver}.tar.gz")
+md5sums=('aa6bcc85276b6f25e17bcfc4dede8718')
 
 build() {
   export LDFLAGS="-Wall -shared"
@@ -46,7 +48,7 @@ check() {
   cd ${srcdir}/scipy-${pkgver}
   python3 setup.py config_fc --fcompiler=gnu95 install \
     --prefix=/usr --root=${srcdir}/test --optimize=1
-  export PYTHONPATH=${srcdir}/test/usr/lib/python3.6/site-packages
+  export PYTHONPATH=${srcdir}/test/usr/lib/python3.7/site-packages
   cd ${srcdir}
   python -c "from scipy import test; test('full')"
 

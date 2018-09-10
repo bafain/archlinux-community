@@ -3,34 +3,29 @@
 # Contributor: dibblethewrecker dibblethewrecker.at.jiwe.dot.org
 # Contributor: William Rea <sillywilly@gmail.com>
 
-pkgname=gdal
-pkgver=2.2.3
-pkgrel=1
+pkgbase=gdal
+pkgname=(gdal python-gdal python2-gdal)
+pkgver=2.3.1
+pkgrel=5
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
 license=('custom')
 depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libspatialite' 'libtiff' 'netcdf'
-         'openjpeg2' 'poppler' 'python2' 'python2-numpy' 'cfitsio' 'sqlite' 'libmariadbclient' 'postgresql-libs')
-makedepends=('perl' 'swig' 'chrpath' 'doxygen')
+         'openjpeg2' 'poppler' 'cfitsio' 'sqlite' 'libmariadbclient' 'postgresql-libs' 'xerces-c' 'json-c')
+makedepends=('perl' 'swig' 'chrpath' 'doxygen' 'python-numpy' 'python2-numpy')
 optdepends=('postgresql: postgresql database support'
             'mariadb: mariadb database support'
             'perl:  perl binding support')
 options=('!emptydirs')
-changelog=$pkgname.changelog
-source=(http://download.osgeo.org/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz
+changelog=$pkgbase.changelog
+source=(https://download.osgeo.org/${pkgbase}/${pkgver}/${pkgbase}-${pkgver}.tar.xz
         gdal-perl-vendor.patch)
-sha256sums=('a328d63d476b3653f5a25b5f7971e87a15cdf8860ab0729d4b1157ba988b8d0b'
-            '20989e5fa499206b42c92280ce084fdf7b2f661a4233fc349611cc57102fe114')
+sha256sums=('9c4625c45a3ee7e49a604ef221778983dd9fd8104922a87f20b99d9bedb7725a'
+            'a41a0129a878a0d09b8ecf24b8a0b473856d929d52f535afdf4dca95ddd347d3')
 
 prepare() {
-  cd "${srcdir}"/$pkgname-$pkgver
-
-# python2 fixes
-  sed -i 's_python python1.5_python2 python python1.5_' configure
-  for file in swig/python/{,osgeo/,samples/,scripts/}*.py; do
-      sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' $file
-  done
+  cd "${srcdir}"/$pkgbase-$pkgver
 
 # Fix mandir
   sed -i "s|^mandir=.*|mandir='\${prefix}/share/man'|" configure
@@ -40,14 +35,14 @@ prepare() {
 }
 
 build() {
-  cd "${srcdir}"/$pkgname-$pkgver
+  cd "${srcdir}"/$pkgbase-$pkgver
   export CFLAGS="$CFLAGS -fno-strict-aliasing"
 
 # bug #23654
   export LDFLAGS="$LDFLAGS -Wl,--as-needed"
 
   ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 --with-geotiff \
-              --with-mysql --with-python --with-curl --with-hdf5 --with-perl --with-geos \
+              --with-mysql --with-curl --with-hdf5 --with-perl --with-geos \
               --with-png --with-poppler --with-spatialite --with-openjpeg
 
 # workaround for bug #13646
@@ -56,19 +51,23 @@ build() {
 
   make
   make man
+
+  cd "${srcdir}"/$pkgbase-$pkgver/swig/python
+  python2 setup.py build
+  python3 setup.py build
 }
 
-package () {
-  cd "${srcdir}"/$pkgname-$pkgver
+package_gdal () {
+  cd "${srcdir}"/$pkgbase-$pkgver
 
   make DESTDIR="${pkgdir}" install
   make DESTDIR="${pkgdir}" install-man
 
 # install license
-  install -Dm644 LICENSE.TXT "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 LICENSE.TXT "${pkgdir}"/usr/share/licenses/$pkgbase/LICENSE
 
 #FS15477 clean up junks - still present in 2.2.1
-  rm -f "${pkgdir}"/usr/share/man/man1/_build_gdal_src_gdal-${pkgver}_apps_.1
+#   rm -f "${pkgdir}"/usr/share/man/man1/_build_gdal_src_gdal-${pkgver}_apps_.1
 
 # Remove RPATH
   eval local $(perl -V:vendorarch)
@@ -77,4 +76,37 @@ package () {
   chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GDAL/GDAL.so
   chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GDAL/Const/Const.so
   chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GNM/GNM.so
+}
+
+package_python-gdal () {
+  pkgdesc="Python bindings for GDAL"
+  depends=("gdal=$pkgver" 'python-numpy')
+  optdepends=()
+
+  cd "${srcdir}"/$pkgbase-$pkgver/swig/python
+  python3 setup.py install --root="$pkgdir" --optimize=1
+  install -Dm755 -t "${pkgdir}"/usr/bin scripts/*.py
+
+  install -dm755 "${pkgdir}"/usr/share/licenses
+  ln -s $pkgbase "${pkgdir}"/usr/share/licenses/$pkgname
+}
+
+package_python2-gdal () {
+  pkgdesc="Python 2 bindings for GDAL"
+  depends=("gdal=$pkgver" 'python2-numpy')
+  optdepends=()
+
+  cd "${srcdir}"/$pkgbase-$pkgver/swig/python
+
+# python2 fixes
+  for file in {,osgeo/,samples/,scripts/}*.py; do
+      sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' $file
+  done
+
+  python2 setup.py install --root="$pkgdir" --optimize=1
+  install -Dm755 -t "${pkgdir}"/usr/bin scripts/*.py
+  for file in "${pkgdir}"/usr/bin/*; do mv "${file}" "${file%.py}2.py"; done
+
+  install -dm755 "${pkgdir}"/usr/share/licenses
+  ln -s $pkgbase "${pkgdir}"/usr/share/licenses/$pkgname
 }

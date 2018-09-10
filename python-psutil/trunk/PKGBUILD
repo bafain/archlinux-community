@@ -3,7 +3,7 @@
 
 pkgbase=python-psutil
 pkgname=('python-psutil' 'python2-psutil')
-pkgver=5.4.3
+pkgver=5.4.7
 pkgrel=1
 arch=('x86_64')
 url='https://github.com/giampaolo/psutil'
@@ -11,15 +11,15 @@ license=('custom: BSD')
 makedepends=('python' 'python-setuptools' 'python2' 'python2-setuptools')
 checkdepends=('net-tools' 'procps-ng' 'python2-nose' 'python-nose')
 source=("https://github.com/giampaolo/psutil/archive/release-$pkgver.tar.gz")
-md5sums=('be44b1f04131aa1edfacc14a24ea1915')
+md5sums=('e8d6259eafe5925e7c522868aedd2caa')
 
 build() {
   cd psutil-release-$pkgver
 
-  msg2 python
+  msg python
   python setup.py build --build-lib=build/python
 
-  msg2 python2
+  msg python2
   python2 setup.py build --build-lib=build/python2
   find build/python2 -type f -exec \
     sed -i '1s,^#! \?/usr/bin/\(env \|\)python$,#!/usr/bin/python2,' {} \;
@@ -28,13 +28,13 @@ build() {
 check() {
   cd psutil-release-$pkgver
 
-  msg2 python
+  msg python
   export PYTHONPATH="$PWD/build/python"
   cd psutil/tests/
   # FIXME: dynamic loading so
 
 
-  msg2 python2
+  msg python2
   export PYTHONPATH="$PWD/build/python2"
   #python2 psutil/tests/runner.py
 }

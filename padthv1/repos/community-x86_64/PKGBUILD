@@ -1,17 +1,18 @@
+# $Id$
 # Maintainer: David Runge <dave@sleepmap.de>
 pkgname=padthv1
-pkgver=0.9.0
+pkgver=0.9.2
 pkgrel=1
 pkgdesc="An old-school polyphonic additive synthesizer"
 arch=('x86_64')
 url="https://padthv1.sourceforge.io/"
 license=('GPL2')
 groups=('lv2-plugins' 'pro-audio' 'vee-one')
-depends=('jack' 'liblo' 'lv2' 'qt5-base' 'desktop-file-utils'
-'hicolor-icon-theme' 'shared-mime-info' 'fftw')
-makedepends=('qt5-tools')
+depends=('desktop-file-utils' 'fftw' 'hicolor-icon-theme' 'jack' 'liblo'
+'qt5-base')
+makedepends=('lv2' 'qt5-tools')
 source=("https://download.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-sha512sums=('cab770d8417ee3a163af302a183390b4aa513da62964500125ed645694c3d8e03d99ceaf65ab439c7922d208d6a73d41be3a2fced0d2874fcc2a00755b1beb2f')
+sha512sums=('7d4828e1a6f00b88d8ea05f37d87067294bdc4350182f2f4078ce65b3a1113e5595a678a259d0d16c3b4f90175878619b571f78682754a0840e903789bf25fee')
 
 prepare() {
   cd "${pkgname}-${pkgver}"
@@ -29,6 +30,6 @@ package() {
   cd "${pkgname}-${pkgver}"
   make DESTDIR="$pkgdir/" install
   install -t "${pkgdir}/usr/share/doc/${pkgname}" \
-    -vDm644 {AUTHORS,ChangeLog,README,TODO}
+    -vDm 644 {AUTHORS,ChangeLog,README,TODO}
 }
 # vim:set ts=2 sw=2 et:

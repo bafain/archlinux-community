@@ -4,16 +4,16 @@
 # Contributor: Joeny Ang <ang(dot)joeny(at)gmail(dot)com>
 
 pkgname=simple-scan
-pkgver=3.26.3
-pkgrel=1
+pkgver=3.28.1
+pkgrel=2
 pkgdesc="Simple scanning utility"
 url="https://launchpad.net/simple-scan"
 arch=(x86_64)
 license=(GPL3)
 groups=(gnome)
-depends=(sane dconf gtk3 colord libgusb)
+depends=(sane dconf gtk3 colord-sane libgusb)
 makedepends=(yelp-tools meson vala git)
-_commit=81eadec7bf420e7d1bdc039a1470de3f156b92b5  # tags/3.26.3^0
+_commit=03fc5b93753478c4ccae6f994ed95101f34c7cc0  # tags/3.28.1^0
 source=("git+https://gitlab.gnome.org/GNOME/simple-scan.git#commit=$_commit")
 sha256sums=('SKIP')
 

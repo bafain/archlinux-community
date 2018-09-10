@@ -4,17 +4,20 @@
 # Contributor: Sebastien Piccand <sebcactus gmail com>
 
 pkgname=('handbrake' 'handbrake-cli')
-pkgver=1.0.7
-pkgrel=3
+pkgver=1.1.2
+pkgrel=1
 arch=('x86_64')
 url="https://handbrake.fr/"
 license=('GPL')
 makedepends=('intltool' 'python2' 'yasm' 'wget' 'cmake' 'bzip2' 'gcc-libs'
              'zlib' 'libnotify' 'gst-plugins-base' 'gtk3' 'dbus-glib' 'libass'
              'lame' 'libxml2' 'opus' 'libvorbis' 'libtheora' 'libsamplerate'
-             'x264' 'libx264' 'jansson' 'librsvg' 'libgudev')
-source=(https://handbrake.fr/mirror/HandBrake-$pkgver.tar.bz2)
-sha256sums=('ffdee112f0288f0146b965107956cd718408406b75db71c44d2188f5296e677f')
+             'x264' 'jansson' 'librsvg' 'libgudev')
+source=(https://download.handbrake.fr/releases/$pkgver/HandBrake-$pkgver-source.tar.bz2
+        https://github.com/HandBrake/HandBrake/releases/download/$pkgver/HandBrake-$pkgver-source.tar.bz2.sig)
+sha256sums=('ba9a4a90a7657720f04e4ba0a2880ed055be3bd855e99c0c13af944c3904de2e'
+            'SKIP')
+validpgpkeys+=('1629C061B3DDE7EB4AE34B81021DB8B44E4A8645') # HandBrake Team <developers@handbrake.fr>
 
 build() {
   cd "$srcdir/HandBrake-$pkgver"
@@ -27,7 +30,7 @@ package_handbrake() {
   pkgdesc="Multithreaded video transcoder"
   depends=('bzip2' 'gcc-libs' 'zlib' 'gst-plugins-base' 'libnotify' 'dbus-glib'
            'gtk3' 'libass' 'lame' 'libxml2' 'opus' 'libvorbis' 'libtheora'
-           'libsamplerate' 'libx264' 'jansson' 'librsvg' 'libgudev'
+           'libsamplerate' 'x264' 'jansson' 'librsvg' 'libgudev'
            'desktop-file-utils' 'hicolor-icon-theme')
   optdepends=('gst-plugins-good: for video previews'
               'gst-libav: for video previews'
@@ -42,7 +45,7 @@ package_handbrake() {
 package_handbrake-cli() {
   pkgdesc="Multithreaded video transcoder (CLI)"
   depends=('bzip2' 'gcc-libs' 'zlib' 'libass' 'lame' 'libxml2' 'opus'
-           'libvorbis' 'libtheora' 'libsamplerate' 'libx264' 'jansson')
+           'libvorbis' 'libtheora' 'libsamplerate' 'x264' 'jansson')
   optdepends=('libdvdcss: for decoding encrypted DVDs')
 
   cd "$srcdir/HandBrake-$pkgver/build"

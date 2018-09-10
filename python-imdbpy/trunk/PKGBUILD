@@ -1,23 +1,29 @@
+# $Id$
 # Maintainer: David Runge <dave@sleepmap.de>
 
+# pypi upstream name is differnt
+#_name=IMDbPY
+_name=imdbpy
 pkgname=python-imdbpy
-pkgver=6.4.1
+pkgver=6.6
 pkgrel=1
 pkgdesc="Python bindings for the Internet Movie Database (IMDb)"
 url="https://imdbpy.sourceforge.io/"
 arch=('any')
 license=('GPL2')
-depends=('python-lxml' 'python-sqlalchemy')
-makedepends=('python-pytest' 'python-setuptools')
+depends=('python-lxml' 'python-sqlalchemy' 'python-setuptools')
 checkdepends=('python-pytest' 'python-pytest-cov')
-source=("${pkgname}-${pkgver}.tar.gz::https://github.com/alberanid/${pkgname/python-/}/archive/${pkgver}.tar.gz")
-sha512sums=('558c1bb9346d7a109c29057c181f7ceabeaba76165e385ff6aef603f2873af6b89cb77391bec9d496c1419cc3af51b48ac966bb3233f7f374a0a8700ca7cda5e')
+source=("${_name}-${pkgver}.tar.gz::https://github.com/alberanid/${_name}/archive/${pkgver}.tar.gz")
+# pypi sources don't have tests yet: 
+# https://github.com/alberanid/imdbpy/issues/180
+#source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+sha512sums=('668ec0303e4b5cb5aa97dc3111ffd36bcf85b01713365ed5eb8f1bb76ddcb2d23f651d0f8ffcd07dea3a83f70de7cb2b196624659ba20e3faca1029a9512fa38')
 
 prepare() {
-  mv -v "${pkgname/python-/}-${pkgver}" "${pkgname}-${pkgver}"
+  mv -v "${_name}-${pkgver}" "${pkgname}-${pkgver}"
   cd "${pkgname}-${pkgver}"
   # fix install folder for docs and config
-  sed -e "s/'doc'/'share\/doc'/" \
+  sed -e "s/'doc'/'share\/doc\/python-imdbpy\/'/" \
       -e "s/'etc'/'\/etc'/" -i setup.py
 }
 
@@ -38,7 +44,7 @@ package() {
     --optimize=1 \
     --prefix=/usr \
     --root="${pkgdir}/"
-  install -vDm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+  install -vDm 644 README.rst -t "${pkgdir}/usr/share/doc/${pkgname}/"
 }
 
 # vim:set ts=2 sw=2 et:

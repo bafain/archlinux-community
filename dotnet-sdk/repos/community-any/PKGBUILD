@@ -3,18 +3,18 @@
 # Contributor: Max Liebkies <mail@maxliebkies.de>
 
 pkgname=dotnet-sdk
-pkgver=2.1.101
-pkgrel=1
+pkgver=2.1.300
+pkgrel=2
 pkgdesc='The .NET Core SDK'
 arch=('any')
 url='https://www.microsoft.com/net/core'
 license=('MIT')
-depends=('dotnet-runtime')
+depends=('aspnet-runtime' 'dotnet-runtime')
 options=('staticlibs')
-conflicts=('dotnet-sdk-2.0')
-provides=('dotnet-sdk-2.0')
-source=('https://download.microsoft.com/download/D/C/F/DCFA73BE-93CE-4DA0-AB76-98972FD6E475/dotnet-sdk-2.1.101-linux-x64.tar.gz')
-sha256sums=('a17b94040bd709b8ce8ded35525e62465b071bb064f7b3d3b01899708b04a4af')
+conflicts=('dotnet-sdk-2.1')
+provides=('dotnet-sdk-2.1')
+source=('https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-linux-x64.tar.gz')
+sha256sums=('fabca4c8825182ff18e5a2f82dfe75aecd10260ee9e7c85a8c4b3d108e5d8e1b')
 
 package() {
   install -dm 755 "${pkgdir}"/{opt/dotnet,usr/share/licenses}

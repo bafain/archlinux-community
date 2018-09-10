@@ -1,17 +1,18 @@
+# $Id$
 # Maintainer: David Runge <dave@sleepmap.de>
 # Contributor: sekret, mail=$(echo c2VrcmV0QHBvc3Rlby5zZQo= | base64 -d)
 pkgname=drumgizmo
-pkgver=0.9.14
-pkgrel=4
-pkgdesc="An open source, multichannel, multilayered, cross-platform drum plugin and stand-alone application"
+pkgver=0.9.16
+pkgrel=1
+pkgdesc="Multichannel, multilayered, cross-platform drum plugin and stand-alone application"
 arch=('x86_64')
 url="https://www.drumgizmo.org"
 license=('GPL')
-groups=('lv2-plugins')
+groups=('lv2-plugins' 'pro-audio')
 depends=('libsmf' 'libxext' 'expat' 'jack' 'zita-resampler')
 makedepends=('lv2')
 source=("https://www.${pkgname}.org/releases/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz"{,.asc})
-sha512sums=('211517c378728ad0f1e0b8a59738dd0d2f1a9505607c80c1f67d68dea4e15a8e47431badbc20a4e48e3a895766ba24ccae071abb5d0e42b08ca720ca68045cbe'
+sha512sums=('ae0c3c2e44fd596a21c11103719f6e2bf622191d86e136bc33a1ea01b76dfdee41eca74a02a5042dee5dd90645fa9e2cb4b9d74668fbcc91d8c3295163e9968d'
             'SKIP')
 validpgpkeys=('F39C94D556CCB995B1AE540E9EB89445BF071867')
 
@@ -26,7 +27,7 @@ package() {
   cd "${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}/" install
   install -t "${pkgdir}/usr/share/doc/${pkgname}/" \
-    -vDm644 {AUTHORS,ChangeLog,README}
+    -vDm 644 {AUTHORS,ChangeLog,README}
 }
 
 # vim:set ts=2 sw=2 et:

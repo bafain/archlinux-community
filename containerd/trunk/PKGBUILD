@@ -1,30 +1,32 @@
 # $Id$
-# Maintainer: Sébastien "Seblu" Luttringer
+# Maintainer: Morten Linderud <foxboron@archlinux.org>
+# Contributor: Sébastien "Seblu" Luttringer
 # Contributor: Iwan Timmer <irtimmer@gmail.com>
 
 pkgname=containerd
-pkgver=1.0.2
+pkgver=1.1.2
+_commit=209a7fc3e4a32ef71a8c7b50c68fc8398415badf
 pkgrel=1
 pkgdesc='An open and reliable container runtime'
 url='https://containerd.io/'
-depends=('glibc' 'runc')
+depends=('runc')
 makedepends=('go-pie' 'git' 'btrfs-progs')
 arch=('x86_64')
-source=("containerd²::git+https://github.com/containerd/containerd.git#tag=v$pkgver")
 license=("APACHE")
-md5sums=('SKIP')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/containerd/containerd/archive/v$pkgver.tar.gz")
+sha256sums=('fd2531e1a1ace89b62f193f8c32e04ab847d75ad6316c7aa864e1eb386db3743')
 
 prepare() {
   mkdir -p src/github.com/containerd
-  ln -rTsf containerd² src/github.com/containerd/containerd
+  ln -rTsf $pkgname-$pkgver src/github.com/containerd/containerd
   # fix paths in service
-  sed -i 's,/sbin,/usr/bin,;s,/usr/local,/usr,' containerd²/containerd.service
+  sed -i 's,/sbin,/usr/bin,;s,/usr/local,/usr,' $pkgname-$pkgver/containerd.service
 }
 
 build() {
   export GOPATH="$srcdir"
   cd src/github.com/containerd/containerd
-  make
+  make VERSION=v$pkgver.m REVISION=$_commit.m
 }
 
 package() {

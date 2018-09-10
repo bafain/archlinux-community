@@ -6,15 +6,16 @@
 
 pkgname=xcursor-bluecurve
 pkgver=0.1.1
-pkgrel=5
+pkgrel=6
 pkgdesc="Redhat's Bluecurve X mouse cursor theme"
 arch=('any')
 url="http://opendesktop.org/content/show.php?content=39229"
 license=("GPL")
-source=("https://dl.opendesktop.org/api/files/download/id/1460734036/39229-bluecurve-${pkgver}.tar.gz")
+# no direct download link?
+source=("https://pkgbuild.com/~kkeen/sources/39229-bluecurve-$pkgver.tar.gz")
 md5sums=('b33ec17ade1dc3dd208fd4694dfa58df')
 
 package() {
-  install -d "$pkgdir"/usr/share/icons/Bluecurve
-  cp -r "$srcdir"/bluecurve/* "$pkgdir"/usr/share/icons/Bluecurve
+  install -d "$pkgdir/usr/share/icons/Bluecurve"
+  cp -r "$srcdir/bluecurve/"* "$pkgdir/usr/share/icons/Bluecurve"
 }

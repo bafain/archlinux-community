@@ -6,17 +6,16 @@
 
 pkgbase=eric
 pkgname=('eric-common' 'eric' 'python2-eric')
-pkgver=18.02
+pkgver=18.08
 pkgrel=1
 pkgdesc="A full-featured Python and Ruby IDE in PyQt"
 arch=('any')
 url="http://eric-ide.python-projects.org/"
 license=('GPL3')
-depends=('python-qscintilla' 'python2-qscintilla'
-         'python-qscintilla-qt5' 'python2-qscintilla-qt5'
+depends=('python-qscintilla-qt5' 'python2-qscintilla-qt5'
          'qt5-svg' 'qt5-webkit')
 source=("https://downloads.sourceforge.net/eric-ide/eric6-${pkgver}.tar.gz")
-sha512sums=('f3bce4428a0f736ebd0b40cd9d5094c7a5041ccdf6cc9100aebbfe4c9c082b5952f1e1bb5ef5db855f24473f3a9db93e9ae8276e63fcd323bd229f494186ae23')
+sha512sums=('5c95ab51cf8b9ffb101702e21f44c37e4e51b0cef47e3d7743faaab070ea7618a9b6362a01935336c70000f1bcd18e5ad728f39a41c3a46820c8dea8ab5e4d1c')
 changelog=ChangeLog
 
 prepare() {
@@ -66,19 +65,23 @@ package_eric-common() {
 package_eric() {
   depends=('eric-common' 'python-qscintilla-qt5' 'qt5-svg' 'qt5-webkit')
   optdepends=('qt5-webengine: alternative browser backend')
-  conflicts=('eric-qt4')
 
   cd "${srcdir}/eric6-${pkgver}"
   python install.py -c -b /usr/bin -i "${pkgdir}" --noapis
+
+  # fix paths in desktop files
+  find "${pkgdir}" -name '*.desktop' -exec sed -i "s|${pkgdir}||g" {} \;
 }
 
 package_python2-eric() {
   depends=('eric-common' 'python2-qscintilla-qt5' 'qt5-svg' 'qt5-webkit')
   optdepends=('qt5-webengine: alternative browser backend')
-  conflicts=('python2-eric-qt4')
 
   cd "${srcdir}/eric6-${pkgver}_py2"
   python2 install.py -c -b /usr/bin -i "${pkgdir}" -y --noapis
+
+  # fix paths in desktop files
+  find "${pkgdir}" -name '*.desktop' -exec sed -i "s|${pkgdir}||g" {} \;
 }
 
 # vim:set ts=2 sw=2 et:

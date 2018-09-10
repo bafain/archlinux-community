@@ -6,7 +6,7 @@
 
 pkgbase=python-tox
 pkgname=(python-tox python2-tox)
-pkgver=2.9.1
+pkgver=3.2.1
 pkgrel=1
 pkgdesc='Python virtualenv management and testing tool'
 arch=('any')
@@ -14,9 +14,10 @@ url='https://tox.readthedocs.io'
 license=('GPL2')
 makedepends=('python-setuptools' 'python2-setuptools' 'python-py' 'python2-py' 'python-virtualenv'
              'python2-virtualenv' 'python-pluggy' 'python2-pluggy')
-checkdepends=('python-pytest-runner' 'python2-pytest-runner')
+checkdepends=('python-pytest-runner' 'python2-pytest-runner' 'python-pytest-mock'
+              'python2-pytest-mock')
 source=("https://pypi.io/packages/source/t/tox/tox-$pkgver.tar.gz")
-sha512sums=('ff19b2bb7ac963379f1cccd4973ad9eb4dabfbda976cde7caba50ad010d8fa57c1cba91d63e3e0512e44cc7d350bc9270fbd9b30db1bd55f7d9c239e7623d066')
+sha512sums=('79f5a1c8f6e818fbb8444754e3767d880fc1fdfe63b46c518d37440fe2b2f3ce572865aff83d9492c24486fded49893cc31bd9b11254bac4db507260304bc76f')
 
 prepare() {
   find tox-$pkgver -name "*.pyc" -delete

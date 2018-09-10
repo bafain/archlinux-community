@@ -5,7 +5,7 @@
 # Contributor: Tobias T. <OldShatterhand at gmx-topmail dot de>
 
 pkgname=bibletime
-pkgver=2.11.1
+pkgver=2.11.2
 pkgrel=1
 pkgdesc='Bible study tool'
 arch=('x86_64')
@@ -14,7 +14,7 @@ license=('GPL2')
 depends=('sword' 'clucene' 'qt5-webengine' 'qt5-svg')
 makedepends=('cmake' 'qt5-tools')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/bibletime/bibletime/archive/v$pkgver.tar.gz")
-sha512sums=('ad718b2c7b6591991ffdcd00fdb9a2bcd7905bc5b8c8cf9828ce60e3a3b1ecbafb6fa06ac5689a1e8e33590439d8bc4cf69f0584bec30c3adb3c32cc14006342')
+sha512sums=('951c72dea1e281c0403284b36d680452ffb9dec180097faec49bc8536ad9a9e3cb543060b9972beae415e94467dbff6edcc253a0fda217cbb17a94fce40ff553')
 
 prepare() {
   mkdir -p build

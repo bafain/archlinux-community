@@ -1,0 +1,40 @@
+# Maintainer: Morten Linderud <foxboron@archlinux.org>
+
+pkgname=git-lfs
+pkgver=2.5.1
+pkgrel=1
+pkgdesc="Git extension for versioning large files"
+arch=('x86_64')
+url="https://git-lfs.github.com"
+license=('MIT')
+makedepends=('go-pie' 'ruby-ronn')
+depends=('git')
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/git-lfs/git-lfs/archive/v${pkgver}.tar.gz")
+sha256sums=('85c3148c7cbd9216e356b9317bc726ff8d982b37654ec1b26c537238ba9bfd8e')
+
+prepare(){
+  mkdir -p src/github.com/git-lfs
+  ln -rTsf "${pkgname}-${pkgver}" src/github.com/git-lfs/git-lfs
+}
+
+build(){
+  export GOPATH="${srcdir}" 
+  cd "src/github.com/git-lfs/git-lfs"
+  go install -gcflags "all=-trimpath=${GOPATH}" -asmflags "all=-trimpath=${GOPATH}" ./...
+  make man
+}
+
+check(){
+  export GOPATH="${srcdir}" 
+  cd "src/github.com/git-lfs/git-lfs"
+  go test ./...
+}
+
+package() {
+  install -Dm755 ./bin/$pkgname "$pkgdir"/usr/bin/$pkgname
+
+  cd "${pkgname}-${pkgver}"
+  install -Dm644 LICENSE.md "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 -t "$pkgdir"/usr/share/man/man1 man/*.1 
+  install -Dm644 -t "$pkgdir"/usr/share/man/man5 man/*.5 
+}

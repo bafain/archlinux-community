@@ -3,7 +3,7 @@
 
 pkgbase=python-scikit-learn
 pkgname=('python2-scikit-learn' 'python-scikit-learn')
-pkgver=0.19.1
+pkgver=0.19.2
 pkgrel=1
 pkgdesc="A set of python modules for machine learning and data mining"
 arch=('x86_64')
@@ -13,10 +13,11 @@ makedepends=('python2-scipy' 'python-scipy' 'python2-setuptools' 'python-setupto
 options=(!emptydirs)
 
 source=("https://github.com/scikit-learn/scikit-learn/archive/${pkgver}.tar.gz")
-md5sums=('8fce5acd7d2d12c45d3381bbfa953d61')
+md5sums=('354d88153e2474174484ec20e350480d')
 
 prepare() {
   cd "$srcdir"
+
   cp -a scikit-learn-$pkgver scikit-learn-py2-$pkgver
   cd scikit-learn-py2-$pkgver
 
@@ -38,6 +39,8 @@ build() {
 
 package_python2-scikit-learn() {
   depends=('python2-scipy')
+  optdepends=('python2-matplotlib: for examples with plotting')
+
   cd "$srcdir"/scikit-learn-py2-$pkgver
 
   python2 setup.py install --root="$pkgdir"/ --optimize=1
@@ -51,6 +54,8 @@ package_python2-scikit-learn() {
 
 package_python-scikit-learn() {
   depends=('python-scipy')
+  optdepends=('python-matplotlib: for examples with plotting')
+
   cd "$srcdir"/scikit-learn-$pkgver
 
   python setup.py install --root="$pkgdir"/ --optimize=1

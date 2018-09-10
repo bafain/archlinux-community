@@ -4,46 +4,43 @@
 # Contributor: Cédric Bellegarde <gnumdk@gmail.com>
 
 pkgname=lollypop
-pkgver=0.9.401
-_portal_pkgver=0.9.6
+pkgver=0.9.522
 pkgrel=1
 pkgdesc='Music player for GNOME'
 arch=('any')
-url='https://github.com/gnumdk/lollypop'
+url='https://gitlab.gnome.org/gnumdk/lollypop'
 license=('GPL')
-depends=('desktop-file-utils' 'gst-python' 'gtk3' 'python-cairo'
-         'python-dbus' 'python-gobject' 'totem-plparser')
-makedepends=('gobject-introspection' 'intltool' 'itstool' 'meson' 'python')
+depends=(
+  'gst-plugins-base-libs' 'gtk3' 'python-beautifulsoup4' 'python-cairo'
+  'python-dbus' 'python-gobject' 'totem-plparser'
+)
+makedepends=(
+  'git' 'gobject-introspection' 'intltool' 'itstool' 'meson' 'python'
+)
 optdepends=('easytag: Modify tags'
             'flatpak: Flatpak Portal'
             'gst-libav: FFmpeg plugin for GStreamer'
+            'gst-plugins-bad: "Bad" plugin libraries'
+            'gst-plugins-base: "Base" plugin libraries'
+            'gst-plugins-good: "Good" plugin libraries'
+            'gst-plugins-ugly: "Ugly" plugin libraries'
             'kid3-qt: Store covers in tags'
             'libsecret: Last.FM support'
+            'lollypop-portal: Flatpak portal for advanced functionalities'
+            'python-pillow: Blur background in lyrics view'
             'python-pylast: Last.FM support'
-            'python-wikipedia: Wikipedia support'
-            'youtube-dl: YouTube playback')
-source=("https://gitlab.gnome.org/gnumdk/lollypop/uploads/6cbec90c1a3c8a6a657f75fea3f64bbb/lollypop-0.9.401.tar.xz"
-        "https://gitlab.gnome.org/gnumdk/lollypop-portal/uploads/7bcb3e4bc40ff460904ae7edaf10d54b/lollypop-portal-0.9.6.tar.xz")
-sha256sums=('9892efe731556f198e8d0de467b4ce1962768ce5b297ae1f25db3d78e8ded85f'
-            '92ad1ea52788e05124b45fa948c6b509aebd154a018d83fa16367601f82b6275')
+            'python-wikipedia: Wikipedia support')
+source=("git+https://gitlab.gnome.org/World/lollypop.git#tag=${pkgver}")
+sha256sums=('SKIP')
 
 build() {
-  for d in lollypop-portal-${_portal_pkgver} lollypop-${pkgver}; do
-    pushd $d
-    meson \
-      --buildtype='release' \
-      --prefix='/usr' \
-      --libexecdir='lib/lollypop' \
-      build
-    ninja -C build
-    popd
-  done
+  arch-meson lollypop build \
+    --libexecdir='lib/lollypop'
+  ninja -C build
 }
 
 package() {
-  for d in lollypop-portal-${_portal_pkgver} lollypop-${pkgver}; do
-    DESTDIR="${pkgdir}" ninja -C $d/build install
-  done
+  DESTDIR="${pkgdir}" ninja -C build install
 }
 
 # vim: ts=2 sw=2 et:

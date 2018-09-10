@@ -4,7 +4,7 @@
 
 pkgbase=python-more-itertools
 pkgname=('python-more-itertools' 'python2-more-itertools')
-pkgver=3.1.0
+pkgver=4.3.0
 pkgrel=1
 pkgdesc='More routines for operating on iterables, beyond itertools'
 arch=('any')
@@ -14,7 +14,7 @@ license=('MIT')
 depends=('python')
 makedepends=('python-setuptools' 'python2-setuptools' 'python2-six')
 source=("https://files.pythonhosted.org/packages/source/m/more-itertools/more-itertools-$pkgver.tar.gz")
-md5sums=('e3dad64e30d0220039d0cb036ae7532c')
+sha512sums=('5fee3d99fd796b0f0f6b5aa99a8db22e219d3dced71fef6f4b16286fe67061dce280389b3638c55c6e5f6c828ef1286cee845d76a6861d2af66d90e995d5aa4e')
 
 prepare() {
   cp -R "more-itertools-$pkgver" "py2-more-itertools-$pkgver"

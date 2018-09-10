@@ -3,28 +3,28 @@
 # Contributor: Ales Katona <almindor@gmail.com>
 
 pkgname=etherwall
-pkgver=2.2.0
-_ewnodever=1.0.1
-_trezorcommit=4ac8e8cdffb04f83ba9f71c27513f8dced1aa3b0
+pkgver=2.2.4
+_ewnodecommit=369edf96f4707db156e63466987fc81025964ad5
+_trezorcommit=8ea2d044785b2285c4390b3afddb08e8d093cc8e
 pkgrel=1
 pkgdesc="Ethereum GUI Wallet (QT5)"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://etherwall.com"
 license=('GPL3')
 depends=('qt5-declarative' 'qt5-graphicaleffects' 'qt5-quickcontrols' 'qt5-websockets' 'geth' 'protobuf' 'hidapi' 'libsystemd')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/almindor/${pkgname}/archive/v$pkgver.tar.gz"
-        "ew-node-$pkgver.tar.gz::https://github.com/almindor/ew-node/archive/v$_ewnodever.tar.gz"
-        "trezor-common-$pkgver.tar.gz::https://github.com/trezor/trezor-common/archive/$_trezorcommit.tar.gz"
+        "ew-node-$_ewnodecommit.tar.gz::https://github.com/almindor/ew-node/archive/$_ewnodecommit.tar.gz"
+        "trezor-common-$_trezorcommit.tar.gz::https://github.com/trezor/trezor-common/archive/$_trezorcommit.tar.gz"
         etherwall.desktop)
-sha256sums=('bee8cabfe7a7b37ca3360a309ae52b598aeb5f0c9d990024e40bb3174d450809'
-            '48f10e003e6c949c4dac81bd3ecc89733cbc3d4f6ae26be38386d70e68a001b4'
-            '95bc637d7b49697d06567b35ef2cbb2fdba1ce8c8e27d95e9cd242ec2b3fa459'
-            '65ca9c47e79daead171d8262cee99fd3d6466611479bb3ba57ef36203a546b61')
+sha512sums=('79ef3094110cbb02acc038834a366094e1ce1adc7818133a474201779d2661eaef65dacd33f1dea64ef34ef7c32381d943552847c34b05dae1f96e580e495e94'
+            '6cce95b0ad634ef90350a479f25f7683488adfbc7aa591319ff31eb64ec57bffb124434253adf3bf24cf70ed9b1544b2db97465bfc80c76820f738cad82e1843'
+            '862b3e678751bbd26380c085036f1526aa576fc75473e06a43c6476085168cb46a904bab716fe905d6970c923b0ae0081365cec0f7df01a3b91f948947fd6594'
+            '82ecee1f1d7a6fe7014b928e3ab79ed507c3c5795ac3e832e0be1aca8fc5659212c5a4323d5dec4571b9e9255c5c46615bd9865dc03eba85d8be9b969b534d57')
 
 build() {
   cd "etherwall-$pkgver"
   rmdir "src/ew-node"
-  ln -s "../../ew-node-$_ewnodever" "src/ew-node"
+  ln -s "../../ew-node-$_ewnodecommit" "src/ew-node"
 
   SRCDIR="../trezor-common-$_trezorcommit/protob" ./generate_protobuf.sh
   qmake -config release && make

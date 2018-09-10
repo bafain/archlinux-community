@@ -2,8 +2,8 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=debootstrap
-pkgver=1.0.93
-pkgrel=2
+pkgver=1.0.109
+pkgrel=1
 pkgdesc="Bootstrap a basic Debian system"
 arch=('any')
 license=('GPL')
@@ -14,8 +14,8 @@ source=("$pkgname-$pkgver.tar.gz::https://github.com/felixonmars/debootstrap/arc
 optdepends=('gnupg: check release signatures'
             'debian-archive-keyring: check release signatures for Debian'
             'ubuntu-keyring: check release signatures for Ubuntu')
-sha512sums=('57a6aa5d27b1b600f49db847b238e412a9819c499995e4dbc63943bb7c6a738f4d97befc2a9d25575a6d619bdc64e838654fa629573ee5fe95c6bc56758a1b8b'
-            '824109b2ea138d0dd1a31039a165cb4079da856cb11c664fc5a7f49a42de08ff56a620887d3c0914b69140849799f4473b1f27a05cd14cd60ef2a41627f8d5e1')
+sha512sums=('8b2cf0ba3e0c672a2375ff323c18c18788e17a4bdf3e03d6b72f956a85b989d3998b89215bc7b99925decbba3c9a5dbeddfc72b9baf7c0571f11559ff8286272'
+            '56e25f48027f99f7e720859a9e14fe769b1cbd6227c7a7e27e14c2fea88520109342d6e5b127dc34ce8cc40f46941a0c5157ad35cf8ef9b3e4323877a4b32d97')
 
 prepare() {
   cd debootstrap-$pkgver

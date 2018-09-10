@@ -4,7 +4,7 @@
 # Contributor: Vlad Kolotvin <vlad.kolotvin@gmail.com>
 
 pkgname=emscripten
-pkgver=1.37.34
+pkgver=1.38.12
 pkgrel=1
 pkgdesc="LLVM-based project that compiles C and C++ into highly-optimizable JavaScript for the web"
 arch=('x86_64')
@@ -19,9 +19,9 @@ source=(emscripten-$pkgver.tar.gz::"https://github.com/kripken/emscripten/archiv
         emscripten-fastcomp-$pkgver.tar.gz::"https://github.com/kripken/emscripten-fastcomp/archive/$pkgver.tar.gz"
         emscripten-fastcomp-clang-$pkgver.tar.gz::"https://github.com/kripken/emscripten-fastcomp-clang/archive/$pkgver.tar.gz"
         "emscripten.sh")
-sha512sums=('afd0adf606f4ab2a3ea27dce2d9fee644bb20e779ea2013c13c26751ec023acbe26583e3bbef595c7c514181a59cebd5dd766165fffc40445cd28ea9b4aab74b'
-            '4711c499b7d4e7f5db4d17ca688e9f9bcd892c3178cc867c5e2e75780fc5dd3673bfbb830c1df9fe94a35d27273ecf377b49fd1ccf9ee6447f8902e1f785f81c'
-            '3b03fd26a2aa7840531f74ea5fb6821e4f3ddeb43b18be50a497339e42c6a9d8b9e57c9433a4de16d669b9175dd925d4d745618a5bcb9023e29ef2f7f3ded825'
+sha512sums=('14f17539d76285a6f7a3ce0629bb3681fa045b43af2dd22636ccdad315d21cdb7ceb4d4d258344c20b9b579c5c24821996161a2c35cd8ba8b753b5a381a4a9bc'
+            '190cd7f639489e833d5defeaeb2ae3dfd06503874ea22a87e9024e0429470c8f6a7a7c1fea205db2b0b4696a86e423b239898e6d42cb9d00eeb172502f781a1d'
+            '684b36ffc5df6ea6947cf802182af24ea6ea8aeab493cf9197096f2cb79ca1d5ad621f8ebc93886c078a4edcdfd8d45e4ce1aad175791edd9a8b6db1548444a9'
             '52007717c21c22f5d9f027268de2516e969f2ffb8e37121f75ca2697b7ddcde6c0be9636d19df7b3c2e89bc769f5361750c62f9fcb84d224cde3c8626bc9c93b')
 
 prepare() {
@@ -48,7 +48,8 @@ prepare() {
 build() {
   cd emscripten-fastcomp-$pkgver/build
 
-  CC=gcc CXX=g++ cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python2 \
+  cmake .. \
+    -DPYTHON_EXECUTABLE=/usr/bin/python2 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_SKIP_RPATH=YES \
     -DLLVM_TARGETS_TO_BUILD="X86;JSBackend" \

@@ -1,0 +1,110 @@
+# $Id$
+# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+# Contributor: Ionut Biru <ibiru@archlinux.org>
+# Contributor: Paul Mattal <paul@archlinux.org>
+# Contributor: Andrew Wright <andreww@photism.org>
+# Contributor: Andreas W. Hauser <andy-aur@splashground.de>
+# Contributor: Marco Crosio <marco.crosio@gmail.com>
+
+pkgbase=eclipse
+pkgname=(eclipse-{common,java,jee,cpp,php,javascript,rust})
+pkgver=4.8
+pkgrel=2
+_release=photon-R
+pkgdesc="Highly extensible IDE"
+license=(EPL)
+arch=(x86_64)
+url="https://eclipse.org"
+makedepends=(python3)
+source=(commonify)
+noextract=()
+
+_sourcename() {
+  case $1 in
+    eclipse-common) return 1 ;;
+    eclipse-rust  ) echo $1-$_release-incubation-linux-gtk-x86_64.tar.gz ;;
+    *             ) echo $1-$_release-linux-gtk-x86_64.tar.gz ;;
+  esac
+}
+
+for _pkg in ${pkgname[@]}; do
+  _src=$(_sourcename $_pkg) || continue
+  source+=(http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/${_release/-//}/$_src)
+  noextract+=($_src)
+  eval "package_$_pkg() { _package $_pkg; }"
+done
+
+sha256sums=('70ae1934385b0b7c25e5a76bfcd6d092bfd8d19ce451c3d909afa3cf2448452e'
+            'd6f5ee4e5ced59d2cf6a9b7a992b7d01eb71480cd2353844ba47eb5c55a41816'
+            '3bd00147fe545d1263dd10cdba9850d1fbeaed463582162bb15ddd0d6cfbd3ee'
+            'aa6addf9748156402075db28d6fe839bc63e996075c3894550ca367b68e51b01'
+            'adec5f5a676486d06ad6d2df40c83a754a498f022501b4b055573f7e56549615'
+            'e267b7b52ed16e858f938a4f2a145a422582543d619e4ccba2744a499c6a0a0a'
+            'cf4bb11a656eb4b5002bf51e6bc2841e710571250e97f0671897c18d61308dff')
+
+prepare() {
+  local pkg src
+  for pkg in ${pkgname[@]}; do
+    mkdir $pkg
+    src=$(_sourcename $pkg) || continue
+    bsdtar -xf $src -C $pkg --strip-components 1
+  done
+}
+
+build() {
+  mkdir eclipse-common/dropins
+  touch eclipse-common/dropins/.keep
+  ./commonify --identical ${pkgname[@]}
+}
+
+package_eclipse-common() {
+  pkgdesc+=" (common files)"
+
+  install -d "$pkgdir/usr/lib"
+  cp -a eclipse-common "$pkgdir/usr/lib/eclipse"
+}
+
+_package() {
+  local variant i
+
+  case ${1#eclipse-} in
+    java      ) variant=Java; replaces=(eclipse) ;;
+    jee       ) variant=JEE ;;
+    cpp       ) variant=C++; replaces=(eclipse-cdt) ;;
+    php       ) variant=PHP ;;
+    javascript) variant=JavaScript ;;
+    rust      ) variant=Rust ;;
+    *         ) return 1 ;;
+  esac
+
+  pkgdesc+=" for $variant"
+  depends=(eclipse-common "java-environment>=8" webkit2gtk unzip)
+  provides=("eclipse=$pkgver-$pkgrel")
+  conflicts=(eclipse)
+
+  install -d "$pkgdir/usr/lib"
+  cp -a $1 "$pkgdir/usr/lib/eclipse"
+
+  install -D /dev/stdin "$pkgdir/usr/bin/eclipse" <<END
+#!/bin/bash
+export ECLIPSE_HOME=/usr/lib/eclipse
+exec \$ECLIPSE_HOME/eclipse "\$@"
+END
+
+  install -Dm644 /dev/stdin "$pkgdir/usr/share/applications/eclipse.desktop" <<END
+[Desktop Entry]
+Name=Eclipse
+Comment=$variant Development Environment
+Icon=eclipse
+Exec=eclipse
+Terminal=false
+Type=Application
+Categories=Development;IDE;$variant;
+StartupNotify=true
+END
+
+  for i in 16 22 24 32 48 64 128 256 512 1024; do
+    install -Dm644 eclipse-common/plugins/org.eclipse.platform_*/eclipse$i.png \
+      "$pkgdir/usr/share/icons/hicolor/${i}x$i/apps/eclipse.png"
+  done
+}

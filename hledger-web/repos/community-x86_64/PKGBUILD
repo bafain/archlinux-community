@@ -3,22 +3,28 @@
 # Contributor: Arch Haskell Team <arch-haskell@haskell.org>
 
 pkgname=hledger-web
-pkgver=1.5.1
-pkgrel=7
+pkgver=1.10
+pkgrel=54
 pkgdesc="Web interface for the hledger accounting tool"
 url="http://hledger.org"
 license=("GPL")
 arch=('x86_64')
-depends=('ghc-libs' 'hledger' 'haskell-hledger-lib' 'haskell-base-compat' 'haskell-blaze-html'
-         'haskell-blaze-markup' 'haskell-clientsession' 'haskell-cmdargs' 'haskell-data-default'
+depends=('ghc-libs' 'hledger' 'haskell-hledger-lib' 'haskell-blaze-html' 'haskell-blaze-markup'
+         'haskell-case-insensitive' 'haskell-clientsession' 'haskell-cmdargs' 'haskell-conduit'
+         'haskell-data-default'
          'haskell-hjsmin' 'haskell-http-conduit' 'haskell-http-client' 'haskell-hunit'
-         'haskell-conduit-extra' 'haskell-safe' 'haskell-shakespeare' 'haskell-text' 'haskell-wai'
+         'haskell-conduit-extra' 'haskell-safe' 'haskell-shakespeare' 'haskell-wai'
          'haskell-wai-extra' 'haskell-wai-handler-launch' 'haskell-warp' 'haskell-yesod'
          'haskell-yesod-core' 'haskell-yesod-form' 'haskell-yesod-static' 'haskell-json'
-         'haskell-megaparsec' 'haskell-mtl' 'haskell-parsec')
+         'haskell-megaparsec')
 makedepends=('ghc' 'haskell-hspec' 'haskell-yesod-test')
 source=("https://hackage.haskell.org/packages/archive/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha512sums=('95028853f0a5c86832a4d0488e0f82c8bfda7f0b3f1f21a585efa12f5e882b63a9cb85a028bab5c33b60cafbba1b56608f254b4efa877f60f26356840d74cc9b')
+sha512sums=('37be7468f4c64dfff852759b35d5f41406b8a49ab75dec621319680cea3536b009e3dcc02c3447df5af5818f64613740db64faa9142ec07d403f404e5f4e7e95')
+
+prepare() {
+    cd $pkgname-$pkgver
+    sed -i '/semigroups/d' $pkgname.cabal
+}
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"

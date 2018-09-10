@@ -1,5 +1,6 @@
 # $Id$
 # Maintainer: Dan Printzell <arch@vild.io>
+# Maintainer: Filipe Laíns (FFY00) <lains@archlinux.org>
 # Contributor: Mihails Strasunse <public@dicebot.lv>
 # Contributor: Sven-Hendrik Haase <sh@lutzhaase.com>
 # Contributor: Chris Brannon <cmbrannon79@gmail.com>
@@ -11,12 +12,12 @@ pkgname=('dmd' 'dmd-docs' 'libphobos')
 pkgdesc="D programming language compiler and standard library"
 groups=('dlang' 'dlang-dmd')
 pkgbase=dmd
-pkgver=2.079.0
+pkgver=2.082.0
 pkgrel=1
 epoch=1
 arch=('x86_64')
 url="http://www.dlang.org"
-makedepends=('git' 'dmd')
+makedepends=('git' 'ldc')
 source=("git+https://github.com/dlang/dmd.git#tag=v$pkgver"
         "git+https://github.com/dlang/druntime.git#tag=v$pkgver"
         "git+https://github.com/dlang/phobos.git#tag=v$pkgver"
@@ -27,7 +28,7 @@ source=("git+https://github.com/dlang/dmd.git#tag=v$pkgver"
 sha256sums=('SKIP'
             'SKIP'
             'SKIP'
-            '75c3df4ba4e731ac0fa36a60cd04bbac05a2d79633f4602ad645f533847929ce'
+            '4f16cd260a92f2cb83cc1a001b9279f50927d85154ee6ba5f7d242f2307e4ca6'
             'SKIP'
             '3d639e89528fed1da90006f4dfb2b0fdc41308da5a96d953381ff4ccf257c035'
             '19c9cd3670bdef7fbde88de36c459d940e6b7bacc2a5e48aefbfd1b2c1895e07')
@@ -37,17 +38,29 @@ noextract=("dmd.$pkgver.linux.tar.xz")
 prepare() {
     # We only want to extract the docs & samples, not the prebuild executables
     tar xfJ "dmd.$pkgver.linux.tar.xz" dmd2/html
+
+    # Make sure the version is not -dirty
+    sed -i "s/git describe --dirty 2>\/dev\/null || //" "$srcdir"/dmd/config.sh
+
+    # Add $LDFLAGS and $CXXFLAGS to the compilation
+    # '-link-defaultlib-shared=false' statically links dmd to liblphobos
+    _linkflags=$(echo -ne $LDFLAGS | cut -d\" -f2 | tail -c+4 | sed "s/,/ -L=/g")
+
+    sed -i "/^CXXFLAGS :=/ a $CXXFLAGS \\\\" "$srcdir"/dmd/src/posix.mak
+    sed -i "/^DFLAGS=/ a override DFLAGS += -link-defaultlib-shared=false $_linkflags" "$srcdir"/dmd/src/posix.mak
+    sed -i "/^DFLAGS=/ a override DFLAGS += $_linkflags" "$srcdir"/druntime/posix.mak
+    sed -i "/^DFLAGS=/ a override DFLAGS += $_linkflags" "$srcdir"/phobos/posix.mak
 }
 
 build() {
     cd "$srcdir"/dmd
-    make -f posix.mak BUILD=release RELEASE=1 PIC=1
+    make -f posix.mak BUILD=release ENABLE_RELEASE=1 PIC=1 ENABLE_LTO=1 HOST_DMD=ldmd2
 
     cd "$srcdir"/druntime
-    make -f posix.mak DMD="$srcdir"/dmd/generated/linux/release/*/dmd BUILD=release RELEASE=1 PIC=1
+    make -f posix.mak DMD="$srcdir"/dmd/generated/linux/release/*/dmd BUILD=release ENABLE_RELEASE=1 PIC=1
 
     cd "$srcdir"/phobos
-    make -f posix.mak DMD="$srcdir"/dmd/generated/linux/release/*/dmd BUILD=release RELEASE=1 PIC=1
+    make -f posix.mak DMD="$srcdir"/dmd/generated/linux/release/*/dmd BUILD=release ENABLE_RELEASE=1 PIC=1
 }
 
 package_dmd() {
@@ -101,7 +114,7 @@ package_dmd-docs() {
 
 package_libphobos() {
     pkgdesc="The Phobos standard library for D programming language"
-    options=('staticlibs')
+    options=('staticlibs' '!strip')
     depends=('gcc-libs')
     conflicts=('libphobos-devel')
     provides=("d-runtime=$pkgver" "d-stdlib=$pkgver" "libphobos-devel=$pkgver")

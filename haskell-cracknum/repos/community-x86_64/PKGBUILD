@@ -4,16 +4,16 @@
 
 _hkgname=crackNum
 pkgname=haskell-cracknum
-pkgver=2.0
-pkgrel=1
+pkgver=2.2
+pkgrel=2
 pkgdesc="Crack various integer, floating-point data formats"
 url="https://github.com/LeventErkok/crackNum"
 license=("custom:BSD3")
 arch=('x86_64')
-depends=('ghc-libs' 'haskell-ieee754' 'haskell-data-binary-ieee754' 'haskell-floatinghex')
+depends=('ghc-libs' 'haskell-ieee754' 'haskell-reinterpret-cast' 'haskell-floatinghex')
 makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('b356c06a502d7f5dfc617c0fe2aa04005fda4e5e45edc66442ef5e6fd939c716ac321e462b17605247866f8d8b779188e9735202073f7e2710b4fc4bfb9789b4')
+sha512sums=('efd7c1609f4169c774cf8497bd448e242d558b56aabb42e95a6dab0a7d6ce7154fe187d6a35c365bc7117f0ca167e5ebcbacd8e098cdfad7c751e3fba6597480')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"

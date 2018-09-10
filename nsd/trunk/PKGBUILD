@@ -4,8 +4,8 @@
 # Contributor: Roberto Alsina <ralsina@kde.org>
 
 pkgname=nsd
-pkgver=4.1.19
-pkgrel=3
+pkgver=4.1.24
+pkgrel=1
 pkgdesc='Authoritative only, high performance and simple DNS server'
 url='https://www.nlnetlabs.nl/nsd/'
 license=('BSD')
@@ -17,7 +17,7 @@ source=("https://www.nlnetlabs.nl/downloads/${pkgname}/${pkgname}-${pkgver}.tar.
         'tmpfiles.d'
         'sysusers.d'
         'service')
-sha256sums=('b0782cb9b57416888d488b6460b071cd85ecb5f99381865b3a7f93dddf9e02c5'
+sha256sums=('4fb687c8e494610ad8692a127ac101ed73df851142a42766c33de06e54449311'
             'SKIP'
             '0be5badb996297150da49b4c655d801bfba76fd8d7785e0899184c130630fe66'
             '6490660d5d4b3e28e16d73e50e35a786a41149917999939fac461ebc60465c79'

@@ -4,19 +4,19 @@
 
 _hkgname=gauge
 pkgname=haskell-gauge
-pkgver=0.2.1
-pkgrel=10
+pkgver=0.2.3
+pkgrel=6
 pkgdesc="Small framework for performance measurement and analysis"
 url="https://github.com/vincenthz/hs-gauge"
 license=("custom:BSD3")
 arch=('x86_64')
 depends=('ghc-libs' 'haskell-basement' 'haskell-vector')
-makedepends=('ghc' 'haskell-hunit' 'haskell-tasty' 'haskell-tasty-hunit')
+makedepends=('ghc' 'haskell-foundation')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('5a969a8eb67de4005b82d8bc34aebaaf0da4be119d412d5d07c8b4e63825ef705634e53ea80e3d95694573700a20c9a0ae7c53d8c4d623b4d339874b600b3382')
+sha512sums=('6f124091f96d2d38f3c6c32d176e8a4bb333573b3ed6bf57c2ef13657d7495e3d0b406a291344b7b42615859847123092d878ff5bcdd0ded1f97c4e28b38b415')
 
 build() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
 
     runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --enable-tests \
@@ -35,7 +35,7 @@ check() {
 }
 
 package() {
-    cd "${srcdir}/${_hkgname}-${pkgver}"
+    cd $_hkgname-$pkgver
 
     install -D -m744 register.sh   "${pkgdir}/usr/share/haskell/register/${pkgname}.sh"
     install -D -m744 unregister.sh "${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh"

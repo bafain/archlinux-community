@@ -3,8 +3,8 @@
 pkgbase=python-flask-socketio
 pkgname=('python-flask-socketio' 'python2-flask-socketio')
 _pkgname=Flask-SocketIO
-pkgver=2.9.6
-pkgrel=1
+pkgver=3.0.1
+pkgrel=2
 pkgdesc='Socket.IO integration for Flask applications'
 url='https://flask-socketio.readthedocs.org/'
 arch=('any')
@@ -15,8 +15,8 @@ checkdepends=('python-coverage' 'python-pytest'
               'python2-coverage' 'python2-pytest')
 options=('!makeflags')
 source=(${pkgbase}-${pkgver}.tar.gz::https://github.com/miguelgrinberg/Flask-SocketIO/archive/v${pkgver}.tar.gz)
-sha256sums=('76fc846ac4eca444f1b553e64ec988721ee63f5ff976ee22febd59053de3d856')
-sha512sums=('cc3f272cda165f4cca1aaaa62273923f8ff160e80b9e79c161e53802bb60585d523c5a4cad5836737151fac7fe7eba51a35614210921267f3da7f86b764bcf75')
+sha256sums=('7dd3ee668670efb1fe63edd771613770cbb78b0dfef6f2f6e36f27b674c89fbd')
+sha512sums=('a7818afbf183363ffddcaac634192dc1103289ca3c198622a7f7779986650c8e1347537654018eb3acb71e8ff2e5822d504812b4f369acf6f35fdffc814de23c')
 
 prepare() {
   cp -ra ${_pkgname}-${pkgver}{,-py2}

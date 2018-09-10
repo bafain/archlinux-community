@@ -4,11 +4,11 @@
 
 pkgbase=python-openstackclient
 pkgname=(python-openstackclient python2-openstackclient)
-pkgver=3.14.0
+pkgver=3.16.1
 pkgrel=1
 pkgdesc="OpenStack Command-line Client"
 arch=('any')
-url="http://docs.openstack.org/developer/python-openstackclient"
+url="https://docs.openstack.org/python-openstackclient/latest/"
 license=('Apache')
 makedepends=('python-setuptools' 'python2-setuptools' 'python-pbr' 'python2-pbr' 'python-babel'
              'python2-babel' 'python-cliff' 'python2-cliff' 'python-keystoneclient'
@@ -17,14 +17,15 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-pbr' 'python2-pbr'
              'python-oslo-i18n' 'python2-oslo-i18n' 'python-openstacksdk' 'python2-openstacksdk'
              'python-glanceclient' 'python2-glanceclient' 'python-novaclient' 'python2-novaclient'
              'python-cinderclient' 'python2-cinderclient')
-checkdepends=('python-oslotest' 'python2-oslotest' 'python-requests-mock' 'python2-requests-mock')
+checkdepends=('python-oslotest' 'python2-oslotest' 'python-requests-mock' 'python2-requests-mock'
+              'python-testrepository' 'python2-testrepository')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/python-openstackclient/archive/$pkgver.tar.gz")
-sha512sums=('3fc3cb03618e85341cc90edf05711f720875774970166b37965aa446dcef31934c342d1b486a6a1ad6f9ad9cfaa9639aeaf5ec63fb4505ecb678a39a2d41a7a1')
+sha512sums=('99ec061699e06a2f796a94860e065f3ad0135869803116571af88d4388993058a524c7fb7f00f9a551d782972564bd922f0a4c8b3168785002c3c1355a113e91')
+
+export PBR_VERSION=$pkgver
 
 prepare() {
   cp -a python-openstackclient-$pkgver{,-py2}
-
-  export PBR_VERSION=$pkgver
 }
 
 build() {
@@ -37,10 +38,10 @@ build() {
 
 check() {
   cd "$srcdir"/python-openstackclient-$pkgver
-  python setup.py testr || warning "Tests failed"
+  python setup.py testr || warning "Tests failed: https://storyboard.openstack.org/#!/story/2003143"
 
   cd "$srcdir"/python-openstackclient-$pkgver-py2
-  PYTHON=python2 python2 setup.py testr
+  PYTHON=python2 python2 setup.py testr || warning "Tests failed: https://storyboard.openstack.org/#!/story/2003143"
 }
 
 package_python-openstackclient() {

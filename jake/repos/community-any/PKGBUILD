@@ -2,8 +2,8 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=jake
-pkgver=8.0.15
-pkgrel=2
+pkgver=8.0.18
+pkgrel=1
 pkgdesc="JavaScript build tool, similar to Make or Rake"
 arch=('any')
 url="http://jakejs.com"
@@ -13,9 +13,11 @@ makedepends=('npm')
 install=${pkgname}.install
 source=("https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz")
 noextract=($pkgname-$pkgver.tgz)
-md5sums=('d20043b13d82ad0502571fbde8921bec')
+sha512sums=('292177407fee351ee929c5a006e4bb5359d8a1875caa2b4b101f3a9ef21c633b62883b1e3e49f6fc9a12bad88a3fbeced4c4cd95b85388d1e8ac8ae5a72cb8b0')
 
 package() {
   npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
-  rm -r "$pkgdir"/usr/etc
+
+  # Why 777? :/
+  chmod -R u=rwX,go=rX "$pkgdir"
 }

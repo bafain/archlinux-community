@@ -1,0 +1,42 @@
+# $Id$
+# Maintainer: FFY00 <filipe.lains@gmail.com>
+
+pkgname=limesuite
+pkgver=18.06.0
+pkgrel=3
+pkgdesc="Driver and GUI for LMS7002M-based SDR platforms (LimeSDR, Novena RF7, etc.)"
+arch=('x86_64')
+url="https://github.com/myriadrf/LimeSuite"
+license=('Apache')
+depends=('sqlite3' 'wxgtk2' 'freeglut' 'libusb>=1.0' 'soapysdr' 'wget' 'gnuplot' 'glew')
+makedepends=('cmake')
+provides=('soapylms7')
+conflicts=('soapylms7')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz"
+        'limesuitegui.desktop')
+sha512sums=('1f4f20a9779f9516216c9ffa6ee96a047c873e87a256b3e97a02bc9415eb7a63ee4780f5a7ed3f27acf8b4f764994b9492ea0ce95b9fad3853583fe0b7bbe628'
+            '9eaef8e46ea3d324ec7f07a71a607b2d2e2c2440d4292f063630fbf2c330640deb4b4d124fe5dabae4215971e615acabfeda5c47ac94b9afd46f7c534d5f1c10')
+
+build() {
+  mkdir -p "$srcdir"/LimeSuite-$pkgver/build
+  cd "$srcdir"/LimeSuite-$pkgver/build
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLIME_SUITE_EXTVER=$pkgver
+
+  make
+}
+
+package() {
+  cd "$srcdir"/LimeSuite-$pkgver/build
+
+  make DESTDIR="$pkgdir" install
+
+  # Install udev rules, changing mode to 666 and ommitting plugdev group
+  mkdir -p "$pkgdir"/etc/udev/rules.d
+  sed 's|MODE="660", GROUP="plugdev"|MODE="666"|g' "$srcdir"/LimeSuite-$pkgver/udev-rules/64-limesuite.rules > "$pkgdir"/etc/udev/rules.d/64-limesuite.rules
+
+  install -Dm 755 "$srcdir"/limesuitegui.desktop "$pkgdir"/usr/share/applications/limesuitegui.desktop
+}

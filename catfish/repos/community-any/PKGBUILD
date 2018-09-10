@@ -1,32 +1,33 @@
 # $Id$
-# Maintainer: Alexander F Rødseth <xyproto@archlinux.org>
+# Maintainer: Alexander F. Rødseth <xyproto@archlinux.org>
 # Contributor: Jaroslav Lichtblau <dragonlord@aur.archlinux.org>
 # Contributor: Alexander Fehr <pizzapunk@gmail.com>
 # Contributor: Pantelis Panayiotou <p.panayiotou@gmail.com>
 
 pkgname=catfish
-pkgver=1.4.4
-pkgrel=1
+pkgver=1.4.6
+pkgrel=2
 pkgdesc='Versatile file searching tool'
 arch=('any')
 url='https://launchpad.net/catfish-search'
 license=('GPL')
 install="$pkgname.install"
-depends=('python-gobject' 'python-xdg' 'python-pexpect' 'python-cairo' 'python-ptyprocess' 'gtk3' 'xdg-utils')
-makedepends=('intltool' 'python-distutils-extra')
-optdepends=('zeitgeist: integration with zeitgeist'
-            'mlocate: filename search')
-source=("https://launchpad.net/catfish-search/${pkgver%.*}/$pkgver/+download/$pkgname-$pkgver.tar.gz")
-sha256sums=('a2d452780bf51f80afe7621e040fe77725021c24a0fe4a9744c89ba88dbf87d7')
+depends=('gtk3' 'python-cairo' 'python-gobject' 'python-pexpect'
+         'python-ptyprocess' 'python-xdg' 'xdg-utils')
+makedepends=('git' 'intltool' 'python-distutils-extra')
+optdepends=('mlocate: filename search'
+            'zeitgeist: integration with zeitgeist')
+source=("git+https://git.launchpad.net/catfish-search#tag=catfish-$pkgver")
+md5sums=('SKIP')
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd "$pkgname-search"
 
   python setup.py build
 }
 
 package () {
-  cd "$pkgname-$pkgver"
+  cd "$pkgname-search"
 
   python setup.py install --root="$pkgdir" --optimize=1
 
@@ -35,5 +36,5 @@ package () {
     "$pkgdir/usr/share/pixmaps/$pkgname.svg"
 }
 
-# getver: launchpad.net/catfish-search/+download
+# getver: git.launchpad.net/catfish-search/plain/catfish.1
 # vim: ts=2 sw=2 et:

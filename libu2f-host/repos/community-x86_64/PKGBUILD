@@ -2,8 +2,8 @@
 # Maintainer: Christian Hesse <mail@eworm.de>
 
 pkgname=libu2f-host
-pkgver=1.1.5
-pkgrel=1
+pkgver=1.1.6
+pkgrel=2
 pkgdesc="Yubico Universal 2nd Factor (U2F) Host C Library"
 arch=('x86_64')
 url='https://github.com/Yubico/libu2f-host'
@@ -12,7 +12,7 @@ depends=('json-c' 'hidapi')
 makedepends=('git' 'help2man' 'gengetopt')
 validpgpkeys=('0A3B0262BCA1705307D5FF06BCA00FD4B2168C0A') # Klas Lindfors <klas@yubico.com>
 source=("https://developers.yubico.com/${pkgname}/Releases/${pkgname}-${pkgver}.tar.xz"{,.sig})
-sha256sums=('f32b71435edf6e412f2971edef411f3b4edb419a5356553ad57811ece4a63a95'
+sha512sums=('499efac0243a7e5fadf6c456cc5530633337c07ab7dda52bd77b541b24ffd0337efe95cce499e73d6c46d312e737c044edcbdb4d41043b1e8721242d6e6ad20a'
             'SKIP')
 
 build() {

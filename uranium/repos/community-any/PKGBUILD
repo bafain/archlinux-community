@@ -2,7 +2,7 @@
 # Contributor: Grey Christoforo <first name [at] last name [dot] net>
 
 pkgname=uranium
-pkgver=3.2.1
+pkgver=3.4.1
 pkgrel=3
 pkgdesc="A Python framework for building Desktop applications."
 url="https://github.com/Ultimaker/Uranium"
@@ -11,7 +11,7 @@ license=('AGPL')
 depends=('python' 'qt5-quickcontrols' 'qt5-quickcontrols2' 'pyqt5-common' 'python-pyqt5' 'python-numpy' 'arcus')
 makedepends=('cmake')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/Ultimaker/${pkgname}/archive/${pkgver}.tar.gz")
-sha256sums=('856b0ec8e8c96737464c74294419cc423cbf463c5b19bb61f75ba35750f06d0d')
+sha256sums=('7a97385b101a30008d1c0bb576d603b93ca2d0967b8c71faeb6760c9cc9ecb72')
 
 prepare() {
   cd Uranium-${pkgver}

@@ -4,6 +4,11 @@ Description=Hardware RNG Entropy Gatherer Daemon
 [Service]
 EnvironmentFile=/etc/conf.d/rngd
 ExecStart=/usr/bin/rngd -f $RNGD_OPTS
+NoNewPrivileges=on
+PrivateNetwork=on
+PrivateTmp=on
+ProtectSystem=full
+ProtectHome=on
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=sysinit.target

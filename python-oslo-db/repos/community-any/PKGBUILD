@@ -4,8 +4,8 @@
 
 pkgbase=python-oslo-db
 pkgname=(python-oslo-db python2-oslo-db)
-pkgver=4.34.0
-pkgrel=1
+pkgver=4.40.0
+pkgrel=2
 pkgdesc="OpenStack Database Pattern Library"
 arch=('any')
 url="https://pypi.python.org/pypi/oslo.db/$pkgver"
@@ -21,7 +21,7 @@ checkdepends=('python-mock' 'python2-mock' 'python-testrepository' 'python2-test
               'python-oslo-context' 'python2-oslo-context' 'python2-unittest2')
 options=('!emptydirs')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/oslo.db/archive/$pkgver.tar.gz")
-sha512sums=('36c135d899ea3d6711d6b75956a585f320a5240ed9bedc36f37acb758303cf715a06959810fecec9383741c104bc6a7c7e9411cac56784a2f219892ca67643ac')
+sha512sums=('47bde2fea3f7603e0052fe4ab649f93887f68f6425057e7e732092ed1f72a0b9917afbf9eab1bce92a40e6292fa64562ee117074744619126a794237627fb0b5')
 
 prepare() {
   cp -a oslo.db-$pkgver{,-py2}

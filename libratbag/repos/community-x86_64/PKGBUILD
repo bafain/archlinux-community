@@ -1,0 +1,40 @@
+# $Id$
+# Maintainer: Filipe Laíns (FFY00) <lains@archlinux.org>
+
+pkgname=libratbag
+pkgver=0.9.903
+pkgrel=1
+pkgdesc='A DBus daemon to configure gaming mice'
+arch=('x86_64')
+url='https://github.com/libratbag/libratbag'
+license=('MIT')
+depends=('glib2' 'libevdev' 'libudev.so' 'python' 'python-evdev')
+makedepends=('meson' 'swig' 'git')
+checkdepends=('check' 'valgrind' 'python-gobject' 'python-lxml')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
+sha512sums=('53176e3bc9f73558f2c92380fccc0c235cafb113319a38c13b2b317acec13294df507671ceff9f28e89dd8ecc7ad4bf6795fb9c270fc462715769d06e11a601c')
+provides=('ratbagd' 'liblur')
+conflicts=('ratbagd' 'libur')
+
+build() {
+  mkdir -p $pkgname-$pkgver/build
+  cd $pkgname-$pkgver/build
+
+  arch-meson ..
+
+  ninja
+}
+
+check() {
+  cd $pkgname-$pkgver/build
+
+  meson test --no-rebuild
+}
+
+package() {
+  cd $pkgname-$pkgver/build
+
+  DESTDIR="$pkgdir" ninja install
+
+  install -Dm 644 ../COPYING "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}

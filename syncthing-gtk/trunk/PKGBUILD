@@ -4,34 +4,29 @@
 # Contributor: kozec <kozec at kozec dot com>
 
 pkgname=syncthing-gtk
-pkgver=0.9.3
+pkgver=0.9.4
 pkgrel=1
 epoch=1
 pkgdesc='GTK3 based GUI and notification area icon for Syncthing'
 arch=('any')
 url='https://github.com/syncthing/syncthing-gtk'
 license=('GPL2')
-depends=('syncthing>=0.13' 'gtk3' 'libnotify' 'python2-pyinotify'
-         'python2-bcrypt' 'python2-cairo' 'python2-dateutil' 'python2-gobject')
+depends=('syncthing>=0.14.48' 'gtk3' 'libnotify' 'python2-bcrypt'
+        'python2-cairo' 'python2-dateutil' 'python2-gobject')
 makedepends=('python2-setuptools')
 optdepends=('python2-caja: file manager integration for Caja'
             'python2-nautilus: file manager integration for Nautilus'
             'nemo-python: file manager integration for Nemo')
 source=($pkgname-$pkgver.tar.gz::https://github.com/syncthing/$pkgname/archive/v$pkgver.tar.gz
-        kde-statusicon.patch
-        fix-icon-path.patch)
-sha256sums=('c5eaf6d80ad0479f8e8d59c65d6ab4f9c96325175704a15bbb10e5fb8bb4988a'
-            '109d8c970045e60251fc64865f05322b23a0995ee6725be02905941cb3a1ae0d'
-            '34b752396db02668016c2c2a57b475f4ade9533f50fb682db6f8a9d239a84653')
+        kde-statusicon.patch)
+sha256sums=('586dc60460973c2664cee9f0fe6360b635a5b04278924f61c4bc9041723549f2'
+            '109d8c970045e60251fc64865f05322b23a0995ee6725be02905941cb3a1ae0d')
 
 prepare() {
   cd $pkgname-$pkgver
 
   # Enable Gtk.StatusIcon in KDE
   patch -Np1 -i ../kde-statusicon.patch
-
-  # Fix icon path on about dialog
-  patch -Np1 -i ../fix-icon-path.patch
 }
 
 build() {
@@ -42,10 +37,4 @@ build() {
 package() {
   cd $pkgname-$pkgver
   python2 setup.py install --root="${pkgdir}" --optimize=1
-
-  # Move filemanager extensions into their right place (FS#57123)
-  mkdir -p "${pkgdir}"/usr/share/{caja,nautilus,nemo}-python/extensions/
-  mv "${pkgdir}"/usr/share/syncthing-gtk/syncthing-plugin-caja.py "${pkgdir}"/usr/share/caja-python/extensions/
-  mv "${pkgdir}"/usr/share/syncthing-gtk/syncthing-plugin-nautilus.py "${pkgdir}"/usr/share/nautilus-python/extensions/
-  mv "${pkgdir}"/usr/share/syncthing-gtk/syncthing-plugin-nemo.py "${pkgdir}"/usr/share/nemo-python/extensions/
 }

@@ -1,19 +1,20 @@
-# $Id$
-# Maintainer: Evgeniy Alekseev <arcanis at archlinux dot org>
+# Maintainer: Lukas Fleischer <lfleischer@archlinux.org>
+# Contributor: Evgeniy Alekseev <arcanis at archlinux dot org>
 # Contributor: Raphaël Doursenaud <rdoursenaud at free dot fr>
 
 pkgbase=python-mysql-connector
 pkgname=('python-mysql-connector' 'python2-mysql-connector')
 _pkgname=mysql-connector-python
-pkgver=2.1.7
+pkgver=8.0.12
 pkgrel=1
 pkgdesc="A standardized database driver for Python platforms and development"
 arch=('any')
 url="http://dev.mysql.com/downloads/connector/python/"
 license=('GPL')
 depends=('python' 'python2')
+makedepends=('python-setuptools' 'python2-setuptools')
 source=("https://cdn.mysql.com/Downloads/Connector-Python/${_pkgname}-${pkgver}.tar.gz")
-sha512sums=('f88c3a6dd3c3c1cd5c16165daef801dbcc7ea9163406273dd751e25687a57dcdf4ffbcdb65bb107e8cd9d7c91029823f625dc19ab34116398263fa074598880a')
+sha512sums=('ec18b39db250ce289f4e7ee382b9f3b12385e393dc032380753e0a60992ec1e2c6bc63559545cc3ade90a8b378407d7afe780d0b36a27294bdd38f071f0ad4d5')
 changelog=ChangeLog
 
 prepare() {

@@ -4,19 +4,19 @@
 
 _hkgname=monad-logger
 pkgname=haskell-monad-logger
-pkgver=0.3.28.2
-pkgrel=2
+pkgver=0.3.29
+pkgrel=12
 pkgdesc="A class of monads which can log messages."
 url="https://github.com/kazu-yamamoto/logger"
 license=("MIT")
 arch=('x86_64')
 depends=('ghc-libs' 'haskell-conduit' 'haskell-conduit-extra' 'haskell-exceptions'
          'haskell-fast-logger' 'haskell-lifted-base' 'haskell-monad-control' 'haskell-monad-loops'
-         'haskell-mtl' 'haskell-resourcet' 'haskell-stm' 'haskell-stm-chans' 'haskell-text'
+         'haskell-resourcet' 'haskell-stm-chans'
          'haskell-transformers-base' 'haskell-transformers-compat' 'haskell-unliftio-core')
 makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('36cccc5ac92a75a8b18a1f60e54b4d7ee98941abce97107f6359ca065940e17b50cbbaa2bfd393a7c22278ce9102c59bee7dd23e14c5b7a66d3c2b2b45e41cb4')
+sha512sums=('1872411e31166ae52f73bd26ad3802eb775e78b55660da4f87c30178e935b201a4cbcfa424a0bfa8565f625a3ea0a3fcd8d9f61e214681a5278c198f38a5f275')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"

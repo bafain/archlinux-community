@@ -1,6 +1,7 @@
+# $Id$
 # Maintainer: David Runge <dave@sleepmap.de>
 pkgname=qmidinet
-pkgver=0.5.0
+pkgver=0.5.2
 pkgrel=1
 pkgdesc="A MIDI Network Gateway via UDP/IP Multicast"
 arch=('x86_64')
@@ -10,7 +11,7 @@ groups=('pro-audio')
 depends=('alsa-lib' 'hicolor-icon-theme' 'jack' 'qt5-base')
 makedepends=('qt5-tools')
 source=("https://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha512sums=('aadf827dfc98eaebeeadbefe1811e35b26b52d12bd7e90aab6dedef9bf9dd3e65807a98499d5a4962e9f1c28102029013a86742129546fb85c94b4c3dfb926fa')
+sha512sums=('ea04b3ddc67c1837998c3cb06aab490011cc1943434449f5e4c54a07ad9ed13b48923be728be0a2dc1663d2c9bee834475cfad3c4fb0d15837eb2f1b3c7b56e6')
 
 prepare() {
   cd "${pkgname}-${pkgver}"

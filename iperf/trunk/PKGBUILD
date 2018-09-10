@@ -4,7 +4,7 @@
 # Contributor: Dale Blount <dale@archlinux.org>
 
 pkgname=iperf
-pkgver=2.0.10
+pkgver=2.0.12
 pkgrel=1
 pkgdesc='A tool to measure maximum TCP bandwidth'
 arch=('x86_64')
@@ -12,10 +12,10 @@ license=('custom')
 url='https://sourceforge.net/projects/iperf2/'
 depends=('gcc-libs')
 install=iperf.install
-source=("http://downloads.sourceforge.net/iperf2/iperf-$pkgver.tar.gz"
+source=("https://downloads.sourceforge.net/iperf2/iperf-$pkgver.tar.gz"
         'iperf-tcp.service'
         'iperf-udp.service')
-md5sums=('097cf0754bc1afa165975c06a91e6906'
+md5sums=('e501e26b9289097086ce0c44a42b10bc'
          '1d8660b540aa0db2e627d3d400cb8de4'
          'a27a8d27b1585bc999a04a2f082e2726')
 prepare() {

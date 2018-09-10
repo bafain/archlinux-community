@@ -6,52 +6,34 @@
 # Contributor: Apkawa <apkawa@gmail.com>
 # Contributor: Schnouki <thomas.jost@gmail.com>
 
-pkgbase=python-django-extensions
-pkgname=('python-django-extensions' 'python2-django-extensions')
-pkgver=2.0.3
+pkgname=python-django-extensions
+pkgver=2.1.2
 pkgrel=1
 pkgdesc='A collection of custom extensions for the Django Framework'
 arch=('any')
 url='http://github.com/django-extensions/django-extensions'
 license=('MIT')
-makedepends=('python-setuptools' 'python2-setuptools')
-optdepends=('graphviz: graph_models extension')
-source=("django-extensions-${pkgver}.tar.gz::https://github.com/django-extensions/django-extensions/archive/${pkgver}.tar.gz")
-sha256sums=('9d814d99c72b1b8e8c3ea829d4d19ca0589e1cbb3b019b740e98f0e9469bf46d')
-
-prepare() {
-  cp -r {,python-}django-extensions-${pkgver}
-  mv {,python2-}django-extensions-${pkgver}
-}
+depends=('python-django' 'python-six')
+makedepends=('git' 'python-setuptools')
+optdepends=(
+  'graphviz: graph_models extension'
+  'ipython: shell_plus extension'
+  'python-werkzeug: runserver_plus extension'
+)
+source=("git+https://github.com/django-extensions/django-extensions.git#tag=${pkgver}")
+sha256sums=('SKIP')
 
 build() {
-  for py in python{,2}; do
-    pushd ${py}-django-extensions-${pkgver}
-    ${py} setup.py build
-    popd
-  done
+  cd django-extensions
+
+  python setup.py build
 }
 
-package_python-django-extensions() {
-  depends=('python-django' 'python-six')
-  optdepends+=('python-werkzeug: runserver_plus extension'
-               'ipython: shell_plus extension')
+package() {
+  cd django-extensions
 
-  cd python-django-extensions-${pkgver}
-
-  python setup.py install --root="${pkgdir}" --optimize='1'
+  python setup.py install --root="${pkgdir}" --optimize='1' --skip-build
   install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/python-django-extensions/
-}
-
-package_python2-django-extensions() {
-  depends=('python2-django' 'python2-six')
-  optdepends+=('python2-werkzeug: runserver_plus extension'
-               'ipython2: shell_plus extensions')
-
-  cd python2-django-extensions-${pkgver}
-
-  python2 setup.py install --root="${pkgdir}" --optimize='1'
-  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/python2-django-extensions/
 }
 
 # vim: ts=2 sw=2 et:

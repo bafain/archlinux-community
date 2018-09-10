@@ -2,8 +2,8 @@
 
 _gemname=async-dns
 pkgname=ruby-${_gemname}
-pkgver=1.0.0
-pkgrel=2
+pkgver=1.2.0
+pkgrel=1
 pkgdesc='Asynchronous DNS resolver and server'
 url='https://github.com/socketry/async-dns'
 arch=('any')
@@ -11,8 +11,8 @@ license=('MIT')
 depends=('ruby' 'ruby-async-io')
 options=('!emptydirs')
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/socketry/async-dns/archive/v${pkgver}.tar.gz)
-sha256sums=('dc870326707d9fb3672c1778514e02c6d236a9cf29d23d14ac906c63667a0db6')
-sha512sums=('5bc4b8049ee41e0465df515a9db31b76fc0abf025e0fecd51a251acc955fb6564d2f965df918c5fc00a00a91eb7db5fa6f787dc25caf9c290b025e748468ef53')
+sha256sums=('5ee925507de7d02a3330532004873d80945128ae9af51c89376664a251c29aa2')
+sha512sums=('a94de011d47e665049b940941d1c55d89002870d691055906915e13a7047563f174e86d0e9e656cb7db077f9ff261d7bb55f2b028798561ebeae1a4884835c4c')
 
 prepare() {
   cd ${_gemname}-${pkgver}
@@ -30,6 +30,8 @@ package() {
   local _gemdir="$(gem env gemdir)"
   gem install --ignore-dependencies --no-user-install -i "${pkgdir}/${_gemdir}" -n "${pkgdir}/usr/bin" ${_gemname}-${pkgver}.gem
   install -Dm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  ln -s /usr/share/doc/${pkgname}/README.md "${pkgdir}/usr/share/licenses/${pkgname}"
   rm "${pkgdir}"/${_gemdir}/cache/${_gemname}-${pkgver}.gem
 }
 

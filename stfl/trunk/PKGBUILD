@@ -4,7 +4,7 @@
 
 pkgname=stfl
 pkgver=0.24
-pkgrel=2
+pkgrel=4
 pkgdesc="Library implementing a curses-based widget set for text terminals"
 arch=('x86_64')
 url="http://clifford.at/stfl/"
@@ -30,4 +30,7 @@ package() {
   cd "${srcdir}"/$pkgname-$pkgver
 
   make prefix=/usr DESTDIR="${pkgdir}" install
+
+#library symlink - FS#34890
+  ln -s /usr/lib/libstfl.so.0.24 "${pkgdir}"/usr/lib/libstfl.so.0
 }

@@ -5,16 +5,16 @@
 
 _hkgname=QuickCheck
 pkgname=haskell-quickcheck
-pkgver=2.10.1
-pkgrel=3
+pkgver=2.12.1
+pkgrel=1
 pkgdesc='Automatic testing of Haskell programs'
 url='https://hackage.haskell.org/package/QuickCheck'
 license=('custom:BSD3')
 arch=('x86_64')
-depends=('ghc-libs' 'haskell-random' 'haskell-tf-random')
+depends=('ghc-libs' 'haskell-erf' 'haskell-random' 'haskell-tf-random')
 makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/$_hkgname/$pkgver/$_hkgname-$pkgver.tar.gz")
-sha512sums=('f7399ff66549e4909cca8ef70797f77af6ca6df53604bec4b08780569b9e6f7340a241f797b44fe1b9af4e5e78b5569072779db0f88b366b49acf1e37656d7c1')
+sha512sums=('280bc8e8b05e096629e5afdb6cd5c7f42690b8632af11ed513454ec7dbd8eff88518ae532b2055a30a57fe8bef3afa35cfe4ed981509d917b20a45c010b62629')
 
 build() {
   cd "$srcdir/$_hkgname-$pkgver"

@@ -5,37 +5,41 @@
 # https://github.com/mymedia2/tdesktop
 
 pkgname=telegram-desktop
-pkgver=1.2.12
-pkgrel=2
+pkgver=1.3.14
+pkgrel=1
 pkgdesc='Official Telegram Desktop client'
 arch=('x86_64')
 url="https://desktop.telegram.org/"
 license=('GPL3')
-depends=('ffmpeg' 'hicolor-icon-theme' 'minizip' 'openal' 'qt5-base' 'qt5-imageformats' 'openssl-1.0')
+depends=('ffmpeg' 'hicolor-icon-theme' 'minizip' 'openal' 'qt5-base' 'qt5-imageformats' 'openssl')
 makedepends=('cmake' 'git' 'gyp' 'range-v3' 'python' 'libappindicator-gtk3')
 optdepends=('libnotify: desktop notifications')
 source=(
     "tdesktop::git+https://github.com/telegramdesktop/tdesktop.git#tag=v$pkgver"
+    "libtgvoip::git+https://github.com/telegramdesktop/libtgvoip"
+    "variant::git+https://github.com/mapbox/variant"
     "GSL::git+https://github.com/Microsoft/GSL.git"
-    "libtgvoip::git+https://github.com/telegramdesktop/libtgvoip.git"
-    "variant::git+https://github.com/mapbox/variant.git"
     "Catch::git+https://github.com/philsquared/Catch"
+    "crl::git+https://github.com/telegramdesktop/crl.git"
     "tg.protocol"
     "CMakeLists.inj"
     "tdesktop.patch"
     "no-gtk2.patch"
     "libtgvoip.patch"
+    "401e1166f9de4c4a19aba79f9afcd611eaa6e30d.patch"
 )
-sha256sums=('SKIP'
+sha512sums=('SKIP'
             'SKIP'
             'SKIP'
             'SKIP'
             'SKIP'
-            'd4cdad0d091c7e47811d8a26d55bbee492e7845e968c522e86f120815477e9eb'
-            '7a06af83609168a8eaec59a65252caa41dcd0ecc805225886435eb65073e9c82'
-            '36b817ec9843b261af7a246f9ec51feb828203bd90e76aef7383457f23a0d4cb'
-            '8d707debe027c7cb658825501dc30fb3beb57ab21b1b6df2f01c5f76ca39a0e6'
-            '0e55b150b91aeeddcb813fb242a62fe4d1977bcac457eb9d65997faef643f075')
+            'SKIP'
+            'b87414ceaae19185a8a5749cea1f6d9f3fc3c69b8dd729e3db8790cde00b987c3c827cd30baf0eac579d1884e34aa2f37bb90778c3c0bc9ca211d75a82891b9d'
+            '2647251940f0d3a2d41ca8a32a592f1ab1e23fe02d3b11d8dc3a54ef34df7c290c9cbf3df76b09970e1cba15c149bc38d49fc824a173d4b21c54edb3c5d5a3da'
+            '00b4307143cf599859d9b9b6d7ac4acbe8b407da55a1e3833921e113dc3aed8c61f2e5f2c1c37e81a261ba4b9e6f40d9bf5f8c90c20dcf0820cfb73852cb091d'
+            '7a37e0ca582145a56a411585aec0bc94889dc18a80cc038d2efa237e19eebf8b67d56825e068be88f7566b08316ce068d7f20c25729caa33d0e9d6c370325025'
+            'd60694dc701aa985b0e82a12c9732b945082470441c687b33167a94f94efcf253baf43bb7280ec160ba338485ee5c62de138e4804cae05f27cc5cf4298166d39'
+            'cb5a414c58614f39dbd45d7260a06abe921165f8426f3e6327bc24e7e7ad291db484fee38975b11f8eff39c3e78d5312e6548b9110dd621f13013c6084be3c1e')
 
 prepare() {
     cd "$srcdir/tdesktop"
@@ -44,9 +48,12 @@ prepare() {
     git config submodule.Telegram/ThirdParty/variant.url "$srcdir/variant"
     git config submodule.Telegram/ThirdParty/libtgvoip.url "$srcdir/libtgvoip"
     git config submodule.Telegram/ThirdParty/Catch.url "$srcdir/Catch"
+    git config submodule.Telegram/ThirdParty/crl.url "$srcdir/crl"
     git submodule update
+
     patch -Np1 -i "$srcdir/tdesktop.patch"
     patch -Np1 -i "$srcdir/no-gtk2.patch"
+    patch -Np1 -i "$srcdir/401e1166f9de4c4a19aba79f9afcd611eaa6e30d.patch"
 
     cd "Telegram/ThirdParty/libtgvoip"
     patch -Np1 -i "$srcdir/libtgvoip.patch"
@@ -55,7 +62,7 @@ prepare() {
 build() {
     cd "$srcdir/tdesktop"
     export LANG=en_US.UTF-8
-    export GYP_DEFINES="TDESKTOP_DISABLE_CRASH_REPORTS,TDESKTOP_DISABLE_AUTOUPDATE,TDESKTOP_DISABLE_REGISTER_CUSTOM_SCHEME,TDESKTOP_DISABLE_UNITY_INTEGRATION"
+    export GYP_DEFINES="TDESKTOP_DISABLE_CRASH_REPORTS,TDESKTOP_DISABLE_AUTOUPDATE,TDESKTOP_DISABLE_REGISTER_CUSTOM_SCHEME"
     export EXTRA_FLAGS="-Winvalid-pch"
     export CPPFLAGS="$CPPFLAGS $EXTRA_FLAGS"
     export CXXFLAGS="$CXXFLAGS $EXTRA_FLAGS"

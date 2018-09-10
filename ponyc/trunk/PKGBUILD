@@ -2,7 +2,7 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=ponyc
-pkgver=0.21.3
+pkgver=0.24.0
 pkgrel=1
 pkgdesc='An actor model, capabilities, high performance programming language'
 url='http://ponylang.org/'
@@ -13,21 +13,17 @@ makedepends=('llvm')
 checkdepends=('pcre2')
 options=('!strip')
 optdepends=('pcre2: Needed for the regex package')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/ponylang/ponyc/archive/$pkgver.tar.gz"
-        https://github.com/winksaville/ponyc/commit/64b64a21b1be70caf4202eb1b1fa22dac1bd6575.patch)
-sha512sums=('f89389142d77e93038c77d3fbe9e64c13ce76b9737430969fcdf2916023d0b7195f4d551895eab999798594352b40848be8dcc63af6927e8cc62b7c7000be65d'
-            '5ff30453ef144d87a32b6c29e024dfbbb252f224b97e4d57df587e796809ca23613f3769d9e66b2f68c1b3d9033108c1c59a8d030ef515edced6d6b3b7ceb6b8')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/ponylang/ponyc/archive/$pkgver.tar.gz")
+sha512sums=('57528906d321d48d7d5536ec1c897ae26674af9dcaf1bdd138e337e03f74dedc255dcccf0697222cb1b407b47ca181f0327275822dfc228019289f967ad3436b')
 
 prepare() {
   cd ponyc-$pkgver
   sed -i 's/-Werror //' Makefile
-
-  patch -p1 -i ../64b64a21b1be70caf4202eb1b1fa22dac1bd6575.patch
 }
 
 build() {
   cd ponyc-$pkgver
-  make config=release prefix=/usr arch=x86-64 verbose= default_pic=true
+  make config=release prefix=/usr arch=x86-64 verbose= default_pic=true default_ssl=openssl_1.1.0
 
   mkdir docs
   build/release/ponyc packages/stdlib -rexpr -g -o docs
@@ -35,7 +31,7 @@ build() {
 
 check() {
   cd ponyc-$pkgver
-  make config=release prefix=/usr arch=x86-64 verbose= default_pic=true test
+  make config=release prefix=/usr arch=x86-64 verbose= default_pic=true default_ssl=openssl_1.1.0 test
 }
 
 package() {

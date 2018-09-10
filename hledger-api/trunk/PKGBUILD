@@ -3,19 +3,20 @@
 # Contributor: Arch Haskell Team <arch-haskell@haskell.org>
 
 pkgname=hledger-api
-pkgver=1.5
-pkgrel=99
+pkgver=1.10
+pkgrel=43
 pkgdesc="Web API server for the hledger accounting tool"
 url="http://hledger.org"
 license=("GPL")
 arch=('x86_64')
-depends=('ghc-libs' 'hledger' 'haskell-hledger-lib' 'haskell-aeson' 'haskell-decimal'
-         'haskell-docopt' 'haskell-either' 'haskell-microlens' 'haskell-microlens-platform'
-         'haskell-safe' 'haskell-servant-server' 'haskell-servant-swagger' 'haskell-swagger2'
-         'haskell-text' 'haskell-wai' 'haskell-wai-extra' 'haskell-warp')
+depends=('ghc-libs' 'hledger' 'haskell-hledger-lib' 'haskell-aeson' 'haskell-data-default'
+         'haskell-decimal' 'haskell-docopt' 'haskell-either' 'haskell-microlens'
+         'haskell-microlens-platform' 'haskell-safe' 'haskell-servant-server'
+         'haskell-servant-swagger' 'haskell-swagger2' 'haskell-wai' 'haskell-wai-extra'
+         'haskell-warp')
 makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha512sums=('237eb5f6b88c1d8fc3647e6ce5d2d1db70abaf4c5f3b3c3392327333a539df49227d2063f0d55ac9cd4c9982c566f3733412b683a87c762b064f4b1c5aa1daae')
+sha512sums=('8c51c80ae911782fac5108949d67d52c81bdbafc562eeea9fc817a29362da85f7dd4a2d860d2fb25bea880df786e4886dca9561c9b2b9c7d7f2a4ecef6091834')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"

@@ -6,8 +6,8 @@
 
 pkgname=haskell-unix-compat
 _hkgname=unix-compat
-pkgver=0.4.3.1
-pkgrel=5
+pkgver=0.5.1
+pkgrel=1
 pkgdesc="Portable POSIX-compatibility layer."
 url="https://hackage.haskell.org/package/unix-compat"
 license=('BSD3')
@@ -15,7 +15,7 @@ arch=('x86_64')
 depends=('ghc-libs' 'haskell-old-time')
 makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('ff6d7f52d1e0e21c3739831ae33b34b13815aadfce7f90efe2cfa10325b55aac982824d4cdaf112af03e8d51824d091d8781ff1caf529f02f8d251ada5c9e63b')
+sha512sums=('4b4a0267e8f84ed8ce86b47e9e02e760bbda09e7d441320ed9f9dae7f861ada25ed906a0410ef8c516b71b0ea29a1e0aa0c8ec7724ecdf889931705f000bb0d4')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"

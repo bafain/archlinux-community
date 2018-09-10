@@ -1,0 +1,27 @@
+# Maintainer: David Runge <dave@sleepmap.de>
+pkgname=zsh-autosuggestions
+pkgver=0.4.3
+pkgrel=1
+pkgdesc="Fish-like autosuggestions for zsh "
+arch=('any')
+url="https://github.com/zsh-users/zsh-autosuggestions"
+license=('MIT')
+depends=('zsh')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/zsh-users/${pkgname}/archive/v${pkgver}.tar.gz")
+sha512sums=('c9be728bfd4cea67cc580548bda4c1b043e275a5a6f0c2134120e7e62e4522da2eddfff4c9414b5d6f28210d2f0b0f5bf008e7275c977c81bd61194f653c922c')
+
+build() {
+  cd "$pkgname-$pkgver"
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -vDm 644 ${pkgname}{,.plugin}.zsh \
+    -t "${pkgdir}/usr/share/zsh/plugins/${pkgname}/"
+  # docs
+  install -vDm 644 {CHANGELOG,README}.md \
+    -t "${pkgdir}/usr/share/doc/${pkgname}/"
+  # license
+  install -vDm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

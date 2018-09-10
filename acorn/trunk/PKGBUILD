@@ -2,7 +2,7 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=acorn
-pkgver=5.5.3
+pkgver=5.7.2
 pkgrel=1
 pkgdesc='A tiny, fast JavaScript parser, written completely in JavaScript.'
 arch=('any')
@@ -12,11 +12,10 @@ depends=('nodejs')
 makedepends=('npm')
 source=(https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz)
 noextract=($pkgname-$pkgver.tgz)
-sha512sums=('8dde4c9085256db99bd3b9d71f40d3df2eeb0d5b64cc38b85d939455601eafc6a3985fc34d249b979a0d1720ce97f397037dc197bf7eca91e1976a4ddb455e39')
+sha512sums=('709aca08d72bda4bfc7650e76f0f893d41a31d9ce8e26c9ac4e2e6a4e5fc6beae05fde1879371332ffcb14951207246973e8b81a05679e12f1bccbbfd98fabab')
 
 package() {
   npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
-  rm -r "$pkgdir"/usr/etc
 
   mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
   ln -s "../../../lib/node_modules/$pkgname/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/"

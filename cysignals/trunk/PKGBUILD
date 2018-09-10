@@ -3,15 +3,15 @@
 
 pkgbase=cysignals
 pkgname=(python-cysignals python2-cysignals)
-pkgver=1.6.9
-pkgrel=1
+pkgver=1.7.2
+pkgrel=4
 pkgdesc="Interrupt and signal handling for Cython"
 arch=(x86_64)
 url="https://www.sagemath.org"
 license=(LGPL)
 makedepends=(cython2 cython pari)
 source=("https://github.com/sagemath/cysignals/releases/download/$pkgver/$pkgbase-$pkgver.tar.gz")
-sha256sums=('08a4a2b6e5ba627c077eb335a55909f7f7e97be61b95b12881c1e31eedb67100')
+sha256sums=('db245c19248a869add480e50e5bd97d282176a74b8c6ca7a0072192e576afc67')
 
 prepare() {
   cp -r $pkgbase-$pkgver{,-py2}
@@ -32,7 +32,7 @@ package_python-cysignals() {
   python setup.py install --root="$pkgdir"
 
 # Keep scripts in python2 package
-  rm -r "$pkgdir"/usr/bin
+  rm -r "$pkgdir"/usr/{bin,share}
 }
 
 package_python2-cysignals() {

@@ -5,17 +5,17 @@
 # Contributor: Patrick Palka <patrick@parcs.ath.cx>
 
 pkgname=pianobar
-pkgver=2017.08.30
-pkgrel=3
+pkgver=2018.06.22
+pkgrel=1
 pkgdesc="Console-based frontend for Pandora"
 arch=('x86_64')
 url="https://6xq.net/pianobar/"
 license=('MIT')
 depends=('libao' 'ffmpeg' 'curl' 'json-c')
 source=(https://6xq.net/pianobar/$pkgname-$pkgver.tar.bz2{,.asc})
-sha256sums=('ec14db6cf1a7dbc1d8190b5ca0d256021e970587bcdaeb23904d4bca71a04674'
-            'SKIP')
 validpgpkeys=('017D74E27F5856963801781DF663943E08D8092A') # Lars-Dominik Braun <lars@6xq.net>
+sha256sums=('946357718a7b5fea661247ad10187e77f94724ef2bb29a2482afeb2d8c8bd4c2'
+            'SKIP')
 
 build() {
   make -C ${pkgname}-${pkgver}

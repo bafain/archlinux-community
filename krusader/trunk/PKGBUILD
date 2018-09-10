@@ -1,8 +1,8 @@
 # $Id: PKGBUILD 149613 2012-02-08 20:20:01Z pierre $
 # Maintainer: Lukas Jirkovsky <l.jirkovsky@gmail.com>
 pkgname=krusader
-pkgver=2.6.0
-pkgrel=2
+pkgver=2.7.1
+pkgrel=1
 pkgdesc="Advanced twin panel (commander style) file manager for KDE"
 arch=('x86_64')
 url="https://krusader.org/"
@@ -11,7 +11,7 @@ depends=('karchive' 'kbookmarks' 'kcodecs' 'kcompletion' 'kcoreaddons' 'kconfig'
          'kdoctools' 'ki18n' 'kiconthemes' 'kitemviews' 'kio' 'knotifications'
          'kparts' 'solid' 'ktextwidgets' 'kwallet' 'kwidgetsaddons' 'kwindowsystem'
          'kxmlgui' 'kguiaddons' 'hicolor-icon-theme')
-makedepends=('cmake' 'extra-cmake-modules' 'python')
+makedepends=('cmake' 'extra-cmake-modules')
 optdepends=(
             # archive formats
 			# look for KrServices::cmdExist calls
@@ -21,7 +21,6 @@ optdepends=(
             'lhasa: LHA archive support'
             'cpio: cpio archive support'
             'unrar: RAR decompression support'
-            'rar: RAR archive support'
             'arj: ARJ archive support'
             'unarj: ARJ decompression support'
             'unace: ACE decompression support'
@@ -36,7 +35,9 @@ optdepends=(
             'ktexteditor: file editing support'
 )
 source=("http://download.kde.org/stable/krusader/$pkgver/$pkgname-$pkgver.tar.xz")
-md5sums=('a4559041d1b6dfe0830fbe3a3029e524')
+sha256sums=('d5c14d7e0698b84a1285efe7058074f760924d13d0823e1b5123fbe771907deb')
+sha1sums=('03ac98f0761e2d2802c06d93afaefbc723b8476a')
+md5sums=('3007982c9e0ba7b2b66ecc51bdafa98a')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"

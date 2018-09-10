@@ -4,7 +4,7 @@
 # Contributor: Carl George < arch at cgtx dot us >
 
 pkgname="tilix"
-pkgver=1.7.7
+pkgver=1.8.5
 pkgrel=1
 pkgdesc="A tiling terminal emulator for Linux using GTK+ 3"
 arch=('x86_64')
@@ -15,10 +15,11 @@ makedepends=('ldc' 'po4a')
 optdepends=('python-nautilus: for "Open Tilix Here" support in nautilus'
             'libsecret: for the password manager')
 source=("$url/archive/$pkgver/$pkgname-$pkgver.tar.gz")
-sha256sums=('9c8ba7734c61fee7efcd3c75548c996216383092e4d33472aeaa457ddfdb3828')
+sha256sums=('b4fd4624a39b19c612199ffb56b5d617afbbab8995a4c0da66ef80ed193c616f')
 
 prepare() {
     cd "$pkgname-$pkgver"
+
     ./autogen.sh
 }
 

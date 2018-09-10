@@ -4,7 +4,7 @@
 # Contributor: Nathan Owe <ndowens.aur at gmail dot com>
 
 pkgname=batctl
-pkgver=2017.4
+pkgver=2018.1
 _advver=$pkgver
 pkgrel=1
 pkgdesc='B.A.T.M.A.N. advanced control and management tool'
@@ -13,7 +13,7 @@ url='http://www.open-mesh.net/'
 license=('GPL')
 depends=('libnl')
 source=("http://downloads.open-mesh.net/batman/releases/batman-adv-$_advver/batctl-$pkgver.tar.gz"{,.asc})
-sha512sums=('a3ce3f32ed1eaa65aee4a9ac56d8e235b861b3844a13fe050cfc0e707bbdf382fd2e6e4ecb35b7777f79020cb241e063f473d28f1b2e312f865e6dce304b4b9f'
+sha512sums=('0909f3f012223091f7458b9e73c72e5cbb5716d4df42a283bc8a58e8fe071f3ede4e85dfdd22c140ebf1ae4456f75aa318846f8381eed4287f2d2a868b3f67e1'
             'SKIP')
 validpgpkeys=('2DE9541A85CC87D5D9836D5E0C8A47A2ABD72DF9')  # Simon Wunderlich
 

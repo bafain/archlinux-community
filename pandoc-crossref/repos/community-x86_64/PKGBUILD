@@ -3,29 +3,24 @@
 # Contributor: Arch Haskell Team <arch-haskell@haskell.org>
 
 pkgname=pandoc-crossref
-pkgver=0.3.0.1
-pkgrel=76
+pkgver=0.3.2.1
+pkgrel=79
 pkgdesc="Pandoc filter for cross-references"
 url="https://hackage.haskell.org/package/${pkgname}"
 license=("GPL2")
 arch=('x86_64')
 depends=('ghc-libs' 'haskell-data-default' 'haskell-data-accessor' 'haskell-data-accessor-template'
-         'haskell-data-accessor-transformers' 'haskell-file-embed' 'haskell-mtl'
-         'haskell-open-browser' 'haskell-optparse-applicative' 'pandoc' 'haskell-pandoc-types'
-         'haskell-roman-numerals' 'haskell-syb' 'haskell-text' 'haskell-utility-ht')
+         'haskell-data-accessor-transformers' 'haskell-file-embed' 'haskell-open-browser'
+         'haskell-optparse-applicative' 'pandoc' 'haskell-pandoc-types' 'haskell-roman-numerals'
+         'haskell-syb' 'haskell-utility-ht')
 makedepends=('ghc' 'haskell-hspec')
 conflicts=('haskell-pandoc-crossref')
 replaces=('haskell-pandoc-crossref')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/lierdakil/pandoc-crossref/archive/v$pkgver.tar.gz")
-sha512sums=('9484b50cb01bad33687d4787f48878899d59eeaddd6714ac324e37be5bd20a313f246cafce1d7fba36432fd99cb75f10d4efba5ebd9b0def87dc77410c912b13')
-
-prepare() {
-    sed -i 's/pandoc ==2.0.*/pandoc/' $pkgname-$pkgver/$pkgname.cabal
-}
+sha512sums=('224218d3a559fc6a2b574c4f62a7e99f28c25abb20f7fc2eb6b318f388d0c3e65f690c03b687964d50bb4fc87a77d79a6bebb20c196cd93f884f12c43ce1c68e')
 
 build() {
     cd $pkgname-$pkgver
-
     runhaskell Setup configure -O --enable-shared --enable-executable-dynamic --disable-library-vanilla \
         --prefix=/usr --docdir="/usr/share/doc/${pkgname}" --enable-tests --datasubdir="$pkgname" \
         --dynlibdir=/usr/lib --libsubdir=\$compiler/site-local/\$pkgid
@@ -37,8 +32,8 @@ build() {
 }
 
 check() {
+    # https://github.com/lierdakil/pandoc-crossref/issues/181#issuecomment-398269601
     cd $pkgname-$pkgver
-    # https://github.com/lierdakil/pandoc-crossref/issues/167
     runhaskell Setup test || warning "Tests failed"
 }
 

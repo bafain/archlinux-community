@@ -3,7 +3,7 @@
 
 pkgbase=python-zope-security
 pkgname=('python-zope-security' 'python2-zope-security')
-pkgver=4.2.2
+pkgver=4.3.0
 pkgrel=1
 pkgdesc="Zope Security Framework"
 arch=('x86_64')
@@ -18,7 +18,7 @@ checkdepends=('python-btrees' 'python2-btrees' 'python-nose' 'python2-nose'
               'python-zope-configuration' 'python2-zope-configuration' 'python-zope-testing'
               'python2-zope-testing' 'python-zope-testrunner' 'python2-zope-testrunner')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/zopefoundation/zope.security/archive/$pkgver.tar.gz")
-sha512sums=('33e84e7a0015c305bf07a1593e6eba64a27b878dd122a5058681d030c83ac711002689a25561afe4ab93d914890749118d57e63e8510b9e1c9ad48965350a9f3')
+sha512sums=('ed7b739839aaed4a0ba9e312234fc58e0f2f1524d9dbbd2de7d10d43a64bd75eb5855dcdb1f49fe218e431a6171b3ffa27e040ddc3f2bd510b7fa639beab37ae')
 
 prepare() {
   cp -a zope.security-$pkgver{,-py2}

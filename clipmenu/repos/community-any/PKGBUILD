@@ -1,0 +1,28 @@
+# Maintainer: Thore Bödecker <foxxx0@archlinux.org>
+# Contributor: Chris Down <chris@chrisdown.name>
+
+pkgname=clipmenu
+pkgver=5.5.0
+pkgrel=1
+pkgdesc='Clipboard management using dmenu'
+url='https://github.com/cdown/clipmenu'
+arch=('any')
+license=('custom:Public Domain')
+depends=('dmenu' 'xsel')
+optdepends=(
+  'rofi: dmenu replacement (use with "export CM_LAUNCHER=rofi")'
+  'clipnotify: polling-free clipboard notifier'
+)
+
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/cdown/clipmenu/archive/${pkgver}.tar.gz")
+sha512sums=('42937c5898cd2cdd978ec6babf77234ee47aff6910c98bf79eca6134ed28104f86f00025e2b5b4be6bfabb59d1a068e9a24e98402ebc68208eda2bbac292f8ba')
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  install -D -m755 clipmenu "${pkgdir}/usr/bin/clipmenu"
+  install -D -m755 clipmenud "${pkgdir}/usr/bin/clipmenud"
+  install -D -m755 clipdel "${pkgdir}/usr/bin/clipdel"
+  install -D -m755 init/clipmenud.service "${pkgdir}/usr/lib/systemd/user/clipmenud.service"
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

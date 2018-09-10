@@ -3,17 +3,17 @@
 
 pkgbase=python-persistent
 pkgname=('python-persistent' 'python2-persistent')
-pkgver=4.2.4.2
+pkgver=4.4.2
 pkgrel=1
 pkgdesc="Translucent persistent objects"
 arch=('x86_64')
 license=('ZPL')
 url="http://www.zope.org/Products/ZODB"
 makedepends=('python-setuptools' 'python2-setuptools' 'python-zope-interface'
-             'python2-zope-interface')
-checkdepends=('python-nose' 'python2-nose')
+             'python2-zope-interface' 'python-cffi' 'python2-cffi')
+checkdepends=('python-zope-testrunner' 'python2-zope-testrunner' 'python-manuel' 'python2-manuel')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/zopefoundation/persistent/archive/$pkgver.tar.gz")
-sha512sums=('6f06ce59ccc6237ca4d0ba2a3c386a5d18ce13c1064fa8e0da3c3561de9de7fab2be9963c23e71bd0e820732ccf5ec3808130877ea02f1e0f2bbe4f98e09383e')
+sha512sums=('3737aad0ce71f8df088958fe20d27327f46a0c4e8b302ae22dda782776415283c47dc8eef2293cfcab5094722b137b9ce90c9ce24037d3c948e187f442e7dd33')
 
 prepare() {
   cp -a persistent-$pkgver{,-py2}
@@ -29,10 +29,10 @@ build() {
 
 check() {
   cd "$srcdir"/persistent-$pkgver
-  nosetests3
+  PYTHONPATH="$PWD/build/lib.linux-$CARCH-3.7:$PYTHONPATH" python -m zope.testrunner --test-path=.
 
   cd "$srcdir"/persistent-$pkgver-py2
-  nosetests2
+  PYTHONPATH="$PWD/build/lib.linux-$CARCH-2.7:$PYTHONPATH" python2 -m zope.testrunner --test-path=.
 }
 
 package_python-persistent() {

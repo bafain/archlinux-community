@@ -1,0 +1,47 @@
+# $Id$
+# Maintainer: David Runge <dave@sleepmap.de>
+_name=JACK-Client
+pkgname=python-jack-client
+pkgver=0.4.5
+pkgrel=1
+pkgdesc="JACK Audio Connection Kit (JACK) Client for Python"
+arch=('any')
+url="https://github.com/spatialaudio/jackclient-python/"
+license=('MIT')
+depends=('jack' 'python-cffi')
+makedepends=('python-setuptools')
+checkdepends=('python-pytest')
+optdepends=('python-numpy: Access input/output buffers as numpy arrays')
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+sha512sums=('3dc6d7dedd85b54590fdcf13053fa69b507bcb3aa3be4448de22b0afb99d6db1861242090441581eecbfc83072c9b180ca81b6849d9678f8c49774fe1748e5cd')
+validpgpkeys=()
+
+prepare() {
+  mv -v "${_name}-${pkgver}" "$pkgname-$pkgver"
+}
+
+build() {
+  cd "$pkgname-$pkgver"
+  python setup.py build
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+  python setup.py test
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  python setup.py install --skip-build \
+    --optimize=1 \
+    --prefix=/usr \
+    --root="${pkgdir}"
+  # license
+  install -vDm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
+  # docs
+  install -vDm 644 {CONTRIBUTING,NEWS,README}.rst \
+    -t "${pkgdir}/usr/share/doc/${pkgname}/"
+  # examples
+  install -vDm 755 examples/*.py \
+    -t "${pkgdir}/usr/share/doc/${pkgname}/examples/"
+}

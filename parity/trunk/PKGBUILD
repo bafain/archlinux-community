@@ -2,15 +2,15 @@
 # Maintainer: Nicola Squartini <tensor5@gmail.com>
 
 pkgname=parity
-pkgver=1.8.11
-_commit=21522ff863c72c1a76e0d041bab69e5ccb678aef
+pkgver=1.11.10
+_commit=31720e6151d4fb6c0fce4aa670fb543e669a11ab
 pkgrel=1
 pkgdesc='Fast, light, robust Ethereum implementation'
 arch=('x86_64')
 url='https://parity.io/'
 license=('GPL3')
-depends=('libsystemd' 'openssl')
-makedepends=('git' 'rust' 'systemd')
+depends=('libsystemd')
+makedepends=('cmake' 'git' 'rust' 'systemd')
 source=("git+https://github.com/paritytech/parity.git#commit=${_commit}"
         'parity.service')
 sha256sums=('SKIP'

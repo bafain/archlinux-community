@@ -1,5 +1,6 @@
 # $Id$
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
+# Maintainer: Filipe Laíns (FFY00) <lains@archlinux.org>
 # Contributor: Johannes Dewender  arch at JonnyJD dot net
 # Contributor: Ivan Sichmann Freitas <ivansichfreitas@gmail.com>
 # Contributor: Brice Maron <brice@bmaron.net>
@@ -7,44 +8,47 @@
 # Contributor: Steven Allen <steven {at} stebalien {dot} com>
 
 pkgbase=python-keyrings-alt
-pkgname=('python-keyrings-alt' 'python2-keyrings-alt')
+_pkgname=keyrings.alt
+pkgname=(python-keyrings-alt python2-keyrings-alt)
 epoch=1
-pkgver=3.0
-pkgrel=1
+pkgver=3.1
+pkgrel=3
 pkgdesc="Alternate keyring implementations"
 arch=('any')
-url="http://pypi.python.org/pypi/keyrings.alt"
+url="https://github.com/jaraco/keyrings.alt"
 license=('MIT')
-makedepends=('python-setuptools_scm' 'python2-setuptools_scm' 'python-keyring' 'python2-keyring')
-checkdepends=('python-pytest-runner' 'python2-pytest-runner' 'python2-backports.unittest_mock'
-              'python-crypto' 'python2-crypto' 'libgnome-keyring' 'python-gobject' 'python2-gobject'
-              'python2-gdata')  # 'python-fs' 'python2-fs' Not compatible
-source=("$pkgbase-$pkgver.tar.gz::https://github.com/jaraco/keyrings.alt/archive/$pkgver.tar.gz")
-sha512sums=('63de03f6fdb0a5575fc4ccd80439ba79bbe2b66ecf52ecdc2de76d685587126c44b22e52bf944c7614456309ce8b63ac5d2fe06b97ffa3719ac65d857c3743e0')
+makedepends=('python-setuptools_scm' 'python2-setuptools')
+checkdepends=('libgnome-keyring' 'python2-backports.unittest_mock'
+              'python-pycryptodome' 'python-gobject' 'python-pytest-flake8' 'python-pytest-runner' 'python-keyring'
+              'python2-pycryptodome' 'python2-gobject' 'python2-pytest-flake8' 'python2-pytest-runner' 'python2-keyring')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz")
+sha512sums=('29a552f526d33cabf9646c7c51236c74cbccc6a3f650d6ccec6d5beaa48c065dec7438debb0f2d2d6a48611590f6767ee442fb9e5a597bf428a70652ae79dab5')
+
+export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
 
 prepare() {
-  # Remove it from test_requirements
-  sed -i '/python-keyczar/d' keyrings.alt-$pkgver/setup.py
+  echo -e '\nflake8-ignore = W191 W503 W504' >> keyrings.alt-$pkgver/pytest.ini
 
-  # Set version for setuptools_scm
-  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
-
-  cp -a keyrings.alt-$pkgver{,-py2}
+  cp -a $_pkgname-$pkgver{,-py2}
 }
 
 build() {
-  cd "$srcdir"/keyrings.alt-$pkgver
+  echo "Building python-$_pkgname $pkgver"
+  cd "$srcdir"/$_pkgname-$pkgver
   python setup.py build
 
-  cd "$srcdir"/keyrings.alt-$pkgver-py2
+  echo "Building python2-$_pkgname $pkgver"
+  cd "$srcdir"/$_pkgname-$pkgver-py2
   python2 setup.py build
 }
 
 check() {
-  cd "$srcdir"/keyrings.alt-$pkgver
+  echo "Running tests on python-$_pkgname $pkgver"
+  cd "$srcdir"/$_pkgname-$pkgver
   python setup.py pytest
 
-  cd "$srcdir"/keyrings.alt-$pkgver-py2
+  echo "Running tests on python2-$_pkgname $pkgver"
+  cd "$srcdir"/$_pkgname-$pkgver-py2
   python2 setup.py pytest
 }
 
@@ -54,9 +58,10 @@ package_python-keyrings-alt() {
               'python-gobject: GNOME Integration'
               'python-fs'
               'python-crypto: Encrypted file storage')
+  cd $_pkgname-$pkgver
 
-  cd "$srcdir"/keyrings.alt-$pkgver
-  python setup.py install --root="$pkgdir" --optimize=1
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }
 
 package_python2-keyrings-alt() {
@@ -64,11 +69,11 @@ package_python2-keyrings-alt() {
   optdepends=('libgnome-keyring: GNOME Integration'
               'python2-gobject: GNOME Integration'
               'python2-fs'
-              'python2-gdata: Google Docs Integration'
               'python2-crypto: Encrypted file storage')
+  cd $_pkgname-$pkgver-py2
 
-  cd "$srcdir"/keyrings.alt-$pkgver-py2
-  python2 setup.py install --root="$pkgdir" --optimize=1
+  python2 setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }
 
 # vim:set ts=2 sw=2 et:

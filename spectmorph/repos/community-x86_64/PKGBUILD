@@ -1,0 +1,36 @@
+# Maintainer: David Runge <dave@sleepmap.de>
+pkgname=spectmorph
+pkgver=0.4.1
+pkgrel=1
+pkgdesc="Analyze samples of musical instruments and combine them (morphing)"
+arch=('x86_64')
+url="http://spectmorph.org/"
+license=('LGPL3')
+groups=('lv2-plugins' 'pro-audio')
+depends=('cairo' 'fftw' 'jack' 'libao' 'qt5-base')
+makedepends=('lv2')
+optdepends=('python2: For sminstbuilder')
+source=("http://www.spectmorph.org/files/releases/${pkgname}-${pkgver}.tar.bz2"
+        "http://spectmorph.org/files/instruments/${pkgname}-instruments-${pkgver}.tar.xz")
+sha512sums=('9dd28ae09f56df07a224c5b3d3b500d117059a7585a405321d33c539dc4f5cbff1183602e10be1f0f343532b63f1a442c6df403fdf5356b0dbc566800aa0b5d2'
+            'b7b564dcd2d144272f2620172c43ed453069fa22b516e4f259e498acfe0f6720ead700fff672327786cda8e2f8723362169261219c79bd4a85078ab8edfe9029')
+
+build() {
+  cd "$pkgname-$pkgver"
+  ./configure --prefix=/usr \
+              --with-lv2 \
+              --with-jack \
+              --with-qt
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir/" install
+  # standard instruments
+  install -vDm 644 ../instruments/standard/* \
+    -t "${pkgdir}/usr/share/${pkgname}/instruments/standard/"
+  # docs
+  install -vDm 644 {AUTHORS,DESIGN,NEWS,README.md,TODO} \
+    -t "${pkgdir}/usr/share/doc/${pkgname}/"
+}

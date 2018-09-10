@@ -4,7 +4,7 @@
 
 pkgbase=python-glanceclient
 pkgname=(python-glanceclient python2-glanceclient)
-pkgver=2.9.1
+pkgver=2.12.1
 pkgrel=1
 pkgdesc="OpenStack Image API Client Library"
 arch=('any')
@@ -16,10 +16,11 @@ makedepends=('python-setuptools' 'python2-setuptools' 'python-pbr' 'python2-pbr'
              'python2-warlock' 'python-oslo-utils' 'python2-oslo-utils' 'python-oslo-i18n'
              'python2-oslo-i18n' 'python-wrapt' 'python2-wrapt' 'python-pyopenssl'
              'python2-pyopenssl')
-checkdepends=('python-oslotest' 'python2-oslotest' 'python-requests-mock' 'python2-requests-mock')
+checkdepends=('python-stestr' 'python2-stestr' 'python-mock' 'python2-mock' 'python-requests-mock'
+              'python2-requests-mock' 'python-testscenarios' 'python2-testscenarios')
 options=('!emptydirs')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/python-glanceclient/archive/$pkgver.tar.gz")
-sha512sums=('c9c213f52644e6bc41377d55d4a7a387768364657afc60e0f3528fbb67b1870bb01b947801d8080f6e5ab70beaeab4a133c56e23b903c00a97d615fd53eda35c')
+sha512sums=('de453be6c195d649b73b02caf20eab0d9a49f000cacf1cd8738644076bb19fedd0d1209801ddbf15e4e4920e95440bcdd3792672d5dabafd6e3aa464f16cacc9')
 
 prepare() {
   cp -a python-glanceclient-$pkgver{,-py2}
@@ -37,10 +38,10 @@ build() {
 
 check() {
   cd "$srcdir"/python-glanceclient-$pkgver
-  python setup.py testr
+  stestr run
 
   cd "$srcdir"/python-glanceclient-$pkgver-py2
-  PYTHON=python2 python2 setup.py testr
+  PYTHON=python2 stestr2 run
 }
 
 package_python-glanceclient() {

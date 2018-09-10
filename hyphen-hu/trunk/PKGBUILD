@@ -4,7 +4,7 @@
 
 pkgname=hyphen-hu
 pkgver=20100512
-pkgrel=1
+pkgrel=3
 pkgdesc="Hungarian hyphenation rules"
 arch=('any')
 url="http://extensions.services.openoffice.org/project/hu_dicts"

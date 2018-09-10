@@ -4,24 +4,22 @@
 # Contribuitor: Christian Babeux <christian.babeux@0x80.ca>
 
 pkgname=sysdig
-pkgver=0.20.0
-pkgrel=2
+pkgver=0.23.1
+pkgrel=1
 pkgdesc="Open source system-level exploration and troubleshooting tool"
 arch=('x86_64')
 url="http://www.sysdig.org/"
 license=('GPL2')
 depends=('dkms' 'jsoncpp' 'luajit' 'curl' 'jq' 'libb64')
 makedepends=('cmake' 'pandoc')
-source=("https://github.com/draios/sysdig/archive/$pkgver/$pkgname-$pkgver.tar.gz")
-sha256sums=('e1f7e824831a9b902f6df0e818c41bdfc21175398d58318d7892df9c601e7e96')
+source=("https://github.com/draios/sysdig/archive/$pkgver/$pkgname-$pkgver.tar.gz"
+        "bashcomp-location.patch")
+sha256sums=('57d5b713b875eba35546a1408bf3f20c2703904a17d956be115ee55272db4cfa'
+            'aaee8a0ff414a24c5d5a479229324be1667bc5eb70702838f5d617fd986f947b')
 
 prepare() {
   cd "$srcdir"/$pkgname-$pkgver
-  sed 's|${DIR_ETC}/bash_completion.d|share/bash-completion/completions/|' -i \
-      scripts/CMakeLists.txt
-  sed 's|curl/curlbuild\.h|curl/system.h|' -i \
-      userspace/libsinsp/marathon_http.cpp \
-      userspace/libsinsp/mesos_http.cpp
+  patch -p1 -i "$srcdir"/bashcomp-location.patch
 }
 
 build() {

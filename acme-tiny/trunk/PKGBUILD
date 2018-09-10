@@ -1,0 +1,20 @@
+# Maintainer: Sven-Hendrik Haase <svenstaro@gmail.com>
+# Contributor: Tom Hacohen <tom@stosb.com>
+pkgname=acme-tiny
+pkgver=4.0.4
+pkgrel=1
+pkgdesc="A tiny script to issue and renew TLS certs from Let's Encrypt"
+url="https://github.com/diafygi/acme-tiny"
+depends=('python' 'openssl')
+license=('MIT')
+arch=('any')
+source=(https://github.com/diafygi/acme-tiny/archive/${pkgver}.tar.gz)
+sha256sums=('ba535d556ab01b91751370270fe6f1e1cbf960a4c8a0ac6b72e2e43008dd5786')
+
+package() {
+    cd "$srcdir"/acme-tiny-${pkgver}
+
+    install -Dm 755 acme_tiny.py "$pkgdir/usr/bin/acme-tiny"
+    install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+

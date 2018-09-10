@@ -1,0 +1,37 @@
+# $Id$
+# Maintainer: Felix Yan <felixonmars@archlinux.org>
+# Contributor: Josip Ponjavic <josipponjavic at gmail dot com>
+# Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
+
+pkgname=deepin-go-dbus-factory
+pkgver=0.0.7
+pkgrel=1
+pkgdesc='GO DBus factory for DDE'
+arch=('any')
+url="https://github.com/linuxdeepin/go-dbus-factory"
+license=('GPL3')
+depends=('deepin-go-lib')
+makedepends=('go-pie' 'git')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/go-dbus-factory/archive/$pkgver.tar.gz")
+sha512sums=('8bed7c5cb345ddb4660f6dabd212460692d1b53678da398037690044556df14107b2be7c3c6bce1054a861ff484c9ae6b36ed6dac0b4cc8f57604e3957635c46')
+
+prepare() {
+  export GOPATH="$srcdir/build:/usr/share/gocode"
+
+  mkdir -p "$srcdir"/build/src/github.com/linuxdeepin
+  ln -sf "$srcdir"/go-dbus-factory-$pkgver "$srcdir"/build/src/github.com/linuxdeepin/go-dbus-factory
+
+  go get golang.org/x/net/context
+}
+
+build() {
+  cd go-dbus-factory-$pkgver
+  make bin
+  ./gen.sh
+}
+
+package() {
+  cd go-dbus-factory-$pkgver
+  install -dm755 "$pkgdir"/usr/share/gocode/src/github.com/linuxdeepin/go-dbus-factory
+  cp -a com.* org.* net.* object_manager "$pkgdir"/usr/share/gocode/src/github.com/linuxdeepin/go-dbus-factory/
+}

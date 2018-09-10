@@ -3,15 +3,15 @@
 
 pkgname=remmina
 epoch=1
-pkgver=1.2.0rcgit.27
+pkgver=1.2.31.4
 pkgrel=1
 pkgdesc="remote desktop client written in GTK+"
 arch=(x86_64)
-url="http://www.remmina.org/"
+url="https://www.remmina.org/"
 license=('GPL')
 depends=('gtk3' 'zlib' 'libjpeg' 'libssh' 'avahi' 'vte3'
 	 'libgcrypt' 'libxdmcp' 'libsecret' 'webkit2gtk')
-makedepends=('intltool' 'pkgconfig' 'cmake' 'libgnome-keyring'
+makedepends=('intltool' 'cmake' 'libgnome-keyring'
              'avahi' 'libxkbfile' 'freerdp' 'telepathy-glib'
              'libvncserver' 'spice-protocol' 'spice-gtk3')
 optdepends=('libxkbfile'
@@ -25,7 +25,12 @@ optdepends=('libxkbfile'
 replaces=('remmina-plugins')
 provides=('remmina-plugins')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/FreeRDP/Remmina/archive/v${pkgver/rc/-rc}.tar.gz")
-sha256sums=('5f96fc2b1013a12acada30991ec7f46b53b731e71f735e662d830d9083db9826')
+sha256sums=('b9adc23ac84630607f219cbae4c3ce89239aebaaae023e13d5423da56ae74173')
+
+prepare() {
+  cd Remmina-${pkgver/rc/-rc}
+  sed -e 's|ssh_threads|ssh|' -i cmake/FindLIBSSH.cmake # Fix build with libssh 0.8
+}
 
 build() {
   cd "$srcdir"/Remmina-${pkgver/rc/-rc}/
@@ -39,5 +44,4 @@ build() {
 package() {
   cd "$srcdir"/Remmina-${pkgver/rc/-rc}/
   make DESTDIR="$pkgdir" install
-  rm -rf "$pkgdir"/build
 }

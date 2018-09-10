@@ -2,7 +2,7 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=eslint
-pkgver=4.19.0
+pkgver=5.5.0
 pkgrel=1
 pkgdesc='An AST-based pattern checker for JavaScript'
 arch=('any')
@@ -12,11 +12,10 @@ depends=('nodejs' 'acorn')
 makedepends=('npm')
 source=("https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz")
 noextract=("$pkgname-$pkgver.tgz")
-sha512sums=('afcdcbe42baa6a8703bdfc1da236f3ebc6fab42524f0a264a9fa693be82648042a602cd3af46c248cbba03ac8508b286eb98f978a70a530e02c38625e207d692')
+sha512sums=('9be6b3e2f61e84826097567481bdb92a71577aa41174dade62c7a2d6376f91df5b07e50d403ddfb2e882d80592439e8ffbfb7efa415220d65715b7da8be92b3b')
 
 package() {
   npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
-  rm -r "$pkgdir"/usr/etc
 
   # Fix permissions
   find "$pkgdir/usr" -type d -exec chmod 755 '{}' +

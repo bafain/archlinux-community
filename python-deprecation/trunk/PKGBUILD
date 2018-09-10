@@ -1,18 +1,21 @@
 # $Id$
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
+_name=deprecation
 pkgbase=python-deprecation
 pkgname=('python-deprecation' 'python2-deprecation')
-pkgver=1.1
-pkgrel=1
+pkgver=2.0.5
+pkgrel=2
 pkgdesc="A library to handle automated deprecations"
 arch=('any')
 license=('Apache')
 url="http://deprecation.readthedocs.io"
 makedepends=('python-setuptools' 'python2-setuptools')
 checkdepends=('python2-unittest2')
-source=("$pkgbase-$pkgver.tar.gz::https://github.com/briancurtin/deprecation/archive/$pkgver.tar.gz")
-sha512sums=('05012794c42c720374f9339ca01b1e85fee4af8d5c17dde315399b1e1b74311cf7bfe93feca8caaa0e009c456fdbe1ba34de2475a825d279701b7f06ec883f96')
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz"{,.asc})
+sha512sums=('d42271860c50032023e559f9096156b694c414710e1122b377128885be923753bec51f308fab80d5dceaf324ad98863146e5dab4b3d8e0847234b5b2c235ad4b'
+            'SKIP')
+validpgpkeys=('E62866A3562575D95B570AF58EB71A70831B56D1') # Brian Curtin (brian.curtin) <brian@python.org>
 
 prepare() {
   cp -a deprecation-$pkgver{,-py2}

@@ -5,25 +5,19 @@
 # Contributor: Otto Sabart <seberm[at]gmail[dot]com>
 
 pkgname=knot
-pkgver=2.6.5
+pkgver=2.7.2
 pkgrel=2
 pkgdesc="High-performance authoritative-only DNS server"
 arch=('x86_64')
 url="https://www.knot-dns.cz/"
 license=('GPL3')
-depends=('lmdb' 'liburcu' 'protobuf-c' 'fstrm' 'libedit' 'systemd' 'libcap-ng' 'gnutls' 'libidn2')
-optdepends=('python: for pykeymgr')
+depends=('libedit' 'gnutls' 'liburcu' 'lmdb'
+         'libidn2' 'systemd' 'libcap-ng'
+         'fstrm' 'protobuf-c' 'libmaxminddb')
 backup=('etc/knot/knot.conf')
-
-source=("https://secure.nic.cz/files/knot-dns/${pkgname}-${pkgver}.tar.xz"{,.asc}
-        "${pkgname}.service"
-        "${pkgname}.sysusers"
-        "${pkgname}.tmpfiles")
-sha256sums=('33cd676706e2baeb37cf3879ccbc91a1e1cd1ee5d7a082adff4d1e753ce49d46'
-            'SKIP'
-            '353e109d07483d029a85106021c108767aab74427abec6a66c8e3c6b39a0b41f'
-            '76c47120f91dbe467454a2f5330067d3dfd6ac5dacda5f3a095138b9a8877855'
-            '793fee121d03acce87e3b04cfa869d4eb65e6ac0ee3e1257804fa526fa60d7f5')
+source=("https://secure.nic.cz/files/knot-dns/${pkgname}-${pkgver}.tar.xz"{,.asc})
+sha256sums=('cb70b2ee1c7ecbaad8774a1e0c449a68c6a6f7c9d60595524f003201d6e38431'
+            'SKIP')
 validpgpkeys=('742FA4E95829B6C5EAC6B85710BB7AF6FEBBD6AB') # Daniel Salzman <daniel.salzman@nic.cz>
 
 build() {
@@ -62,8 +56,7 @@ package() {
     rm "${pkgdir}"/etc/knot/example.com.zone
     mv "${pkgdir}"/etc/knot/{knot.sample.conf,knot.conf}
 
-    cd ..
-    install -Dm644 ${pkgname}.service -t "${pkgdir}"/usr/lib/systemd/system/
-    install -Dm644 ${pkgname}.tmpfiles "${pkgdir}"/usr/lib/tmpfiles.d/${pkgname}.conf
-    install -Dm644 ${pkgname}.sysusers "${pkgdir}"/usr/lib/sysusers.d/${pkgname}.conf
+    install -Dm644 distro/common/knot.service -t "${pkgdir}"/usr/lib/systemd/system/
+    install -Dm644 distro/arch/knot.tmpfiles.arch "${pkgdir}"/usr/lib/tmpfiles.d/${pkgname}.conf
+    install -Dm644 distro/arch/knot.sysusers "${pkgdir}"/usr/lib/sysusers.d/${pkgname}.conf
 }

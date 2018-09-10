@@ -2,13 +2,13 @@
 # Maintainer: Nicola Squartini <tensor5@gmail.com>
 
 pkgname=apm
-pkgver=1.19.0
+pkgver=2.1.1
 pkgrel=1
 pkgdesc='Atom package manager'
 arch=('x86_64')
 url='https://github.com/atom/apm'
 license=('MIT')
-depends=('libsecret' 'nodejs>=8' 'npm' 'python2')
+depends=('libsecret' 'nodejs>=10' 'npm' 'python2')
 makedepends=('git')
 provides=('nodejs-atom-package-manager')
 conflicts=('nodejs-atom-package-manager')
@@ -19,11 +19,11 @@ source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/apm/archive/v${pkg
         'no-scripts.patch'
         'python2.patch'
         'use-system-npm.patch')
-sha512sums=('642e7d4bd29455f56ad6e611de9a38954b8a403576620ea3684bc49c2d05f6be89e2ce37efa383cdd050e7ff6b0a6f4a14213f1256e1a6999d3789de0d621afa'
+sha512sums=('051956cf4f5f6fa5445cd2aebaea0fc2eb9b5f7bab8fe5d6026efbe2487a3f32d65a53b9125e85a06bd25fd1481535becb0606ab58a3148b3f7b66309d374263'
             '7ef40058bb50189729a541f8e74191336f9652f12e70118e8b24c207e42f00c8f548d408759f261d8b0f2f67f7296e38d771694e45570102e28be1e6b9788d6c'
             'da2e2c6b336b87371541ef159201f6942c606f7c8b212f1a610a8605bb08ddc97ed1ade7f1c02339c40c40f22d8a7d37b1686fb5c7105a775fa85ff6048162dc'
             '2fedcfc04c03059429c231c5bbd3d5e4b32a30ea9d341c3e27dcbba0deee1e4c8d27d993c59ee96aebf0a0c930b7cc55177e3600c18349dd2b91ebac7bd96632'
-            'b5000006cf81d1664db4e520f7835d7be0b794e843bc2d12c9339e1f88436722c41762be633b6157a76832c74525a11b4e58e2007e68d2a7217f533996fdf028')
+            '96449a53197e7b498561e8fb820f2d60aa4d77cd4364b97e7e595d49776e3ad7fb89b944174be55ad3b81b6b64d65c0f12c5b8cf3eeb1bad8ac18dfdf3c6b610')
 
 _apmdir='/usr/lib/node_modules/atom-package-manager'
 
@@ -37,7 +37,7 @@ prepare() {
   rm src/cli.coffee
   install -m755 "${srcdir}"/apm.js bin/apm
 
-  # Use system npm
+  # Use system npm and node-gyp
   patch -Np1 -i "${srcdir}"/use-system-npm.patch
 
   # Don't download binary Node
@@ -52,7 +52,7 @@ build() {
   cd apm-${pkgver}
 
   npm install coffee-script
-  ./node_modules/.bin/coffee -c --no-header -o lib src/*.coffee
+  npx coffee -c --no-header -o lib src/*.coffee
   rm -r node_modules
   npm install --user root -g --prefix="${srcdir}"/apm-build/usr $(npm pack | tail -1)
 }

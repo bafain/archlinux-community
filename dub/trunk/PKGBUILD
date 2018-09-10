@@ -1,31 +1,30 @@
 # $Id$
 # Maintainer: Dan Printzell <arch@vild.io>
+# Maintainer: Filipe Laíns (FFY00) <lains@archlinux.org>
 # Contributor: Mihails Strasuns <public@dicebot.lv>
 # Contributor: Moritz Maxeiner <moritz@ucworks.org>
 
-pkgname=('dub')
-pkgver=1.8.0
+pkgname=dub
+pkgver=1.11.0
 pkgrel=1
 pkgdesc="Developer package manager for D programming language"
 arch=('x86_64')
 url="https://github.com/D-Programming-Language/dub"
 license=('MIT')
 groups=('dlang')
-makedepends=('dmd')
-depends=('libphobos' 'curl')
-
+makedepends=('ldc')
+depends=('liblphobos' 'curl')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/dlang/dub/archive/v$pkgver.tar.gz")
-sha512sums=('042c84266c3f8f49fe882f79eff3df6d8e83d9b9c93f6fde06b50212282a9e3ecd80f6b75c08c51f62a45f4aec409fff6022b0fe74ee1b0b0bcbf4d7d6930be0')
+sha512sums=('f78a796658b0e431e6fe98a4614a80f71c9d5e618b64fd9a539a318c8ff780322a6216617837aeedb25c4a4c20f901c8a0a7c6742d10a2cf1df10be4782b52b7')
 
 build() {
-	DC=dmd
 	cd "$pkgname-$pkgver"
 
 	echo Generating version file...
 	echo "module dub.version_;" > source/dub/version_.d
 	echo "enum dubVersion = \"$pkgver\";" >> source/dub/version_.d
 
-	$DC -ofbin/dub -w -O -g -version=DubUseCurl -Isource -L-lcurl @build-files.txt
+	ldmd2 -ofbin/dub -w -O -g -version=DubUseCurl -Isource -L-lcurl -release -flto=full -linker=gold -link-defaultlib-shared=false @build-files.txt
 }
 
 package() {
@@ -33,7 +32,7 @@ package() {
 	install -Dm755 "$pkgname-$pkgver/bin/dub" "$pkgdir/usr/bin/dub"
 
 	# license
-	install -Dm644 "$pkgname-$pkgver/LICENSE.txt" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+	install -Dm644 "$pkgname-$pkgver/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 
 	# bash completion
 	install -Dm644 "$pkgname-$pkgver/scripts/bash-completion/dub.bash" "$pkgdir/usr/share/bash-completion/completions/dub"

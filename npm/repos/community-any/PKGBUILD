@@ -2,52 +2,46 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=npm
-pkgver=5.7.1
+pkgver=6.4.1
 pkgrel=1
 pkgdesc='A package manager for javascript'
 arch=('any')
 url='https://www.npmjs.com/'
 license=('custom:Artistic')
-depends=('nodejs' 'semver')
-provides=('nodejs-node-gyp')
+depends=('nodejs' 'node-gyp' 'semver')
 makedepends=('procps-ng' 'marked-man')
-optdepends=('python2: for node-gyp')
 options=('!emptydirs')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/npm/npm/archive/v$pkgver.tar.gz")
-sha512sums=('e100e0819bae1e5d9b4766319a8280801160dca75244a50a99a2f2b9ca36da2dba432e9ee615735e21030684982f811bf7b90349e073e8c6e740f5eb8a446298')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/npm/cli/archive/v$pkgver.tar.gz")
+sha512sums=('a43e1ce34bd1107fffb2bf3d08448ea30c1c1342caa3f0f181d28f057b3a1069a4e2decf23f0c6f740c20a2e0a5abe15f2c1eec019c9b59f13a7fe457bb64abb')
 
 prepare() {
-  cd npm-$pkgver
+  cd cli-$pkgver
   ln -sf /usr/bin/marked{,-man} node_modules/.bin/
 }
 
 build() {
-  cd npm-$pkgver
+  cd cli-$pkgver
   make
 }
 
 package() {
-  cd npm-$pkgver
+  cd cli-$pkgver
   make NPMOPTS="--prefix=\"$pkgdir/usr\"" install
 
-  # Provide node-gyp executable
-  cp "$pkgdir"/usr/lib/node_modules/npm/bin/node-gyp-bin/node-gyp "$pkgdir"/usr/bin/node-gyp
-  sed -i 's|"`dirname "$0"`/../../|"`dirname "$0"`/../lib/node_modules/npm/|' "$pkgdir"/usr/bin/node-gyp
-
-  # Why 777? :/
+  # Non-deterministic race in npm gives 777 permissions to random directories.
+  # See https://github.com/npm/npm/issues/9359 for details.
   chmod -R u=rwX,go=rX "$pkgdir"
 
   # Experimental dedup
-  for _d in "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules \
-            "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/node-gyp/node_modules; do
-    cd "$_d"
-    for dep in semver; do
-      rm -r $dep;
-    done
-  done
+  _npmdir="$pkgdir"/usr/lib/node_modules/$pkgname
+  rm -r "$_npmdir"/node_modules/{,.bin/}semver
+  rm -r "$_npmdir"/node_modules/{,.bin/}node-gyp
+  sed -i '/node-gyp.js/c\  exec /usr/bin/node-gyp "$@"' \
+    "$_npmdir"/node_modules/npm-lifecycle/node-gyp-bin/node-gyp \
+    "$_npmdir"/bin/node-gyp-bin/node-gyp
 
   install -dm755 "$pkgdir"/usr/share/bash-completion/completions
-  node "$srcdir"/npm-$pkgver/bin/npm-cli.js completion > "$pkgdir"/usr/share/bash-completion/completions/npm
+  node "$srcdir"/cli-$pkgver/bin/npm-cli.js completion > "$pkgdir"/usr/share/bash-completion/completions/npm
 
-  install -Dm644 "$srcdir"/npm-$pkgver/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 "$srcdir"/cli-$pkgver/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }

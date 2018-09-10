@@ -2,24 +2,18 @@
 # Maintainer: Sven-Hendrik Haase <sh@lutzhaase.com>
 pkgbase=ogre
 pkgname=('ogre' 'ogre-docs')
-pkgver=1.10.11
-pkgrel=4
+pkgver=1.11.1
+pkgrel=3
 pkgdesc='Scene-oriented, flexible 3D engine written in C++'
 arch=('x86_64')
 url='http://www.ogre3d.org'
 license=('custom:MIT')
-depends=('boost-libs' 'freeimage' 'freetype2' 'libxaw' 'libxrandr'
+depends=('freeimage' 'freetype2' 'libxaw' 'libxrandr' 'openexr'
          'nvidia-cg-toolkit' 'zziplib' 'sdl2' 'glu' 'tinyxml')
-makedepends=('boost' 'cmake' 'doxygen' 'graphviz' 'ttf-dejavu' 'mesa' 'mercurial' 'python' 'swig' 'systemd')
+makedepends=('cmake' 'doxygen' 'graphviz' 'ttf-dejavu' 'mesa' 'python' 'swig' 'systemd' 'java-environment')
 install=ogre.install
 source=("https://github.com/OGRECave/ogre/archive/v${pkgver}.tar.gz")
-sha512sums=('2dfedd6f0a0de1a8c687c001439138b233200ca11e5c9940debf43d8a0380ca6472e0b5f4d599f0e22ca2049d0a5d34066ef41b6bc4912130694fa5d851fc900')
-
-prepare() {
-  cd ogre-${pkgver}
-
-  sed -i "s/dist-packages/site-packages/" Components/Python/CMakeLists.txt
-}
+sha512sums=('10b70913a67ea7ee22ce6743b7d03abbf3eb271414b75b35eed50ad2affa85def33dfc4ba11d66e417d451674ee220efda9ef0c1fd19ad63390b4c2d762850c8')
 
 build() {
   cd ogre-${pkgver}
@@ -27,14 +21,14 @@ build() {
   [[ -d build ]] && rm -rf build
   mkdir build && cd build
 
+  export JAVA_HOME=/usr/lib/jvm/default
+
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DOGRE_INSTALL_SAMPLES=TRUE \
-    -DOGRE_INSTALL_DOCS=TRUE \
-    -DOGRE_INSTALL_SAMPLES_SOURCE=TRUE \
     -DOGRE_BUILD_DEPENDENCIES=FALSE \
-    -DOGRE_BUILD_COMPONENT_PYTHON=TRUE \
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DOGRE_BUILD_PLUGIN_FREEIMAGE=TRUE \
+    -DOGRE_BUILD_PLUGIN_EXRCODEC=TRUE
 
   make
   make OgreDoc
@@ -42,10 +36,8 @@ build() {
 
 package_ogre() {
   optdepends=('cppunit: unit testing'
-              'intel-tbb: better threading support'
-              'poco: portability'
               'python: python bindings'
-              'boost: for developing using ogre'
+              'java-environment: jni bindings'
               'ogre-docs: documentation')
 
   cd ogre-${pkgver}/build

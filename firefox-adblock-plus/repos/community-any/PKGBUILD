@@ -1,24 +1,24 @@
-# $Id$
 # Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
-# Contributor: Eschwartz <eschwartz93@gmail.com>
+# Maintainer: Eli Schwartz <eschwartz@archlinux.org>
 
 pkgname=firefox-adblock-plus
-pkgver=3.0.1
-pkgrel=2
-_file=764081
+pkgver=3.3.1
+pkgrel=1
+_file=1061111
 pkgdesc="Extension for firefox which block ads and banners"
 arch=('any')
-url="http://adblockplus.org/"
-license=('GPL')
+url="https://adblockplus.org/"
+license=('GPL3')
 groups=('firefox-addons')
-depends=("firefox")
 makedepends=('unzip')
 # https://addons.mozilla.org/en-US/firefox/addon/adblock-plus/versions/
 source=("https://addons.mozilla.org/firefox/downloads/file/${_file}/adblock-plus-${pkgver}.xpi")
 noextract=("adblock-plus-$pkgver.xpi")
-sha256sums=('0e9973e14e6a57871e797b72d044e30b252121822e233b73e3087f51a0bc5efc')
+sha256sums=('a12d40b03812d152e2fb6870be133158b941b4fcf97b139b00b84c9f30cf2191')
 
 package() {
+  depends=("firefox")
+
   cd "${srcdir}"
   _extension_id="{d10d0bf8-f5b5-c8b4-a8b2-2b9879e08c5d}"
   _extension_dest="${pkgdir}/usr/lib/firefox/browser/extensions/${_extension_id}"

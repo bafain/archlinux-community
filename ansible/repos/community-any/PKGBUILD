@@ -6,46 +6,41 @@
 # Contributor: m0ikz <ndelatorre@moikz.com.ar>
 # Contributor: atweiden <archbaum@gmail.com>
 
-pkgname=(ansible python-ansible)
-pkgver=2.4.3.0
-pkgrel=3
+pkgname=ansible
+pkgver=2.6.4
+pkgrel=1
 pkgdesc='Radically simple IT automation platform'
 arch=('any')
 url='https://www.ansible.com'
 license=('GPL3')
-depends=('python2' 'python2-yaml' 'python2-paramiko' 'python2-jinja' 'python2-crypto')
+depends=('python' 'python-yaml' 'python-paramiko' 'python-jinja')
+provides=('python-ansible')
+replaces=('python-ansible')
+conflicts=('python-ansible')
 optdepends=('sshpass: for ssh connections with password'
-            'python2-passlib: crypt values for vars_prompt'
-            'python2-netaddr: for the ipaddr filter'
-            'python2-systemd: log to journal'
-            'python2-pywinrm: connect to Windows machines'
-            'python2-dnspython: for dig lookup'
-            'python2-ovirt-engine-sdk: ovirt support'
-            'python2-boto3: aws_s3 module'
-            'python2-jmespath: json_query support')
-makedepends=('asciidoc' 'fakeroot' 'python' 'python2-setuptools'
-             'python-setuptools')
+            'python-passlib: crypt values for vars_prompt'
+            'python-pyopenssl: openssl modules'
+            'python-netaddr: for the ipaddr filter'
+            'python-systemd: log to journal'
+            'python-pywinrm: connect to Windows machines'
+            'python-dnspython: for dig lookup'
+            'python-ovirt-engine-sdk: ovirt support'
+            'python-boto3: aws_s3 module'
+            'python-jmespath: json_query support'
+            'acme-tiny: openssl_certificate module')
+makedepends=('asciidoc' 'fakeroot' 'python-setuptools')
 backup=('etc/ansible/ansible.cfg')
 source=("https://releases.ansible.com/ansible/ansible-${pkgver}.tar.gz")
-sha512sums=('a7cda358c67c519c7e5ba248bf47070f21a27203fb29d70d9d75ecf027ba1275d71c0f96493e047281211d172a3be8273d7e08144446284695fb0bc8b94daa82')
-
-prepare() {
-  cp -r ${pkgname}-${pkgver} "${srcdir}"/${pkgname}-${pkgver}-python
-}
+sha512sums=('b3dc3469dd7e34e3b39b3382df65c3684a44be0515f68861997a4d0e5fce44d64000bc0da0b38fd3d27b45aa1ec3973da581482e0de54c5cc41eb761b230b116')
 
 build() {
   cd "${srcdir}"/${pkgname}-${pkgver}
-  python2 setup.py build
-
-  cd "${srcdir}"/${pkgname}-${pkgver}-python
   python setup.py build
 }
 
-package_ansible() {
-  provides=('python2-ansible')
-
+package() {
   cd ${pkgname}-${pkgver}
-  python2 setup.py install -O1 --root="${pkgdir}"
+  python setup.py install -O1 --root="${pkgdir}"
   install -Dm644 COPYING "${pkgdir}"/usr/share/doc/ansible/COPYING
 
   install -d "${pkgdir}"/usr/share/ansible/doc
@@ -54,13 +49,4 @@ package_ansible() {
 
   install -d "${pkgdir}"/usr/share/man/man1
   cp -dpr --no-preserve=ownership docs/man/man1/*.1 "${pkgdir}"/usr/share/man/man1
-}
-
-package_python-ansible() {
-  pkgdesc='python bindings for ansible'
-  depends=('python-paramiko' 'python-jinja' 'python-yaml' 'python-crypto')
-
-  cd "${srcdir}"/ansible-${pkgver}-python
-  python setup.py install --root=${pkgdir} --optimize=1
-  rm "${pkgdir}"/usr/bin/ansible*
 }

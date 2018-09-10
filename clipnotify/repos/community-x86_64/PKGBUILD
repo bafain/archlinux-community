@@ -1,0 +1,30 @@
+# Maintainer: Thore Bödecker <foxxx0@archlinux.org>
+# Contributor: Chris Down <chris@chrisdown.name>
+
+pkgname=clipnotify
+pkgver=1.0.1
+pkgrel=1
+pkgdesc='Polling-free clipboard notifier'
+url='https://github.com/cdown/clipnotify'
+arch=('x86_64')
+license=('custom:Public Domain')
+depends=('libx11' 'libxfixes')
+
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/cdown/clipnotify/archive/${pkgver}.tar.gz")
+sha512sums=('4721d41febdb306f777f87c33f58043d676d29c31372dc249aae774649f38e814075125559b9d637a3597baf1ddc4807d5f9541452ae72ac11afcfe223a9b066')
+
+prepare() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    true
+}
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    install -Dm755 clipnotify "${pkgdir}/usr/bin/clipnotify"
+    install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

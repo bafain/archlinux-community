@@ -2,7 +2,7 @@
 # Maintainer: Massimiliano Torromeo <massimiliano.torromeo@gmail.com>
 
 pkgname='geoip2-database'
-pkgver=20180207
+pkgver=20180716
 pkgrel=1
 pkgdesc="GeoLite2 IP geolocation databases compiled by MaxMind"
 arch=('any')
@@ -14,9 +14,9 @@ source=(GeoLite2-City-$pkgver.tar.gz::https://geolite.maxmind.com/download/geoip
 noextract=(GeoLite2-City-$pkgver.tar.gz
            GeoLite2-Country-$pkgver.tar.gz
            GeoLite2-ASN-$pkgver.tar.gz)
-sha256sums=('f6593b6cb1c645d98b51ab99e6f6e1330885af3be01f54e24e740e64954484c4'
-            '0e0611d5f86e08432e68a1989923a61357deceb81eecabe45e89b3da79af169c'
-            '6fb001aac55dd247cf1e7d2642801ea4d29f2c75e886a92cd6736ebd0970eb96')
+sha256sums=('1e896e40344e836e2153f6315d0c4a605cbe18901698353e3c58b9e9807fe924'
+            '8d648c0c79e375d2a904b5bb326ba7f3bddd11eefb742e0926e2d8dccf24aa61'
+            'e9a4dbd656474076d817ef7d3f20c4a4f478b104e18ca840b2b8d48977d1b57b')
 
 prepare() {
   cd "$srcdir"

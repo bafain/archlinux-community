@@ -2,19 +2,19 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=certbot-dns-route53
-pkgver=0.22.0
+pkgver=0.27.1
 pkgrel=1
 pkgdesc="Route53 DNS Authenticator plugin for Certbot"
 arch=('any')
 license=('Apache')
 url="https://pypi.python.org/pypi/$pkgname"
-depends=("certbot=$pkgver" "python-acme=$pkgver" 'python-boto3' 'python-mock' 'python-setuptools'
+depends=('certbot' 'python-acme' 'python-boto3' 'python-mock' 'python-setuptools'
          'python-zope-interface')
 source=("https://pypi.io/packages/source/c/$pkgname/$pkgname-$pkgver.tar.gz"{,.asc})
 validpgpkeys=('148C30F6F7E429337A72D992B00B9CC82D7ADF2C'
               '1B41B758F9A78C7F444C20FA3E5B4152E3ADB1FD'
               'A2CFB51FA275A7286234E7B24D17C995CD9775F2')
-sha512sums=('5884f08a618d1dac4ab6d985423601e17baed0e09a191a85041a858e7fcfc4972361a55542633434784968d5f4f0196dbfebbaafc53476c59e117fd1132e843b'
+sha512sums=('4ce409acf92439282e70e735f20d870ea17cde39ec94d774a7218d5f6395dd6790272ad1a00b2453553b6bfdf16228a8baf7e02349ea1772ead611ed8eb69c58'
             'SKIP')
 
 build() {

@@ -8,7 +8,7 @@
 
 _pkgbasename=gnutls
 pkgname=lib32-$_pkgbasename
-pkgver=3.5.13
+pkgver=3.5.19
 pkgrel=1
 pkgdesc="A library which provides a secure layer over a reliable transport layer (32-bit)"
 arch=('x86_64')
@@ -17,7 +17,7 @@ url="https://gnutls.org/"
 depends=('lib32-zlib' 'lib32-nettle' 'lib32-p11-kit' 'lib32-libtasn1' 'lib32-libidn' $_pkgbasename)
 makedepends=('gcc-multilib')
 source=(https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/${_pkgbasename}-${pkgver}.tar.xz{,.sig})
-sha256sums=('79f5480ad198dad5bc78e075f4a40c4a315a1b2072666919d2d05a08aec13096'
+sha256sums=('1936eb64f03aaefd6eb16cef0567457777618573826b94d03376bb6a4afadc44'
             'SKIP')
 validpgpkeys=(1F42418905D8206AA754CCDC29EE58B996865171)
 

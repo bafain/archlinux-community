@@ -1,18 +1,19 @@
-# $Id$
+# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 
 _pkgbasename=fontconfig
 pkgname=lib32-$_pkgbasename
-pkgver=2.13.0+10+g58f5285
-pkgrel=1.1
+pkgver=2.13.0+15+gc60ed9e
+pkgrel=1
+epoch=2
 pkgdesc="A library for configuring and customizing font access (32-bit)"
 arch=(x86_64)
 url="https://www.freedesktop.org/wiki/Software/fontconfig/"
 license=(custom)
 depends=(lib32-expat lib32-freetype2 $_pkgbasename)
-makedepends=(git autoconf-archive gperf python-lxml python-six)
+makedepends=(git autoconf-archive gperf python-lxml python-six lib32-json-c)
 install=lib32-fontconfig.install
-_commit=58f52853d5689e897525a5926c1a222340d3f404  # master
+_commit=c60ed9ef66e59584f8b54323018e9e6c69925c7e  # master~45
 source=("git+https://anongit.freedesktop.org/git/fontconfig#commit=$_commit"
         fontconfig-32.hook)
 sha256sums=('SKIP'

@@ -2,20 +2,24 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=cryptol
-pkgver=2.5.0
-pkgrel=38
+pkgver=2.6.0
+pkgrel=20
 pkgdesc="The Language of Cryptography"
 url="http://www.cryptol.net"
 license=("custom:BSD3")
 arch=('x86_64')
-depends=('ghc-libs' 'z3' 'haskell-base-compat' 'haskell-async' 'haskell-gitrev' 'haskell-graphscc'
-         'haskell-heredoc' 'haskell-monad-control' 'haskell-monadlib' 'haskell-old-time'
-         'haskell-presburger' 'haskell-quickcheck' 'haskell-random' 'haskell-sbv' 'haskell-smtlib'
-         'haskell-simple-smt' 'haskell-syb' 'haskell-text' 'haskell-tf-random'
-         'haskell-transformers-base' 'haskell-utf8-string' 'haskell-mtl' 'haskell-ansi-terminal')
+depends=('ghc-libs' 'z3' 'haskell-base-compat' 'haskell-gitrev' 'haskell-graphscc' 'haskell-heredoc'
+         'haskell-monad-control' 'haskell-monadlib' 'haskell-panic' 'haskell-random' 'haskell-sbv'
+         'haskell-simple-smt' 'haskell-strict' 'haskell-tf-random' 'haskell-transformers-base'
+         'haskell-ansi-terminal' 'haskell-blaze-html')
 makedepends=('ghc' 'alex' 'happy')
-source=("https://hackage.haskell.org/packages/archive/$pkgname/${pkgver}/$pkgname-${pkgver}.tar.gz")
-sha512sums=('e528c2b75853f559a0e122286734fce373150a458a5af2a74020240629f9f550747f30f50c16d261326e94f4060497af43951f0253dc6885043cf21aab849265')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/GaloisInc/cryptol/archive/$pkgver.tar.gz")
+sha512sums=('445a1656ffd0d260553e041de9b15b6257a4b068b5462d996e8207671c097ea814bc5b7aaeb527b5e9579bd8a3e5e8ced0aaf57c24fbccaa7410342a109e9325')
+
+prepare() {
+    cd $pkgname-$pkgver
+    sed -i 's/<.*0.10/<1/' $pkgname.cabal
+}
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"

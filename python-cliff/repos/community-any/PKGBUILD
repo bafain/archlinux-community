@@ -4,11 +4,11 @@
 
 pkgbase=python-cliff
 pkgname=(python-cliff python2-cliff)
-pkgver=2.11.0
-pkgrel=1
+pkgver=2.13.0
+pkgrel=2
 pkgdesc="Command Line Interface Formulation Framework"
 arch=('any')
-url="http://docs.openstack.org/developer/cliff"
+url="https://docs.openstack.org/cliff/latest/"
 license=('Apache')
 makedepends=('git' 'python-setuptools' 'python2-setuptools' 'python-pbr' 'python2-pbr'
              'python-cmd2' 'python2-cmd2' 'python-prettytable' 'python2-prettytable'
@@ -19,7 +19,7 @@ checkdepends=('python-testrepository' 'python2-testrepository' 'python-mock' 'py
               'python-testscenarios' 'python2-testscenarios')
 options=('!emptydirs')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/openstack/cliff/archive/$pkgver.tar.gz")
-sha512sums=('478c1c135cc83ea6a88d67439db48fd66bdba258ff280e68f8b8930489420f7c2e304929774dc2fd8ff914aa1040adde0f95c987047290d3b6775afc08b37e68')
+sha512sums=('af0f34900897133ab7bb00142d95af20fcd124a3627f5ffc0ed82c34d86bf16afcfacfcafa600d7eba2580689b51deac8b6496e15990c2a33df95f7dcecf04f1')
 
 prepare() {
   cp -a cliff-$pkgver{,-py2}

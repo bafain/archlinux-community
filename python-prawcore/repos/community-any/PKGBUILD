@@ -3,7 +3,7 @@
 
 pkgbase=python-prawcore
 pkgname=('python-prawcore' 'python2-prawcore')
-pkgver=0.13.0
+pkgver=1.0.0
 pkgrel=1
 pkgdesc="Low-level communication layer for PRAW 4+."
 arch=('any')
@@ -14,7 +14,7 @@ checkdepends=('python-mock' 'python2-mock' 'python-betamax-matchers' 'python2-be
               'python-betamax-serializers' 'python2-betamax-serializers' 'python-testfixtures'
               'python2-testfixtures')
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/praw-dev/prawcore/archive/v$pkgver.tar.gz")
-sha512sums=('90e5d2182a4d707685bc3d3b33f6d08e66d030e65faf9de1d2038ac9b1ab6f9955378599c218ddb4849d213074f49f069a2746fd9223227010f3b67d863a4dfe')
+sha512sums=('01ba210b56aedb8f697f13650ac2a763ef034e668ee9a84962e1567cada894adf6088a536d32b67d44edfbbec24aed6c86d33aa56d003593961346e1319de69c')
 
 prepare() {
   cp -a prawcore-$pkgver{,-py2}

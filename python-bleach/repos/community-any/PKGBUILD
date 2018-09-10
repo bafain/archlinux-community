@@ -2,21 +2,25 @@
 
 pkgbase=python-bleach
 pkgname=(python-bleach python2-bleach)
-pkgver=2.1.2
+pkgver=2.1.4
 pkgrel=1
 
 pkgdesc="An easy whitelist-based HTML-sanitizing tool"
-url="http://pypi.python.org/pypi/bleach"
+url="https://pypi.org/project/bleach/"
 arch=('any')
 license=('Apache')
 makedepends=('python'
              'python-setuptools'
+             'python-html5lib'
              'python2'
-             'python2-setuptools')
+             'python2-setuptools'
+             'python2-html5lib')
+checkdepends=('python-pytest'
+              'python2-pytest')
 
 source=(https://pypi.org/packages/source/b/bleach/bleach-$pkgver.tar.gz)
 
-sha256sums=('38fc8cbebea4e787d8db55d6f324820c7f74362b70db9142c1ac7920452d1a19')
+sha256sums=('0ee95f6167129859c5dce9b1ca291ebdb5d8cd7e382ca0e237dfd0dad63f63d8')
 
 prepare() {
 	cp -a bleach-$pkgver{,-python2}
@@ -28,6 +32,14 @@ build() {
 
 	cd "$srcdir"/bleach-$pkgver-python2
 	python2 setup.py build
+}
+
+check() {
+	cd "$srcdir"/bleach-$pkgver
+	python -m pytest
+
+	cd "$srcdir"/bleach-$pkgver-python2
+	python2 -m pytest
 }
 
 package_python-bleach() {

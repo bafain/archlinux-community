@@ -2,8 +2,8 @@
 # Maintainer: Nicola Squartini <tensor5@gmail.com>
 
 pkgname=atom
-pkgver=1.24.0
-pkgrel=2
+pkgver=1.30.0
+pkgrel=1
 pkgdesc='A hackable text editor for the 21st Century'
 arch=('x86_64')
 url='https://github.com/atom/atom'
@@ -15,23 +15,23 @@ optdepends=('ctags: symbol indexing support'
 replaces=('atom-editor')
 options=(!emptydirs)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/atom/atom/archive/v${pkgver}.tar.gz"
+        'atom.js'
         'dugite-use-system-git.patch'
         'fix-atom-sh.patch'
         'fix-license-path.patch'
-        'fix-node8.patch'
         'fix-restart.patch'
         'symbols-view-use-system-ctags.patch'
         'use-system-apm.patch'
         'use-system-electron.patch')
-sha256sums=('7494fba115b214e29d3977cc1a3b08b94d0e88cad65b0d506d40904e3f967bbc'
-            'bbc07c111fe808b49b62198e17e8da5d3192faf281d5d84ac7cd493ed92bb2ba'
-            '7f4f86387d226fcd452f0b97579dadc3eac217a77485228dbf4facf3391b6198'
-            'ef8cc9f8c6a3e0359a19b876653c4d6a0ef1224c2d4e06f3e5d535c772292f4f'
-            'eb771d7c009be8d48c1387ed63f3e575dc12f3bd69455b4be4b78ab57cb49b86'
-            '34625e26f1089a068582bd43a9a3755b3f5186b90dcc097b519def8f701d9f3a'
+sha256sums=('ebc4ef0922307f2c4dfd69c6cd2cb4f4c8f1dc7c00a55253437b7f893d2d94cd'
+            'cdf87ab82cfcf69e8904684c59b08c35a68540ea16ab173fce06037ac341efcd'
+            '530b46d31df0f5e8f5881e1608a66fe75d549092a6db2e72ba3ad69c48714153'
+            'ab9eed3d4c8bfefea256953428379ab1e636b9c7d4c4af30ddc3f485330183c2'
+            'c8a931f36af3722c57c4d1b70c1e58aa1a18372e8e26c28a4e01253e05295205'
+            'b9533bd31e9329d63abc5ec87b237761c73d0586485288925ba723fb34b3b933'
             '3c68e6b3751313e1d386e721f8f819fb051351fb2cf8e753b1d773a0f475fef8'
             '4b91a1acd112838bd001f4e3c555de2a5fc7446c9eab6bc5dae0ca640306e81b'
-            '3e16f307de4f4bbe247d0e3aaba4abcd74b8d2668898613432dd0fee8f37ce95')
+            '79ae5cf80af9a4aa4ff84cad3786e8cdf3eef25e967919c84374d490f9c7f884')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -40,7 +40,6 @@ prepare() {
   patch -Np1 -i "${srcdir}"/use-system-electron.patch
   patch -Np1 -i "${srcdir}"/use-system-apm.patch
   patch -Np1 -i "${srcdir}"/fix-license-path.patch
-  patch -Np1 -i "${srcdir}"/fix-node8.patch
   patch -Np1 -i "${srcdir}"/fix-restart.patch
 }
 
@@ -59,7 +58,7 @@ build() {
   rm -r vendor
   cd ../..
 
-  # Use system git (TODO: set LOCAL_GIT_DIRECTORY=/usr)
+  # Use system git
   cd node_modules/dugite
   patch -Np1 -i "${srcdir}"/dugite-use-system-git.patch
   rm -r git
@@ -75,11 +74,13 @@ package() {
 
   install -d -m 755 "${pkgdir}"/usr/lib
   cp -r out/app "${pkgdir}"/usr/lib/atom
+  install -m 644 out/startup.js "${pkgdir}"/usr/lib/atom
+  install -m 755 "${srcdir}/atom.js" "${pkgdir}"/usr/lib/atom/atom
 
   install -d -m 755 "${pkgdir}/usr/share/applications"
   sed -e "s|<%= appName %>|Atom|" \
       -e "s/<%= description %>/${pkgdesc}/" \
-      -e "s|<%= installDir %>/share/<%= appFileName %>/atom|electron --app=/usr/lib/atom|" \
+      -e "s|<%= installDir %>/share/<%= appFileName %>/atom|/usr/lib/atom/atom|" \
       -e "s|<%= iconPath %>|atom|" \
       resources/linux/atom.desktop.in > "${pkgdir}/usr/share/applications/atom.desktop"
 

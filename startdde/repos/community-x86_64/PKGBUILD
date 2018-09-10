@@ -4,23 +4,24 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=startdde
-pkgver=3.1.25
+pkgver=3.1.35.3
 pkgrel=1
 pkgdesc="starter of deepin desktop environment"
 arch=('x86_64')
 url="https://github.com/linuxdeepin/startdde"
 license=('GPL3')
-depends=('deepin-daemon' 'deepin-wm-switcher' 'libgnome-keyring')
-makedepends=('cmake' 'coffeescript' 'deepin-dbus-factory' 'deepin-gir-generator' 'deepin-go-lib'
-             'deepin-api' 'go-pie' 'python2' 'git')
+depends=('deepin-daemon' 'deepin-wm' 'deepin-metacity' 'libgnome-keyring')
+makedepends=('cmake' 'coffeescript' 'deepin-go-dbus-factory' 'deepin-gir-generator' 'deepin-go-lib'
+             'deepin-api' 'go-pie' 'python2' 'git' 'jq' 'deepin-dbus-factory')
+replaces=('deepin-wm-switcher')
 groups=('deepin')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/startdde/archive/$pkgver.tar.gz")
-sha512sums=('bf013362100ed6bedd7b860bb38d67250bc3416f842607b018e5082a3e8fa88367ff873ee2f1538aacb125fc8e304051f7b457ee16a6023fecf3810ace61d69f')
+sha512sums=('617ead4a7da52dd8311c7edbce706628a9a023a943db153b35b96486b2b60629650ce5f1702294c32b93265eb73886acf4948fcc043c7260528eb8c68441e09e')
 
 prepare() {
   export GOPATH="$srcdir/build:/usr/share/gocode"
   go get github.com/BurntSushi/xgb github.com/BurntSushi/xgbutil github.com/howeyc/fsnotify \
-         github.com/cryptix/wav
+         github.com/cryptix/wav golang.org/x/net/context github.com/linuxdeepin/go-x11-client
 
   sed -i 's/sbin/bin/' startdde-$pkgver/Makefile
 }

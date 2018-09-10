@@ -4,8 +4,8 @@
 
 _hkgname=http-date
 pkgname=haskell-http-date
-pkgver=0.0.6.1
-pkgrel=44
+pkgver=0.0.8
+pkgrel=3
 pkgdesc="HTTP Date parser/formatter"
 url="https://hackage.haskell.org/package/${_hkgname}"
 license=("custom:BSD3")
@@ -13,7 +13,7 @@ arch=('x86_64')
 depends=('ghc-libs' "haskell-attoparsec")
 makedepends=('ghc')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('456d59bc9405578526ea458772ba8b01d1fe85607bc0e201efd6f0f080525205cbf8eba19dfd5f64ff520510a9a7ae3b7008fe43fee0e312b792476b965ba739')
+sha512sums=('7ad48dc20c62fea21aad0d15251cca333b56a59ca13c45be61fd9fcd938e28f5cb82701b7a394c256e1487679d0bbfcf994de90d7c8b57888e3bac8809e97114')
 
 build() {
     cd "${srcdir}/${_hkgname}-${pkgver}"

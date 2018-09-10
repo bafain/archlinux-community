@@ -4,7 +4,7 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 
 pkgname=deepin-metacity
-pkgver=3.22.15
+pkgver=3.22.21
 pkgrel=1
 pkgdesc="2D window manager for Deepin"
 arch=('x86_64')
@@ -13,13 +13,19 @@ depends=('dconf' 'libcanberra' 'libgtop' 'libsm' 'deepin-desktop-schemas' 'gtk3'
 makedepends=('intltool' 'itstool' 'autoconf-archive' 'yelp-tools' 'python')
 url="https://github.com/linuxdeepin/deepin-metacity"
 source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/deepin-metacity/archive/$pkgver.tar.gz")
-sha512sums=('cb266aa8c6fe2bc77fc109711100f603b17e30cc905622f63b6d8494ae956f46862c5ec75e2f8155f2efd00e89364414a0d0eb62c3a9bea7301a920d0db927e6')
+sha512sums=('a1b25164478cbaa98e72deae086eaff32dbfe67fec2c34ef619911826517c07d803ae6012e9166be6ce65f0dace3f6534d6a160498581872c26740135736c996')
 
-build() {
+prepare() {
   cd $pkgname-$pkgver
   ./autogen.sh --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib/$pkgname \
                --disable-static --disable-schemas-compile
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool  
+
+  sed -i 's|/usr/share/backgrounds/default_background.jpg|/usr/share/backgrounds/deepin/desktop.jpg|' src/ui/*.c
+}
+
+build() {
+  cd $pkgname-$pkgver
   make
 }
 

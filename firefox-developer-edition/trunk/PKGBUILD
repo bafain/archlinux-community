@@ -1,17 +1,18 @@
-# Maintainer: Andrew Crerar <andrew@crerar.io>
+# $Id$
+# Maintainer: Andrew Crerar <crerar@archlinux.org>
 # Contributor: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 
 pkgname=firefox-developer-edition
-pkgver=60.0b4
+pkgver=63.0b4
 pkgrel=1
 pkgdesc="Developer Edition of the popular Firefox web browser"
 arch=('x86_64')
 license=('MPL' 'GPL' 'LGPL')
 url="https://www.mozilla.org/firefox/channel/#developer"
 depends=('gtk3' 'mozilla-common' 'libxt' 'startup-notification' 'mime-types'
-         'dbus-glib' 'ffmpeg' 'nss' 'hunspell' 'sqlite' 'ttf-font' 'libpulse')
-makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake' 'gconf' 'inetutils'
-             'xorg-server-xvfb' 'autoconf2.13' 'rust' 'mercurial' 'clang' 'llvm' 'jack' 'gtk2')
+         'dbus-glib' 'ffmpeg' 'nss' 'hunspell-en_US' 'sqlite' 'ttf-font' 'libpulse')
+makedepends=('unzip' 'zip' 'diffutils' 'python2' 'python' 'yasm' 'mesa' 'imake' 'gconf' 'inetutils'
+             'xorg-server-xvfb' 'autoconf2.13' 'rust' 'mercurial' 'clang' 'llvm' 'jack' 'gtk2' 'nodejs')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'libnotify: Notification integration'
             'pulseaudio: Audio support'
@@ -41,8 +42,7 @@ _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
 _mozilla_api_key=16674381-f021-49de-8622-3021c5942aff
 
 prepare() {
-  mkdir path
-  ln -s /usr/bin/python2 path/python
+  cargo install cbindgen
 
   cd mozilla-unified
   patch -Np1 -i ../firefox-install-dir.patch
@@ -55,20 +55,19 @@ ac_add_options --enable-application=browser
 
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
-ac_add_options --enable-gold
-ac_add_options --enable-pie
-ac_add_options --enable-optimize="-O2"
+ac_add_options --enable-linker=gold
+ac_add_options --enable-hardening
+ac_add_options --enable-optimize
 ac_add_options --enable-rust-simd
 
 # Branding
 ac_add_options --with-branding=browser/branding/aurora
 ac_add_options --enable-update-channel=aurora
 ac_add_options --with-distribution-id=org.archlinux
+ac_add_options "MOZ_ALLOW_LEGACY_EXTENSIONS=1"
 export MOZILLA_OFFICIAL=1
 export MOZ_TELEMETRY_REPORTING=1
-export MOZ_ADDON_SIGNING=1
 export MOZ_REQUIRE_SIGNING=0
-ac_add_options "MOZ_ALLOW_LEGACY_EXTENSIONS=1"
 
 # Keys
 ac_add_options --with-google-api-keyfile=${PWD@Q}/google-api-key
@@ -77,7 +76,6 @@ ac_add_options --with-mozilla-api-keyfile=${PWD@Q}/mozilla-api-key
 # System libraries
 ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
-ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 
@@ -88,22 +86,14 @@ ac_add_options --enable-startup-notification
 ac_add_options --enable-crashreporter
 ac_add_options --disable-updater
 
-STRIP_FLAGS="--strip-debug"
 END
 }
 
 build() {
   cd mozilla-unified
 
-  # _FORTIFY_SOURCE causes configure failures
-  CPPFLAGS+=" -O2"
-
-  export PATH="$srcdir/path:$PATH"
   export MOZ_SOURCE_REPO="$_repo"
 
-  # Do PGO
-  #xvfb-run -a -n 93 -s "-extension GLX -screen 0 1280x1024x24" \
-  #  MOZ_PGO=1 ./mach build
   ./mach build
   ./mach buildsymbols
 }
@@ -118,15 +108,15 @@ package() {
 // Use LANG environment variable to choose locale
 pref("intl.locale.requested", "");
 
-// Disable default browser checking.
+// Use system-provided dictionaries
+pref("spellchecker.dictionary_path", "/usr/share/hunspell");
+
+// Disable default browser checking
 pref("browser.shell.checkDefaultBrowser", false);
 
 // Don't disable our bundled extensions in the application directory
 pref("extensions.autoDisableScopes", 11);
 pref("extensions.shownSelectionUI", true);
-
-// Opt all of us into e10s, instead of just 50%
-pref("browser.tabs.remote.autostart", true);
 END
 
   _distini="$pkgdir/usr/lib/$pkgname/distribution/distribution.ini"
@@ -155,11 +145,6 @@ END
 
   install -Dm644 ../$pkgname.desktop \
     "$pkgdir/usr/share/applications/$pkgname.desktop"
-
-  # Use system-provided dictionaries
-  rm -r "$pkgdir/usr/lib/$pkgname/dictionaries"
-  ln -Ts /usr/share/hunspell "$pkgdir/usr/lib/$pkgname/dictionaries"
-  ln -Ts /usr/share/hyphen "$pkgdir/usr/lib/$pkgname/hyphenation"
 
   # Install a wrapper to avoid confusion about binary path
   install -Dm755 /dev/stdin "$pkgdir/usr/bin/$pkgname" << END

@@ -3,7 +3,7 @@
 # Contributor: pandada8 <pandada8@gmail.com>
 
 pkgname=v2ray
-pkgver=3.14
+pkgver=3.39
 pkgrel=1
 pkgdesc="A platform for building proxies to bypass network restrictions"
 arch=('x86_64')
@@ -12,7 +12,7 @@ license=('MIT')
 makedepends=('go' 'git')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/v2ray/v2ray-core/archive/v$pkgver.tar.gz"
         'v2ray.service')
-sha512sums=('235c9b6a3f50876537735a0fb06e3a5bdf9472cbf1d597cc63cd67ba3d871c4b252a6fcb1a8faabcb67274d3dea8974aaf67db62fd70dde28473dda6fcd5b9fc'
+sha512sums=('d83245fcd5f2dc42b298bbda50508b812e0a62fae0761a742e250d69acd89f0a33c3339ac4e5631205ef810fa4eaaead8d8040f37b57a1c0c4dd9603d7127cfd'
             'bebb87f43b3920be8efde9aece9c4305323cd7d3a65a3b2441f0dbd0098c02a18ca89a5b08833eee70482cffae2c8e7b7237bb5a4d1076e3c30d273898e2bedb')
 
 prepare() {

@@ -4,7 +4,7 @@
 # Contributor: Xu Fasheng <fasheng.xu[AT]gmail.com>
 
 pkgname=deepin-file-manager
-pkgver=4.4.8.2
+pkgver=4.6.8.3
 pkgrel=1
 epoch=1
 pkgdesc='Deepin File Manager'
@@ -12,20 +12,21 @@ arch=('x86_64')
 url="https://github.com/linuxdeepin/dde-file-manager"
 license=('GPL3')
 depends=('deepin-qt5integration' 'gtk2' 'gsettings-qt' 'libsecret' 'qt5-svg' 'file' 'avfs'
-         'polkit-qt5' 'deepin-shortcut-viewer' 'poppler' 'ffmpegthumbnailer' 'deepin-manual'
+         'polkit-qt5' 'deepin-shortcut-viewer' 'poppler' 'ffmpegthumbnailer'
          'file-roller' 'deepin-qt-dbus-factory' 'treefrog-framework' 'deepin-terminal'
-         'gst-plugins-good' 'mpv')
+         'gst-plugins-good' 'mpv' 'deepin-anything' 'deepin-movie' 'jemalloc' 'kcodecs')
 makedepends=('qt5-tools' 'deepin-dock' 'deepin-gettext-tools')
+optdepends=('deepin-manual: view the help manual')
 groups=('deepin')
 provides=('deepin-desktop')
 conflicts=('deepin-desktop')
 replaces=('deepin-desktop')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/felixonmars/dde-file-manager/archive/$pkgver.tar.gz")
-sha512sums=('55c32150796871b2cbc5376f2badbe6c9697c438dc526ea314b6681ddefca381c8a2781fea3bbae710b605a4c897bd6268f8d2df16e63134678adf1f4aee1ca4')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/linuxdeepin/dde-file-manager/archive/$pkgver.tar.gz")
+sha512sums=('b0c2b722fab6ed94f9eb74ba1cf250217c743f64535d10c68b4d997c386ede6f0a43b2850e3ce6487462335e6031bb540fe2467fb889df9c23252a6ba826c38d')
 
 build() {
   cd dde-file-manager-$pkgver
-  qmake-qt5 PREFIX=/usr QMAKE_CFLAGS_ISYSTEM=
+  qmake-qt5 PREFIX=/usr
   make
 }
 

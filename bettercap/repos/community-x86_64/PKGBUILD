@@ -1,34 +1,35 @@
 # Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Maintainer: Christian Rebischke <chris.rebischke[at]archlinux[dot]org>
 
 pkgname=bettercap
-pkgver=2.2
+pkgver=2.8
 pkgrel=1
 pkgdesc='Swiss army knife for network attacks and monitoring'
 url='https://github.com/bettercap/bettercap'
 arch=('x86_64')
 license=('GPL3')
-depends=('libpcap')
-makedepends=('go-pie' 'git')
+depends=('libpcap' 'libnetfilter_queue' 'iproute2' 'glibc' 'libnfnetlink')
+makedepends=('go-pie' 'git' 'dep')
 options=('!emptydirs')
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/bettercap/bettercap/archive/v${pkgver}.tar.gz)
-sha512sums=('3546a243b321a22a2dc03047602c1adc983126ace0128f2fb5a3625c42aaa7e24fa70a9d23e780cab58660db9f049670d1a22a769b098534cb3d27d950d1b047')
+sha512sums=('f23f42d06e938d615d3d7033cdabdeeb571c606dd24ae8a412262b34871980d7e0bb3a13d9836668f7667a9d7fac1cfb27e0bb8b5bcf94854e9353991f748325')
 
 prepare(){
-  export GOPATH="${srcdir}"
-  mkdir -p src/github.com/bettercap
-  ln -rTsf ${pkgname}-${pkgver} src/github.com/bettercap/bettercap
+  export GOPATH="${srcdir}/go"
+  mkdir -p go/src/github.com/bettercap
+  ln -rTsf ${pkgname}-${pkgver} go/src/github.com/bettercap/bettercap
 }
 
 build() {
-  cd src/github.com/bettercap/bettercap
-  export GOPATH="${srcdir}"
-  go get -v
+  cd go/src/github.com/bettercap/bettercap
+  export GOPATH="${srcdir}/go"
+  dep ensure
   go build -o bettercap
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  install -Dm 755 ../bin/bettercap -t "${pkgdir}/usr/bin"
+  install -Dm 755 bettercap -t "${pkgdir}/usr/bin"
   install -Dm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
 }
 

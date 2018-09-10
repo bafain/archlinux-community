@@ -4,8 +4,8 @@
 
 _hkgname=doctest
 pkgname=haskell-doctest
-pkgver=0.13.0
-pkgrel=4
+pkgver=0.16.0
+pkgrel=3
 pkgdesc="Test interactive Haskell examples"
 url="https://github.com/sol/doctest"
 license=("MIT")
@@ -15,12 +15,12 @@ depends=('ghc-libs' 'haskell-base-compat' 'haskell-ghc' 'haskell-syb' 'haskell-c
 makedepends=('ghc' 'haskell-hunit' 'haskell-hspec' 'haskell-quickcheck' 'haskell-stringbuilder'
              'haskell-silently' 'haskell-setenv' 'haskell-with-location' 'haskell-mockery')
 source=("https://hackage.haskell.org/packages/archive/${_hkgname}/${pkgver}/${_hkgname}-${pkgver}.tar.gz")
-sha512sums=('6ae0cc74811501cc8d94c50a1de2ae241e298a3bdc56ef21a1b0c5f6ad05b3119efbafb1e3d286c1aee59c9884f364c04ecc8e4505ac54d9c8319b3402a92644')
+sha512sums=('20b2b1dcfe9173b64a1f09369711f3aaaf045d9ed3c11731c6001a8e71ca8a9c5ebee4c4e88673f5da1a215fe0dce478ab05786fe6f54b5c30ba7fe0f89ecc6d')
 
 prepare() {
     # Add -dynamic flag
-    sed -i '/-packageghc/a \  , "-dynamic"' $_hkgname-$pkgver/test/doctests.hs
-    sed -i 's/Example.hs"/Example.hs", "-dynamic"/' $_hkgname-$pkgver/src/Run.hs
+    sed -i 's/\+\+ packageDBArgs/++ packageDBArgs ++ ["-dynamic"]/' $_hkgname-$pkgver/src/Extract.hs
+    sed -i 's/\+\+ expandedArgs)/++ expandedArgs ++ ["-dynamic"])/' $_hkgname-$pkgver/src/Run.hs
 }
 
 build() {
@@ -38,7 +38,7 @@ build() {
 
 check() {
     cd $_hkgname-$pkgver
-    runhaskell Setup test
+    runhaskell Setup test || warning "Tests failed"
 }
 
 package() {

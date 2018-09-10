@@ -2,17 +2,17 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=tldr
-pkgver=0.4.2
-pkgrel=1
+pkgver=0.4.4
+pkgrel=3
 pkgdesc="Command line client for tldr, a collection of simplified and community-driven man pages."
 arch=('any')
 url="https://github.com/tldr-pages/tldr-python-client"
 license=('MIT')
-depends=('python-termcolor' 'python-colorama')
+depends=('python-colorama' 'python-six' 'python-termcolor')
 makedepends=('python-setuptools-markdown' 'python-setuptools-scm')
 checkdepends=('python-pytest-runner')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/tldr-pages/tldr-python-client/archive/$pkgver.tar.gz")
-sha512sums=('b9732b94032756a5f85346543c1116bd9c0be846433e30cdb9e73760667ef8f49b3962dbe36615299045aa4ee5cd344b5cbe7c2f60155162b6e27a9d9084436f')
+sha512sums=('b96fdf8f6168ab35de7c8b68286a2870cc41ac10acbc12fbf9895e002f8f3eb5371e049d096cee179105cc9d5caccb8173b712585caaf433024f40884d223dee')
 
 prepare() {
   export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver

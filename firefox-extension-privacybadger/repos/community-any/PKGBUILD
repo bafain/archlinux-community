@@ -4,19 +4,18 @@
 
 _pkgname=privacybadger
 pkgname=firefox-extension-${_pkgname}
-pkgver=2018.1.22
-pkgrel=2
+pkgver=2018.8.22
+pkgrel=1
 pkgdesc="Block third party tracking in your browser"
 arch=('any')
 url="https://www.eff.org/privacybadger"
 license=('GPL3')
 groups=('firefox-addons')
-depends=("firefox")
 makedepends=("unzip")
 source=("${_pkgname}-${pkgver}.xpi::https://www.eff.org/files/privacy-badger-eff-${pkgver}.xpi"
         "${_pkgname}-${pkgver}.xpi.sig::https://www.eff.org/files/privacy-badger-eff-${pkgver}.xpi.sig")
 noextract=("${_pkgname}-${pkgver}.xpi")
-sha256sums=('97b21b5ca8866ba44c3bf958f36157b0ff8397986d9d4c2ce8a9a82fead04029'
+sha256sums=('894e27e00ac5b1ee510a0d583f7f1e01c7f95632d43c9d7e6b856fff698163fd'
             'SKIP')
 validpgpkeys=('88F8662241B0C16C16E3B5A7950FC3999D80F309') # Alexei <alexei@eff.org>
 
@@ -27,6 +26,7 @@ prepare() {
 }
 
 package() {
+  depends=("firefox")
   cd "${srcdir}"
 
   if [[ -f ${_pkgname}-${pkgver}/install.rdf ]]; then
